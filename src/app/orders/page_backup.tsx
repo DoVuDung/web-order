@@ -21,12 +21,7 @@ import CartComponent from "@/app/components/Cart";
 function page() {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const { 
-    isOpen: isCartOpen, 
-    onOpen: onCartOpen, 
-    onOpenChange: onCartOpenChange 
-  } = useDisclosure();
+
   
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const storeState: Store = useStore((state) => state);
@@ -74,14 +69,7 @@ function page() {
     console.log("Product added to cart:", cartItem);
   }
 
-  const cartItemCount = getCartItemCount();
-      quantity: 1,
-      price: product.price,
-      status: "pending",
-    };
-    storeState.addOrder(newOrder);
-    console.log("Product added to order:", newOrder);
-  }
+ 
 
   return (
     <>
@@ -130,7 +118,7 @@ function page() {
                       size="sm" 
                       color="primary" 
                       variant="flat"
-                      onPress={() => addProductToOrder(product)}
+                      // onPress={() => addProductToOrder(product)}
                       className="w-full"
                     >
                       Add to Order
