@@ -52,7 +52,7 @@ function OrderCraw({ onChange }: OrderCrawProps) {
           description: `Found ${data.products?.length || 0} items from ${data.name}`,
           color: "success",
         });
-      } catch (toastError) {
+      } catch {
         console.log("Toast not available, using console log instead");
       }
       

@@ -1,6 +1,16 @@
 import { auth, clerkClient } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
 
+interface ClerkUser {
+  id: string;
+  firstName?: string | null;
+  lastName?: string | null;
+  emailAddresses: Array<{ emailAddress: string }>;
+  publicMetadata?: { role?: string };
+  lastSignInAt?: number | null;
+  createdAt?: number;
+}
+
 export async function GET() {
   try {
     const { userId } = await auth();
@@ -22,7 +32,7 @@ export async function GET() {
       orderBy: '-created_at'
     });
 
-    const formattedUsers = users.data.map((user: any) => ({
+    const formattedUsers = users.data.map((user: ClerkUser) => ({
       id: user.id,
       firstName: user.firstName,
       lastName: user.lastName,

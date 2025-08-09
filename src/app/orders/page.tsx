@@ -28,7 +28,7 @@ function OrdersPage() {
   } = useDisclosure();
   
   const storeState: Store = useStore((state) => state);
-  const { crawledData, addToCart, getCartItemCount, loadTestData } = storeState;
+  const { crawledData, addToCart, getCartItemCount } = storeState;
   
   console.log("storeState: ", storeState);
   console.log("crawledData: ", crawledData);
