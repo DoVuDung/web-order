@@ -14,6 +14,36 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
+
+  /* Improved contrast for accessibility */
+  :root {
+    --foreground-rgb: 0, 0, 0;
+    --background-start-rgb: 255, 255, 255;
+    --background-end-rgb: 255, 255, 255;
+  }
+
+  [data-theme="dark"] {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+
+  /* Ensure proper text contrast */
+  .text-gray-600 {
+    color: #4b5563; /* Darker gray for better contrast */
+  }
+  
+  .dark .text-gray-600 {
+    color: #d1d5db; /* Lighter gray for dark mode */
+  }
+
+  .text-gray-500 {
+    color: #6b7280; /* Adjusted for better contrast */
+  }
+  
+  .dark .text-gray-500 {
+    color: #9ca3af; /* Adjusted for dark mode */
+  }
 }
 
 @layer utilities {
