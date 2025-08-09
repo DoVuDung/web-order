@@ -1,41 +1,101 @@
-# Web Order
+# Web Order - Food Delivery Application
 
-A web-based application for managing and placing orders online.
+A modern, full-stack food ordering application with group ordering capabilities, real-time updates, and comprehensive admin management.
 
-## Features
+## 🚀 Quick Start
 
-- User authentication and registration
-- Browse and search products
-- Add items to cart and checkout
-- Order history and tracking
-- Admin dashboard for order management
+### Prerequisites
+- Node.js (v18+)
+- PostgreSQL database
+- Clerk account for authentication
 
-## Getting Started
+### Installation
 
-1. **Clone the repository:**
-    ```bash
-    git clone https://github.com/yourusername/web-order.git
-    cd web-order
-    ```
+```bash
+# Clone repository
+git clone https://github.com/DoVuDung/web-order.git
+cd web-order
 
-2. **Install dependencies:**
-    ```bash
-    npm install
-    ```
+# Install dependencies
+npm install
 
-3. **Start the development server:**
-    ```bash
-    npm start
-    ```
+# Setup environment
+cp .env.example .env.local
+# Edit .env.local with your database and Clerk credentials
 
-## Configuration
+# Initialize database
+npm run db
 
-- Copy `.env.example` to `.env` and update environment variables as needed.
+# Start development server
+npm run dev
+```
 
-## Contributing
+Visit `http://localhost:3000` to see the application.
 
-Contributions are welcome! Please open issues or submit pull requests.
+## 📚 Full Documentation
 
-## License
+For complete setup, architecture, and technical details, see [PROJECT_GUIDE.md](./PROJECT_GUIDE.md)
 
-This project is licensed under the MIT License.
+## 🛠️ Tech Stack
+
+- **Frontend**: Next.js 15, React 19, TypeScript, Tailwind CSS, HeroUI
+- **Backend**: Next.js API Routes, Prisma, PostgreSQL
+- **Authentication**: Clerk with role-based access control
+- **State Management**: Zustand
+- **Deployment**: Vercel (recommended)
+
+## ✨ Key Features
+
+- 🔐 **Authentication & Authorization** - Role-based access (Admin, Moderator, User)
+- 👥 **Group Ordering** - Collaborative ordering with shared carts
+- 🏪 **Restaurant Management** - Web scraping for menu data
+- 📱 **Responsive Design** - Mobile-first with dark/light themes
+- 🛡️ **Security** - Input validation, CSRF protection, secure headers
+- ⚡ **Performance** - Optimized bundles, source maps, caching
+
+## 🚦 Available Scripts
+
+```bash
+npm run dev          # Start development server
+npm run build        # Build for production
+npm run start        # Start production server
+npm run lint         # Run ESLint
+npm run db          # Push database schema
+```
+
+## 📖 Project Structure
+
+```
+src/
+├── app/                # Next.js App Router
+│   ├── admin/         # Admin dashboard
+│   ├── api/           # API endpoints
+│   ├── components/    # Page components
+│   └── orders/        # Order management
+├── components/        # Shared components
+├── hooks/            # Custom React hooks
+├── lib/              # Utilities and database
+└── store/            # State management
+```
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature/amazing-feature`
+3. Commit changes: `git commit -m 'Add amazing feature'`
+4. Push to branch: `git push origin feature/amazing-feature`
+5. Open a Pull Request
+
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 👨‍💻 Author
+
+**Andy Do**
+- GitHub: [@DoVuDung](https://github.com/DoVuDung)
+- Support: [Buy me a coffee](https://buymeacoffee.com/andydo)
+
+---
+
+⭐ Star this repository if it helped you!
