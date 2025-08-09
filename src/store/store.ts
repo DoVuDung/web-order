@@ -40,7 +40,12 @@ export interface CrawledRestaurant {
 export interface Store {
   orders: Order[];
   cart: CartItem[];
+  // Current restaurant data for the active group
   crawledData: CrawledRestaurant | null;
+  // Store crawled data per group for group ordering
+  groupCrawledData: Record<string, CrawledRestaurant>;
+  // Currently active group ID
+  currentGroupId: string | null;
   addOrder: (order: Order) => void;
   removeOrder: (id: string) => void;
   addToCart: (item: CartItem) => void;
@@ -49,8 +54,16 @@ export interface Store {
   clearCart: () => void;
   getCartTotal: () => number;
   getCartItemCount: () => number;
+  // Set crawled data for the current group
   setCrawledData: (data: CrawledRestaurant) => void;
   clearCrawledData: () => void;
+  // Group ordering actions
+  // Initialize or update crawled data for a given group
+  setGroupCrawledData: (groupId: string, data: CrawledRestaurant) => void;
+  // Change the current active group
+  setCurrentGroupId: (groupId: string) => void;
+  // Clear current group data
+  clearGroup: () => void;
   // Add test data function
   loadTestData: () => void;
 }
@@ -59,6 +72,8 @@ const useStore = create<Store>((set, get) => ({
   orders: [],
   cart: [],
   crawledData: null,
+  groupCrawledData: {},
+  currentGroupId: null,
   addOrder: (order: Order) => set((state) => ({ orders: [...state.orders, order] })),
   removeOrder: (orderId: string) => set((state) => ({
     orders: state.orders.filter((order) => order.id !== orderId),
@@ -101,8 +116,28 @@ const useStore = create<Store>((set, get) => ({
     const state = get();
     return state.cart.reduce((count, item) => count + item.quantity, 0);
   },
-  setCrawledData: (data: CrawledRestaurant) => set({ crawledData: data }),
+  setCrawledData: (data: CrawledRestaurant) => {
+    const groupId = get().currentGroupId;
+    if (groupId) {
+      set((state) => ({
+        crawledData: data,
+        groupCrawledData: { ...state.groupCrawledData, [groupId]: data }
+      }));
+    } else {
+      set({ crawledData: data });
+    }
+  },
   clearCrawledData: () => set({ crawledData: null }),
+  setGroupCrawledData: (groupId: string, data: CrawledRestaurant) =>
+    set((state) => ({
+      groupCrawledData: { ...state.groupCrawledData, [groupId]: data }
+    })),
+  setCurrentGroupId: (groupId: string) => {
+    set({ currentGroupId: groupId });
+    const data = get().groupCrawledData[groupId] || null;
+    set({ crawledData: data });
+  },
+  clearGroup: () => set({ currentGroupId: null, crawledData: null }),
   
   // Load test data to demonstrate image functionality
   loadTestData: () => set({

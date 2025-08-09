@@ -6,6 +6,7 @@ import {
     SignInButton,
     SignUpButton,
     UserButton,
+    useUser,
 } from "@clerk/nextjs";
 import {
     Navbar,
@@ -20,6 +21,7 @@ import Link from "next/link";
 import { useState } from "react";
 
 function NavbarOrder() {
+  const { user, isLoaded, isSignedIn } = useUser();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
@@ -34,7 +36,7 @@ function NavbarOrder() {
           className="sm:hidden"
         />
         <NavbarBrand>
-          <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-[#6c47ff]">
+          <h2 className="text-lg sm:text-xl md:text-2xl font-bold ]">
             <Link href="/">
               <span className="truncate">Order Together</span>
             </Link>
@@ -67,6 +69,17 @@ function NavbarOrder() {
             About
           </Link>
         </NavbarMenuItem>
+        {/* Show Admin link only for admin users */}
+        {isLoaded && isSignedIn && user.publicMetadata.role === 'admin' && (
+          <NavbarMenuItem>
+            <Link 
+              href="/admin" 
+              className="text-foreground hover:text-primary transition-colors"
+            >
+              Admin
+            </Link>
+          </NavbarMenuItem>
+        )}
       </NavbarContent>
 
       <NavbarContent justify="end" className="gap-2">
@@ -141,6 +154,18 @@ function NavbarOrder() {
             About
           </Link>
         </NavbarMenuItem>
+        {/* Show Admin link in mobile menu for admin users */}
+        {isLoaded && isSignedIn && user?.publicMetadata?.role === 'admin' && (
+          <NavbarMenuItem>
+            <Link 
+              href="/admin"
+              className="w-full block py-2 text-large text-primary"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Admin
+            </Link>
+          </NavbarMenuItem>
+        )}
         <NavbarMenuItem className="sm:hidden">
           <SignedOut>
             <div className="flex flex-col gap-2 pt-4">

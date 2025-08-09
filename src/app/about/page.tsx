@@ -2,7 +2,17 @@ import React from 'react'
 
 function About() {
   return (
-    <div>About Us</div>
+    <div>
+      <section>
+        <h2>Andy Do</h2>
+        <p>
+          Hi, I&#39;m Andy Do, the creator of this site. I am passionate about web development and building useful applications.
+        </p>
+        <p>
+          If you like my work, you can <a href="https://www.buymeacoffee.com/andydo" target="_blank" rel="noopener noreferrer">buy me a coffee</a>!
+        </p>
+      </section>
+    </div>
   )
 }
 

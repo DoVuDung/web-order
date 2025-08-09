@@ -16,6 +16,7 @@ import Image from "next/image";
 import React from "react";
 import { IoCartOutline } from "react-icons/io5";
 import CartComponent from "@/app/components/Cart";
+import GroupManager from "@/app/components/GroupManager";
 import { formatVND } from "@/lib/utils";
 
 function OrdersPage() {
@@ -169,6 +170,9 @@ function OrdersPage() {
   return (
     <>
       <div className="w-full max-w-7xl mx-auto">
+        {/* Group Manager */}
+        <GroupManager />
+        
         {/* Header with Cart Button */}
         <div className="mb-4 gap-4">
           <div className="flex gap-2 items-end">
