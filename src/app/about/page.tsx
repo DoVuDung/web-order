@@ -9,7 +9,7 @@ function About() {
           Hi, I&#39;m Andy Do, the creator of this site. I am passionate about web development and building useful applications.
         </p>
         <p>
-          If you like my work, you can <a href="https://www.buymeacoffee.com/andydo" target="_blank" rel="noopener noreferrer">buy me a coffee</a>!
+          If you like my work, you can <a href="https://buymeacoffee.com/andydo" target="_blank" rel="noopener noreferrer">buy me a coffee</a>!
         </p>
       </section>
     </div>
