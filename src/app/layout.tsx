@@ -53,6 +53,7 @@ export const metadata: Metadata = {
     creator: "@andydo",
   },
 };
+import { ThemeProvider as NextThemesProvider } from "next-themes";
 
 export default function RootLayout({
   children,
@@ -60,6 +61,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
+    <NextThemesProvider
+        attribute="class"
+        defaultTheme="light"
+        enableSystem
+        disableTransitionOnChange
+      >
     <ClerkProvider>
       <html lang="en" suppressHydrationWarning>
         <head>
@@ -100,5 +107,6 @@ export default function RootLayout({
         </body>
       </html>
     </ClerkProvider>
+    </NextThemesProvider>
   );
 }

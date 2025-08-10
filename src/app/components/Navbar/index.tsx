@@ -19,6 +19,7 @@ import {
 } from "@heroui/react";
 import Link from "next/link";
 import { useState } from "react";
+import { ThemeSwitcher } from "..";
 
 function NavbarOrder() {
   const { user, isLoaded, isSignedIn } = useUser();
@@ -83,6 +84,9 @@ function NavbarOrder() {
       </NavbarContent>
 
       <NavbarContent justify="end" className="gap-2">
+        <NavbarMenuItem>
+          <ThemeSwitcher />
+        </NavbarMenuItem>
         <NavbarMenuItem className="hidden sm:block">
           <SignedOut>
             <div className="flex gap-2">
