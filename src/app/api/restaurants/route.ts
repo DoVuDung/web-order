@@ -122,3 +122,18 @@ export async function DELETE(req: Request) {
     );
   }
 }
+
+/**
+ * @swagger
+ * /api/restaurants:
+ *   options:
+ *     summary: CORS preflight for restaurants endpoint
+ *     tags: [Restaurants]
+ *     description: Handles CORS preflight requests
+ *     responses:
+ *       200:
+ *         description: CORS preflight response
+ */
+export async function OPTIONS() {
+  return corsOptionsResponse();
+}
