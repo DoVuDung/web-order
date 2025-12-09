@@ -134,6 +134,6 @@ export async function DELETE(req: Request) {
  *       200:
  *         description: CORS preflight response
  */
-export async function OPTIONS() {
-  return corsOptionsResponse();
+export async function OPTIONS(request: NextRequest) {
+  return corsOptionsResponse(request);
 }

@@ -177,6 +177,6 @@ export const POST = withRateLimit('crawl', requireAuth(async (auth, request: Nex
  *       200:
  *         description: CORS preflight response
  */
-export async function OPTIONS() {
-  return corsOptionsResponse();
+export async function OPTIONS(request: NextRequest) {
+  return corsOptionsResponse(request);
 }
