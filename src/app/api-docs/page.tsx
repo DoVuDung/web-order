@@ -19,7 +19,8 @@ export default function ApiDocsPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('/api/swagger')
+    // Use the server OpenAPI spec endpoint
+    fetch('/api/docs')
       .then((res) => res.json())
       .then((data) => {
         setSpec(data);
