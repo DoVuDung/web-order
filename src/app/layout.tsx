@@ -5,6 +5,8 @@ import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
 import { Providers } from "./providers";
 import NavbarOrder from "./components/Navbar";
+import FloatingFoodIcons from "@/components/FloatingFoodIcons";
+import AnimatedGradientBackground from "@/components/AnimatedGradientBackground";
 import type { Metadata, Viewport } from "next";
 import "../lib/client-utils";
 
@@ -98,9 +100,11 @@ export default function RootLayout({
           />
         </head>
         <body className="min-h-screen bg-background text-foreground antialiased" suppressHydrationWarning>
+          <AnimatedGradientBackground />
+          <FloatingFoodIcons />
           <NavbarOrder />
           <Providers>
-            <main className="container mx-auto px-2 sm:px-4 lg:px-6 xl:px-8 py-4">
+            <main className="container mx-auto px-2 sm:px-4 lg:px-6 xl:px-8 py-4 relative z-10">
               {children}
             </main>
           </Providers>

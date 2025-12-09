@@ -1,10 +1,35 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, CardBody, CardHeader } from "@heroui/react";
-import { Button, Input, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure } from "@heroui/react";
+import { Button, Input, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure, Select, SelectItem, Spinner } from "@heroui/react";
 import useStore from '@/store/store';
 import { useUser } from '@clerk/nextjs';
+
+interface Restaurant {
+  id: string;
+  name: string;
+  platform: string;
+}
+
+interface GroupOrder {
+  id: string;
+  groupId: string;
+  status: string;
+  restaurant: Restaurant;
+  owner: {
+    id: string;
+    name: string;
+  };
+  members: Array<{
+    id: string;
+    user: {
+      id: string;
+      name: string;
+    };
+  }>;
+  createdAt: string;
+}
 
 export default function GroupManager() {
   const { user } = useUser();
@@ -13,87 +38,177 @@ export default function GroupManager() {
   
   const [groupIdInput, setGroupIdInput] = useState('');
   const [isCreating, setIsCreating] = useState(false);
+  const [isJoining, setIsJoining] = useState(false);
+  const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
+  const [selectedRestaurant, setSelectedRestaurant] = useState('');
+  const [loadingRestaurants, setLoadingRestaurants] = useState(false);
+  const [currentGroup, setCurrentGroup] = useState<GroupOrder | null>(null);
+  const [modalMode, setModalMode] = useState<'create' | 'join'>('create');
+
+  // Load restaurants when modal opens for create mode
+  useEffect(() => {
+    if (isOpen && modalMode === 'create') {
+      loadRestaurants();
+    }
+  }, [isOpen, modalMode]);
+
+  // Load current group info
+  useEffect(() => {
+    if (currentGroupId) {
+      loadGroupInfo();
+    } else {
+      setCurrentGroup(null);
+    }
+  }, [currentGroupId]);
+
+  const loadRestaurants = async () => {
+    setLoadingRestaurants(true);
+    try {
+      const response = await fetch('/api/restaurants');
+      if (response.ok) {
+        const data = await response.json();
+        setRestaurants(data);
+      }
+    } catch (error) {
+      console.error('Error loading restaurants:', error);
+    } finally {
+      setLoadingRestaurants(false);
+    }
+  };
+
+  const loadGroupInfo = async () => {
+    if (!currentGroupId) return;
+    
+    try {
+      const response = await fetch(`/api/groups/${currentGroupId}`);
+      if (response.ok) {
+        const data = await response.json();
+        setCurrentGroup(data.groupOrder);
+      }
+    } catch (error) {
+      console.error('Error loading group info:', error);
+    }
+  };
 
   const handleCreateGroup = async () => {
-    if (!user) return;
+    if (!user || !selectedRestaurant) {
+      alert('Please select a restaurant');
+      return;
+    }
     
     setIsCreating(true);
     try {
-      // Generate a unique group ID
-      const newGroupId = `group_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-      
-      // Set the current group
-      setCurrentGroupId(newGroupId);
-      
-      // Store group info (you might want to save this to a database)
-      localStorage.setItem(`group_${newGroupId}`, JSON.stringify({
-        id: newGroupId,
-        createdBy: user.id,
-        createdAt: new Date().toISOString(),
-        members: [user.id],
-        name: `${user.firstName || 'User'}&apos;s Group`,
-      }));
-      
-      onClose();
+      const response = await fetch('/api/groups', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          restaurantId: selectedRestaurant,
+        }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setCurrentGroupId(data.groupOrder.groupId);
+        alert(`✅ Group created successfully!\n\nShare this ID with others:\n${data.groupOrder.groupId}`);
+        onClose();
+        setSelectedRestaurant('');
+      } else {
+        const error = await response.json();
+        alert(`❌ Error: ${error.error || 'Failed to create group'}`);
+      }
     } catch (error) {
       console.error('Error creating group:', error);
+      alert('❌ Failed to create group. Please try again.');
     } finally {
       setIsCreating(false);
     }
   };
 
-  const handleJoinGroup = () => {
-    if (!groupIdInput.trim()) return;
-    
-    // Validate group exists (you might want to check with your backend)
-    const groupInfo = localStorage.getItem(`group_${groupIdInput}`);
-    if (!groupInfo) {
-      alert('Group not found. Please check the group ID.');
+  const handleJoinGroup = async () => {
+    if (!groupIdInput.trim()) {
+      alert('Please enter a group ID');
       return;
     }
     
-    // Join the group
-    setCurrentGroupId(groupIdInput);
-    setGroupIdInput('');
-    onClose();
+    setIsJoining(true);
+    try {
+      const response = await fetch(`/api/groups/${groupIdInput}/join`, {
+        method: 'POST',
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setCurrentGroupId(groupIdInput);
+        alert(`✅ ${data.message || 'Successfully joined group!'}`);
+        onClose();
+        setGroupIdInput('');
+      } else {
+        const error = await response.json();
+        alert(`❌ Error: ${error.error || 'Failed to join group'}`);
+      }
+    } catch (error) {
+      console.error('Error joining group:', error);
+      alert('❌ Failed to join group. Please try again.');
+    } finally {
+      setIsJoining(false);
+    }
   };
 
-  const handleLeaveGroup = () => {
-    if (confirm('Are you sure you want to leave this group? You will lose access to the current group order.')) {
-      clearGroup();
+  const handleLeaveGroup = async () => {
+    if (!currentGroupId) return;
+    
+    if (confirm('⚠️ Are you sure you want to leave this group?\n\nYou will lose access to the group order.')) {
+      try {
+        const response = await fetch(`/api/groups/${currentGroupId}/leave`, {
+          method: 'POST',
+        });
+
+        if (response.ok) {
+          clearGroup();
+          alert('✅ Successfully left the group');
+        } else {
+          const error = await response.json();
+          alert(`❌ Error: ${error.error || 'Failed to leave group'}`);
+        }
+      } catch (error) {
+        console.error('Error leaving group:', error);
+        alert('❌ Failed to leave group. Please try again.');
+      }
     }
   };
 
   const copyGroupId = () => {
     if (currentGroupId) {
       navigator.clipboard.writeText(currentGroupId);
-      alert('Group ID copied to clipboard!');
+      alert('✅ Group ID copied to clipboard!');
     }
   };
 
-  const getGroupInfo = () => {
-    if (!currentGroupId) return null;
-    
-    const groupData = localStorage.getItem(`group_${currentGroupId}`);
-    if (groupData) {
-      return JSON.parse(groupData);
-    }
-    return null;
+  const openCreateModal = () => {
+    setModalMode('create');
+    onOpen();
   };
 
-  const groupInfo = getGroupInfo();
+  const openJoinModal = () => {
+    setModalMode('join');
+    onOpen();
+  };
+
+  const isOwner = currentGroup?.owner?.id === user?.id;
 
   return (
     <div className="w-full">
       <Card className="mb-4">
         <CardHeader>
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 w-full">
-            <h2 className="text-xl font-semibold">Group Ordering</h2>
+            <h2 className="text-xl font-semibold">🍽️ Group Ordering</h2>
             {!currentGroupId && (
               <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
                 <Button 
                   color="primary" 
-                  onPress={onOpen}
+                  onPress={openCreateModal}
                   className="w-full sm:w-auto"
                 >
                   Create Group
@@ -101,7 +216,7 @@ export default function GroupManager() {
                 <Button 
                   color="secondary" 
                   variant="bordered"
-                  onPress={onOpen}
+                  onPress={openJoinModal}
                   className="w-full sm:w-auto"
                 >
                   Join Group
@@ -111,13 +226,28 @@ export default function GroupManager() {
           </div>
         </CardHeader>
         <CardBody>
-          {currentGroupId ? (
+          {currentGroup ? (
             <div className="space-y-4">
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                <div>
-                  <p className="text-sm text-gray-600">Current Group:</p>
-                  <p className="font-medium">{groupInfo?.name || 'Unknown Group'}</p>
-                  <p className="text-xs text-gray-500">ID: {currentGroupId}</p>
+                <div className="flex-1">
+                  <p className="text-sm text-gray-500 dark:text-gray-400">Restaurant</p>
+                  <p className="font-semibold text-lg">{currentGroup.restaurant.name}</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                    Group ID: {currentGroup.groupId}
+                  </p>
+                  <div className="flex items-center gap-2 mt-2">
+                    <span className={`px-2 py-1 rounded text-xs font-medium ${
+                      currentGroup.status === 'DRAFT' ? 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300' :
+                      currentGroup.status === 'ACTIVE' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300' :
+                      currentGroup.status === 'LOCKED' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300' :
+                      'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300'
+                    }`}>
+                      {currentGroup.status}
+                    </span>
+                    <span className="text-xs text-gray-500">
+                      {currentGroup.members.length} {currentGroup.members.length === 1 ? 'member' : 'members'}
+                    </span>
+                  </div>
                 </div>
                 <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
                   <Button 
@@ -126,29 +256,42 @@ export default function GroupManager() {
                     onPress={copyGroupId}
                     className="w-full sm:w-auto"
                   >
-                    Copy Group ID
+                    📋 Copy ID
                   </Button>
-                  <Button 
-                    size="sm" 
-                    color="danger" 
-                    variant="bordered"
-                    onPress={handleLeaveGroup}
-                    className="w-full sm:w-auto"
-                  >
-                    Leave Group
-                  </Button>
+                  {!isOwner && (
+                    <Button 
+                      size="sm" 
+                      color="danger" 
+                      variant="bordered"
+                      onPress={handleLeaveGroup}
+                      className="w-full sm:w-auto"
+                    >
+                      Leave
+                    </Button>
+                  )}
                 </div>
               </div>
-              {groupInfo && (
-                <div className="text-sm text-gray-600">
-                  <p>Created by: {groupInfo.createdBy === user?.id ? 'You' : 'Another user'}</p>
-                  <p>Created: {new Date(groupInfo.createdAt).toLocaleDateString()}</p>
+              
+              <div className="border-t pt-3">
+                <p className="text-sm font-medium mb-2">Members:</p>
+                <div className="flex flex-wrap gap-2">
+                  {currentGroup.members.map((member) => (
+                    <div
+                      key={member.id}
+                      className="px-3 py-1 bg-gray-100 dark:bg-gray-800 rounded-full text-sm flex items-center gap-2"
+                    >
+                      <span>{member.user.name}</span>
+                      {member.user.id === currentGroup.owner.id && (
+                        <span className="text-xs bg-blue-500 text-white px-2 py-0.5 rounded">Owner</span>
+                      )}
+                    </div>
+                  ))}
                 </div>
-              )}
+              </div>
             </div>
           ) : (
             <div className="text-center py-8">
-              <p className="text-gray-600 mb-4">
+              <p className="text-gray-600 dark:text-gray-400 mb-4">
                 You&apos;re not currently in a group. Create a new group to start ordering together,
                 or join an existing group with a group ID.
               </p>
@@ -160,48 +303,71 @@ export default function GroupManager() {
       <Modal isOpen={isOpen} onClose={onClose} size="md">
         <ModalContent>
           <ModalHeader>
-            <h3>Group Management</h3>
+            <h3>{modalMode === 'create' ? '✨ Create Group' : '🚪 Join Group'}</h3>
           </ModalHeader>
           <ModalBody>
-            <div className="space-y-4">
-              <div>
-                <h4 className="font-medium mb-2">Create New Group</h4>
-                <p className="text-sm text-gray-600 mb-3">
-                  Create a new group and share the group ID with others to order together.
+            {modalMode === 'create' ? (
+              <div className="space-y-4">
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  Select a restaurant to create a group order. Share the group ID with others to let them join.
                 </p>
+                
+                {loadingRestaurants ? (
+                  <div className="flex justify-center py-4">
+                    <Spinner size="sm" />
+                  </div>
+                ) : restaurants.length > 0 ? (
+                  <Select
+                    label="Select Restaurant"
+                    placeholder="Choose a restaurant"
+                    selectedKeys={selectedRestaurant ? [selectedRestaurant] : []}
+                    onChange={(e) => setSelectedRestaurant(e.target.value)}
+                  >
+                    {restaurants.map((restaurant) => (
+                      <SelectItem key={restaurant.id} value={restaurant.id}>
+                        {restaurant.name} ({restaurant.platform})
+                      </SelectItem>
+                    ))}
+                  </Select>
+                ) : (
+                  <p className="text-sm text-gray-500">
+                    No restaurants available. Please crawl a restaurant first at the home page.
+                  </p>
+                )}
+                
                 <Button 
                   color="primary" 
                   onPress={handleCreateGroup}
                   isLoading={isCreating}
+                  isDisabled={!selectedRestaurant}
                   className="w-full"
                 >
                   Create Group
                 </Button>
               </div>
-              
-              <div className="border-t pt-4">
-                <h4 className="font-medium mb-2">Join Existing Group</h4>
-                <p className="text-sm text-gray-600 mb-3">
-                  Enter the group ID to join an existing group order.
+            ) : (
+              <div className="space-y-4">
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  Enter the group ID shared by the group owner to join the order.
                 </p>
-                <div className="space-y-2">
-                  <Input
-                    placeholder="Enter group ID"
-                    value={groupIdInput}
-                    onChange={(e) => setGroupIdInput(e.target.value)}
-                    size="sm"
-                  />
-                  <Button 
-                    color="secondary" 
-                    onPress={handleJoinGroup}
-                    isDisabled={!groupIdInput.trim()}
-                    className="w-full"
-                  >
-                    Join Group
-                  </Button>
-                </div>
+                <Input
+                  label="Group ID"
+                  placeholder="group_..."
+                  value={groupIdInput}
+                  onChange={(e) => setGroupIdInput(e.target.value)}
+                  fullWidth
+                />
+                <Button 
+                  color="secondary" 
+                  onPress={handleJoinGroup}
+                  isLoading={isJoining}
+                  isDisabled={!groupIdInput.trim()}
+                  className="w-full"
+                >
+                  Join Group
+                </Button>
               </div>
-            </div>
+            )}
           </ModalBody>
           <ModalFooter>
             <Button color="danger" variant="light" onPress={onClose}>
