@@ -16,24 +16,35 @@ datasource db {
 
 // User Table
 model User {
-  id        String   @id @default(cuid())
-  name      String
-  email     String   @unique
-  password  String
-  role      Role     @default(CUSTOMER)
-  orders    Order[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id              String              @id @default(cuid())
+  name            String
+  email           String              @unique
+  password        String
+  role            Role                @default(CUSTOMER)
+  orders          Order[]
+  bankAccounts    BankAccount[]
+  groupMembers    GroupMember[]
+  groupOrders     GroupOrder[]        @relation("GroupOwner")
+  paymentTransfersFrom PaymentTransfer[] @relation("PaymentFrom")
+  paymentTransfersTo   PaymentTransfer[] @relation("PaymentTo")
+  createdAt       DateTime            @default(now())
+  updatedAt       DateTime            @updatedAt
 }
 
 // Restaurant Table
 model Restaurant {
-  id        String    @id @default(cuid())
-  name      String
-  grabLink  String    @unique
-  products  Product[]
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  id          String         @id @default(cuid())
+  name        String
+  platform    Platform       @default(GRAB)
+  grabLink    String?        @unique
+  shopeeLink  String?        @unique
+  products    Product[]
+  groupOrders GroupOrder[]
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  @@index([grabLink])
+  @@index([shopeeLink])
 }
 
 // Product Table
@@ -51,7 +62,7 @@ model Product {
   orderItems   OrderItem[]
 }
 
-// Order Table
+// Order Table (Individual orders - legacy support)
 model Order {
   id         String       @id @default(cuid())
   user       User         @relation(fields: [userId], references: [id])
@@ -62,6 +73,94 @@ model Order {
   updatedAt  DateTime     @updatedAt
   orderItems OrderItem[]
   payment    Payment?
+}
+
+// Group Order Table
+model GroupOrder {
+  id              String            @id @default(cuid())
+  groupId         String            @unique // Unique group identifier
+  owner           User              @relation("GroupOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+  ownerId         String
+  restaurant      Restaurant        @relation(fields: [restaurantId], references: [id])
+  restaurantId    String
+  platform        Platform          @default(GRAB)
+  platformOrderId String?           // Order ID from Grab/Shopee
+  status          GroupOrderStatus   @default(DRAFT)
+  totalAmount     Float             @default(0)
+  deliveryFee     Float             @default(0)
+  serviceFee      Float             @default(0)
+  tax             Float             @default(0)
+  lockedAt        DateTime?
+  placedAt        DateTime?
+  deliveredAt     DateTime?
+  paymentDeadline DateTime?
+  members         GroupMember[]
+  payments        PaymentTransfer[]
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+
+  @@index([groupId])
+  @@index([ownerId])
+  @@index([status])
+}
+
+// Group Member Table
+model GroupMember {
+  id           String      @id @default(cuid())
+  groupOrder   GroupOrder  @relation(fields: [groupOrderId], references: [id], onDelete: Cascade)
+  groupOrderId String
+  user         User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId       String
+  role         GroupRole   @default(MEMBER)
+  cartTotal    Float       @default(0) // User's individual cart total
+  joinedAt     DateTime    @default(now())
+  leftAt       DateTime?
+
+  @@unique([groupOrderId, userId])
+  @@index([userId])
+}
+
+// Bank Account Table
+model BankAccount {
+  id          String   @id @default(cuid())
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      String
+  bankName    String   // e.g., "Vietcombank", "Techcombank"
+  accountNumber String
+  accountHolderName String
+  isDefault   Boolean  @default(false)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([userId])
+}
+
+// Payment Transfer Table (tracks bank transfers between members)
+model PaymentTransfer {
+  id              String                @id @default(cuid())
+  groupOrder      GroupOrder            @relation(fields: [groupOrderId], references: [id], onDelete: Cascade)
+  groupOrderId    String
+  fromUser        User                  @relation("PaymentFrom", fields: [fromUserId], references: [id], onDelete: Cascade)
+  fromUserId      String
+  toUser          User                  @relation("PaymentTo", fields: [toUserId], references: [id], onDelete: Cascade)
+  toUserId        String
+  amount          Float
+  status          PaymentTransferStatus @default(PENDING)
+  transactionId   String?               // Bank transaction ID/reference
+  bankName        String?               // Bank used for transfer
+  transferDate    DateTime?
+  verifiedAt      DateTime?
+  verifiedBy      String?               // User ID who verified
+  notes           String?
+  screenshotUrl   String?               // Optional screenshot of transfer
+  createdAt       DateTime              @default(now())
+  updatedAt       DateTime              @updatedAt
+
+  @@index([groupOrderId])
+  @@index([fromUserId])
+  @@index([toUserId])
+  @@index([status])
 }
 
 // Order Item Table (many-to-many between Order and Product)
@@ -75,21 +174,26 @@ model OrderItem {
   price     Float   // price at the time of purchase
 }
 
-// Payment Table
+// Payment Table (Legacy - for individual orders)
 model Payment {
-  id        String      @id @default(cuid())
-  order     Order       @relation(fields: [orderId], references: [id])
-  orderId   String      @unique
+  id        String        @id @default(cuid())
+  order     Order         @relation(fields: [orderId], references: [id])
+  orderId   String        @unique
   amount    Float
   method    PaymentMethod
   status    PaymentStatus
-  createdAt DateTime    @default(now())
+  createdAt DateTime      @default(now())
 }
 
 // ENUMS
 enum Role {
   ADMIN
   CUSTOMER
+}
+
+enum Platform {
+  GRAB
+  SHOPEE
 }
 
 enum OrderStatus {
@@ -99,11 +203,34 @@ enum OrderStatus {
   CANCELLED
 }
 
+enum GroupOrderStatus {
+  DRAFT
+  ACTIVE
+  LOCKED
+  PLACED
+  CONFIRMED
+  PREPARING
+  DELIVERING
+  DELIVERED
+  PAYMENT_PENDING
+  PAYMENT_VERIFIED
+  COMPLETED
+  CANCELLED
+}
+
+enum GroupRole {
+  OWNER
+  MEMBER
+}
+
 enum PaymentMethod {
   CASH
   CREDIT_CARD
   PAYPAL
   STRIPE
+  GRAB_PAY
+  SHOPEE_PAY
+  BANK_TRANSFER
 }
 
 enum PaymentStatus {
@@ -111,4 +238,13 @@ enum PaymentStatus {
   COMPLETED
   FAILED
   REFUNDED
+}
+
+enum PaymentTransferStatus {
+  PENDING
+  TRANSFERRED
+  VERIFIED
+  COMPLETED
+  FAILED
+  DISPUTED
 }

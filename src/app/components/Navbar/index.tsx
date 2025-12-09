@@ -70,6 +70,14 @@ function NavbarOrder() {
             About
           </Link>
         </NavbarMenuItem>
+        <NavbarMenuItem>
+          <Link
+            href="/api-docs"
+            className="text-foreground hover:text-primary transition-colors"
+          >
+            API Docs
+          </Link>
+        </NavbarMenuItem>
         {/* Show Admin link only for admin users */}
         {isLoaded && isSignedIn && user.publicMetadata.role === 'admin' && (
           <NavbarMenuItem>
@@ -156,6 +164,15 @@ function NavbarOrder() {
             onClick={() => setIsMenuOpen(false)}
           >
             About
+          </Link>
+        </NavbarMenuItem>
+        <NavbarMenuItem>
+          <Link
+            href="/api-docs"
+            className="w-full block py-2 text-large"
+            onClick={() => setIsMenuOpen(false)}
+          >
+            API Docs
           </Link>
         </NavbarMenuItem>
         {/* Show Admin link in mobile menu for admin users */}

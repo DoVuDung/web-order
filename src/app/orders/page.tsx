@@ -1,6 +1,6 @@
 "use client";
 import useStore, { Store, CartItem, CrawledProduct } from "@/store/store";
-import { Card, CardBody, CardFooter, CardHeader } from "@heroui/card";
+import { Card, CardBody, CardFooter, CardHeader } from "@heroui/react";
 import {
   Button,
   Drawer,

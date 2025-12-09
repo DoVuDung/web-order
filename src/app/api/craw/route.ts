@@ -1,6 +1,12 @@
 import { crawlGrabFood } from "@/lib/craw/grab";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { PrismaClient } from "@/lib/src/generated/prisma";
+import { requireAuth } from "@/lib/api/authorization";
+import { validateRequest, schemas } from "@/lib/api/validation";
+import { withRateLimit } from "@/lib/api/rate-limit";
+import { internalErrorResponse } from "@/lib/api/auth";
+import { corsOptionsResponse } from "@/lib/api/cors";
+import { z } from "zod";
 
 // Global Prisma instance for hot reload
 const globalForPrisma = globalThis as unknown as {
@@ -11,20 +17,81 @@ const prisma = globalForPrisma.prisma ?? new PrismaClient();
 
 if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
 
-export async function POST(req: Request) {
+// Validation schema
+const crawlRequestSchema = z.object({
+  url: schemas.restaurantUrl,
+});
+
+/**
+ * @swagger
+ * /api/craw:
+ *   post:
+ *     summary: Crawl Grab Food restaurant page
+ *     tags: [Crawling]
+ *     description: Scrapes a Grab Food restaurant URL and extracts menu items, then stores them in the database. Requires authentication.
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/CrawlRequest'
+ *           example:
+ *             url: "https://food.grab.com/vn/vi/restaurant/..."
+ *     responses:
+ *       200:
+ *         description: Restaurant data successfully crawled and stored
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/CrawlResponse'
+ *       400:
+ *         description: Invalid request or failed to extract data
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *             example:
+ *               error: "Invalid GrabFood link"
+ *       401:
+ *         description: Unauthorized - Authentication required
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       429:
+ *         description: Too many requests - Rate limit exceeded
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ */
+export const POST = withRateLimit('crawl', requireAuth(async (auth, request: NextRequest) => {
   try {
-    const { url } = await req.json();
-    
-    if (!url || !url.includes("grab.com")) {
-      return NextResponse.json({ error: "Invalid GrabFood link" }, { status: 400 });
+    // Validate request body
+    const validation = await validateRequest(request, crawlRequestSchema);
+    if (!validation.success) {
+      return validation.response;
     }
+
+    const { url } = validation.data;
 
     console.log("Starting crawl for URL:", url);
     const data = await crawlGrabFood(url);
     console.log('data: ', data);
     
     if (!data.restaurantName || !data.menu) {
-      return NextResponse.json({ error: "Failed to extract restaurant data" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Failed to extract restaurant data", code: 'CRAWL_FAILED' },
+        { status: 400 }
+      );
     }
 
     // Check if restaurant already exists
@@ -92,18 +159,24 @@ export async function POST(req: Request) {
     });
 
     console.log("Restaurant created successfully:", restaurant.id);
-    console.log("Restaurant data being returned:", {
-      id: restaurant.id,
-      name: restaurant.name,
-      products: restaurant.products,
-      productsCount: restaurant.products.length
-    });
     return NextResponse.json(restaurant);
   } catch (error) {
     console.error("Error in crawl API:", error);
-    return NextResponse.json(
-      { error: "Internal server error", details: error instanceof Error ? error.message : "Unknown error" },
-      { status: 500 }
-    );
+    return internalErrorResponse("Failed to crawl restaurant data", error);
   }
+}));
+
+/**
+ * @swagger
+ * /api/craw:
+ *   options:
+ *     summary: CORS preflight for crawl endpoint
+ *     tags: [Crawling]
+ *     description: Handles CORS preflight requests
+ *     responses:
+ *       200:
+ *         description: CORS preflight response
+ */
+export async function OPTIONS() {
+  return corsOptionsResponse();
 }
