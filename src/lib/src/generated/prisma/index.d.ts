@@ -34,6 +34,26 @@ export type Product = $Result.DefaultSelection<Prisma.$ProductPayload>
  */
 export type Order = $Result.DefaultSelection<Prisma.$OrderPayload>
 /**
+ * Model GroupOrder
+ * 
+ */
+export type GroupOrder = $Result.DefaultSelection<Prisma.$GroupOrderPayload>
+/**
+ * Model GroupMember
+ * 
+ */
+export type GroupMember = $Result.DefaultSelection<Prisma.$GroupMemberPayload>
+/**
+ * Model BankAccount
+ * 
+ */
+export type BankAccount = $Result.DefaultSelection<Prisma.$BankAccountPayload>
+/**
+ * Model PaymentTransfer
+ * 
+ */
+export type PaymentTransfer = $Result.DefaultSelection<Prisma.$PaymentTransferPayload>
+/**
  * Model OrderItem
  * 
  */
@@ -56,6 +76,14 @@ export namespace $Enums {
 export type Role = (typeof Role)[keyof typeof Role]
 
 
+export const Platform: {
+  GRAB: 'GRAB',
+  SHOPEE: 'SHOPEE'
+};
+
+export type Platform = (typeof Platform)[keyof typeof Platform]
+
+
 export const OrderStatus: {
   PENDING: 'PENDING',
   PROCESSING: 'PROCESSING',
@@ -66,11 +94,40 @@ export const OrderStatus: {
 export type OrderStatus = (typeof OrderStatus)[keyof typeof OrderStatus]
 
 
+export const GroupOrderStatus: {
+  DRAFT: 'DRAFT',
+  ACTIVE: 'ACTIVE',
+  LOCKED: 'LOCKED',
+  PLACED: 'PLACED',
+  CONFIRMED: 'CONFIRMED',
+  PREPARING: 'PREPARING',
+  DELIVERING: 'DELIVERING',
+  DELIVERED: 'DELIVERED',
+  PAYMENT_PENDING: 'PAYMENT_PENDING',
+  PAYMENT_VERIFIED: 'PAYMENT_VERIFIED',
+  COMPLETED: 'COMPLETED',
+  CANCELLED: 'CANCELLED'
+};
+
+export type GroupOrderStatus = (typeof GroupOrderStatus)[keyof typeof GroupOrderStatus]
+
+
+export const GroupRole: {
+  OWNER: 'OWNER',
+  MEMBER: 'MEMBER'
+};
+
+export type GroupRole = (typeof GroupRole)[keyof typeof GroupRole]
+
+
 export const PaymentMethod: {
   CASH: 'CASH',
   CREDIT_CARD: 'CREDIT_CARD',
   PAYPAL: 'PAYPAL',
-  STRIPE: 'STRIPE'
+  STRIPE: 'STRIPE',
+  GRAB_PAY: 'GRAB_PAY',
+  SHOPEE_PAY: 'SHOPEE_PAY',
+  BANK_TRANSFER: 'BANK_TRANSFER'
 };
 
 export type PaymentMethod = (typeof PaymentMethod)[keyof typeof PaymentMethod]
@@ -85,15 +142,39 @@ export const PaymentStatus: {
 
 export type PaymentStatus = (typeof PaymentStatus)[keyof typeof PaymentStatus]
 
+
+export const PaymentTransferStatus: {
+  PENDING: 'PENDING',
+  TRANSFERRED: 'TRANSFERRED',
+  VERIFIED: 'VERIFIED',
+  COMPLETED: 'COMPLETED',
+  FAILED: 'FAILED',
+  DISPUTED: 'DISPUTED'
+};
+
+export type PaymentTransferStatus = (typeof PaymentTransferStatus)[keyof typeof PaymentTransferStatus]
+
 }
 
 export type Role = $Enums.Role
 
 export const Role: typeof $Enums.Role
 
+export type Platform = $Enums.Platform
+
+export const Platform: typeof $Enums.Platform
+
 export type OrderStatus = $Enums.OrderStatus
 
 export const OrderStatus: typeof $Enums.OrderStatus
+
+export type GroupOrderStatus = $Enums.GroupOrderStatus
+
+export const GroupOrderStatus: typeof $Enums.GroupOrderStatus
+
+export type GroupRole = $Enums.GroupRole
+
+export const GroupRole: typeof $Enums.GroupRole
 
 export type PaymentMethod = $Enums.PaymentMethod
 
@@ -102,6 +183,10 @@ export const PaymentMethod: typeof $Enums.PaymentMethod
 export type PaymentStatus = $Enums.PaymentStatus
 
 export const PaymentStatus: typeof $Enums.PaymentStatus
+
+export type PaymentTransferStatus = $Enums.PaymentTransferStatus
+
+export const PaymentTransferStatus: typeof $Enums.PaymentTransferStatus
 
 /**
  * ##  Prisma Client ʲˢ
@@ -267,6 +352,46 @@ export class PrismaClient<
     * ```
     */
   get order(): Prisma.OrderDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.groupOrder`: Exposes CRUD operations for the **GroupOrder** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more GroupOrders
+    * const groupOrders = await prisma.groupOrder.findMany()
+    * ```
+    */
+  get groupOrder(): Prisma.GroupOrderDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.groupMember`: Exposes CRUD operations for the **GroupMember** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more GroupMembers
+    * const groupMembers = await prisma.groupMember.findMany()
+    * ```
+    */
+  get groupMember(): Prisma.GroupMemberDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.bankAccount`: Exposes CRUD operations for the **BankAccount** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more BankAccounts
+    * const bankAccounts = await prisma.bankAccount.findMany()
+    * ```
+    */
+  get bankAccount(): Prisma.BankAccountDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.paymentTransfer`: Exposes CRUD operations for the **PaymentTransfer** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more PaymentTransfers
+    * const paymentTransfers = await prisma.paymentTransfer.findMany()
+    * ```
+    */
+  get paymentTransfer(): Prisma.PaymentTransferDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.orderItem`: Exposes CRUD operations for the **OrderItem** model.
@@ -731,6 +856,10 @@ export namespace Prisma {
     Restaurant: 'Restaurant',
     Product: 'Product',
     Order: 'Order',
+    GroupOrder: 'GroupOrder',
+    GroupMember: 'GroupMember',
+    BankAccount: 'BankAccount',
+    PaymentTransfer: 'PaymentTransfer',
     OrderItem: 'OrderItem',
     Payment: 'Payment'
   };
@@ -751,7 +880,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "restaurant" | "product" | "order" | "orderItem" | "payment"
+      modelProps: "user" | "restaurant" | "product" | "order" | "groupOrder" | "groupMember" | "bankAccount" | "paymentTransfer" | "orderItem" | "payment"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1051,6 +1180,302 @@ export namespace Prisma {
           }
         }
       }
+      GroupOrder: {
+        payload: Prisma.$GroupOrderPayload<ExtArgs>
+        fields: Prisma.GroupOrderFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.GroupOrderFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GroupOrderPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.GroupOrderFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GroupOrderPayload>
+          }
+          findFirst: {
+            args: Prisma.GroupOrderFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GroupOrderPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.GroupOrderFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GroupOrderPayload>
+          }
+          findMany: {
+            args: Prisma.GroupOrderFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GroupOrderPayload>[]
+          }
+          create: {
+            args: Prisma.GroupOrderCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GroupOrderPayload>
+          }
+          createMany: {
+            args: Prisma.GroupOrderCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.GroupOrderCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GroupOrderPayload>[]
+          }
+          delete: {
+            args: Prisma.GroupOrderDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GroupOrderPayload>
+          }
+          update: {
+            args: Prisma.GroupOrderUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GroupOrderPayload>
+          }
+          deleteMany: {
+            args: Prisma.GroupOrderDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.GroupOrderUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.GroupOrderUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GroupOrderPayload>[]
+          }
+          upsert: {
+            args: Prisma.GroupOrderUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GroupOrderPayload>
+          }
+          aggregate: {
+            args: Prisma.GroupOrderAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateGroupOrder>
+          }
+          groupBy: {
+            args: Prisma.GroupOrderGroupByArgs<ExtArgs>
+            result: $Utils.Optional<GroupOrderGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.GroupOrderCountArgs<ExtArgs>
+            result: $Utils.Optional<GroupOrderCountAggregateOutputType> | number
+          }
+        }
+      }
+      GroupMember: {
+        payload: Prisma.$GroupMemberPayload<ExtArgs>
+        fields: Prisma.GroupMemberFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.GroupMemberFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GroupMemberPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.GroupMemberFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GroupMemberPayload>
+          }
+          findFirst: {
+            args: Prisma.GroupMemberFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GroupMemberPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.GroupMemberFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GroupMemberPayload>
+          }
+          findMany: {
+            args: Prisma.GroupMemberFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GroupMemberPayload>[]
+          }
+          create: {
+            args: Prisma.GroupMemberCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GroupMemberPayload>
+          }
+          createMany: {
+            args: Prisma.GroupMemberCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.GroupMemberCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GroupMemberPayload>[]
+          }
+          delete: {
+            args: Prisma.GroupMemberDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GroupMemberPayload>
+          }
+          update: {
+            args: Prisma.GroupMemberUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GroupMemberPayload>
+          }
+          deleteMany: {
+            args: Prisma.GroupMemberDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.GroupMemberUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.GroupMemberUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GroupMemberPayload>[]
+          }
+          upsert: {
+            args: Prisma.GroupMemberUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GroupMemberPayload>
+          }
+          aggregate: {
+            args: Prisma.GroupMemberAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateGroupMember>
+          }
+          groupBy: {
+            args: Prisma.GroupMemberGroupByArgs<ExtArgs>
+            result: $Utils.Optional<GroupMemberGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.GroupMemberCountArgs<ExtArgs>
+            result: $Utils.Optional<GroupMemberCountAggregateOutputType> | number
+          }
+        }
+      }
+      BankAccount: {
+        payload: Prisma.$BankAccountPayload<ExtArgs>
+        fields: Prisma.BankAccountFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.BankAccountFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BankAccountPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.BankAccountFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BankAccountPayload>
+          }
+          findFirst: {
+            args: Prisma.BankAccountFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BankAccountPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.BankAccountFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BankAccountPayload>
+          }
+          findMany: {
+            args: Prisma.BankAccountFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BankAccountPayload>[]
+          }
+          create: {
+            args: Prisma.BankAccountCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BankAccountPayload>
+          }
+          createMany: {
+            args: Prisma.BankAccountCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.BankAccountCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BankAccountPayload>[]
+          }
+          delete: {
+            args: Prisma.BankAccountDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BankAccountPayload>
+          }
+          update: {
+            args: Prisma.BankAccountUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BankAccountPayload>
+          }
+          deleteMany: {
+            args: Prisma.BankAccountDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.BankAccountUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.BankAccountUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BankAccountPayload>[]
+          }
+          upsert: {
+            args: Prisma.BankAccountUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BankAccountPayload>
+          }
+          aggregate: {
+            args: Prisma.BankAccountAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateBankAccount>
+          }
+          groupBy: {
+            args: Prisma.BankAccountGroupByArgs<ExtArgs>
+            result: $Utils.Optional<BankAccountGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.BankAccountCountArgs<ExtArgs>
+            result: $Utils.Optional<BankAccountCountAggregateOutputType> | number
+          }
+        }
+      }
+      PaymentTransfer: {
+        payload: Prisma.$PaymentTransferPayload<ExtArgs>
+        fields: Prisma.PaymentTransferFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.PaymentTransferFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaymentTransferPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.PaymentTransferFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaymentTransferPayload>
+          }
+          findFirst: {
+            args: Prisma.PaymentTransferFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaymentTransferPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.PaymentTransferFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaymentTransferPayload>
+          }
+          findMany: {
+            args: Prisma.PaymentTransferFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaymentTransferPayload>[]
+          }
+          create: {
+            args: Prisma.PaymentTransferCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaymentTransferPayload>
+          }
+          createMany: {
+            args: Prisma.PaymentTransferCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.PaymentTransferCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaymentTransferPayload>[]
+          }
+          delete: {
+            args: Prisma.PaymentTransferDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaymentTransferPayload>
+          }
+          update: {
+            args: Prisma.PaymentTransferUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaymentTransferPayload>
+          }
+          deleteMany: {
+            args: Prisma.PaymentTransferDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.PaymentTransferUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.PaymentTransferUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaymentTransferPayload>[]
+          }
+          upsert: {
+            args: Prisma.PaymentTransferUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaymentTransferPayload>
+          }
+          aggregate: {
+            args: Prisma.PaymentTransferAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregatePaymentTransfer>
+          }
+          groupBy: {
+            args: Prisma.PaymentTransferGroupByArgs<ExtArgs>
+            result: $Utils.Optional<PaymentTransferGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.PaymentTransferCountArgs<ExtArgs>
+            result: $Utils.Optional<PaymentTransferCountAggregateOutputType> | number
+          }
+        }
+      }
       OrderItem: {
         payload: Prisma.$OrderItemPayload<ExtArgs>
         fields: Prisma.OrderItemFieldRefs
@@ -1295,6 +1720,10 @@ export namespace Prisma {
     restaurant?: RestaurantOmit
     product?: ProductOmit
     order?: OrderOmit
+    groupOrder?: GroupOrderOmit
+    groupMember?: GroupMemberOmit
+    bankAccount?: BankAccountOmit
+    paymentTransfer?: PaymentTransferOmit
     orderItem?: OrderItemOmit
     payment?: PaymentOmit
   }
@@ -1397,10 +1826,20 @@ export namespace Prisma {
 
   export type UserCountOutputType = {
     orders: number
+    bankAccounts: number
+    groupMembers: number
+    groupOrders: number
+    paymentTransfersFrom: number
+    paymentTransfersTo: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     orders?: boolean | UserCountOutputTypeCountOrdersArgs
+    bankAccounts?: boolean | UserCountOutputTypeCountBankAccountsArgs
+    groupMembers?: boolean | UserCountOutputTypeCountGroupMembersArgs
+    groupOrders?: boolean | UserCountOutputTypeCountGroupOrdersArgs
+    paymentTransfersFrom?: boolean | UserCountOutputTypeCountPaymentTransfersFromArgs
+    paymentTransfersTo?: boolean | UserCountOutputTypeCountPaymentTransfersToArgs
   }
 
   // Custom InputTypes
@@ -1421,6 +1860,41 @@ export namespace Prisma {
     where?: OrderWhereInput
   }
 
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountBankAccountsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: BankAccountWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountGroupMembersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: GroupMemberWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountGroupOrdersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: GroupOrderWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountPaymentTransfersFromArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PaymentTransferWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountPaymentTransfersToArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PaymentTransferWhereInput
+  }
+
 
   /**
    * Count Type RestaurantCountOutputType
@@ -1428,10 +1902,12 @@ export namespace Prisma {
 
   export type RestaurantCountOutputType = {
     products: number
+    groupOrders: number
   }
 
   export type RestaurantCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     products?: boolean | RestaurantCountOutputTypeCountProductsArgs
+    groupOrders?: boolean | RestaurantCountOutputTypeCountGroupOrdersArgs
   }
 
   // Custom InputTypes
@@ -1450,6 +1926,13 @@ export namespace Prisma {
    */
   export type RestaurantCountOutputTypeCountProductsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ProductWhereInput
+  }
+
+  /**
+   * RestaurantCountOutputType without action
+   */
+  export type RestaurantCountOutputTypeCountGroupOrdersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: GroupOrderWhereInput
   }
 
 
@@ -1512,6 +1995,46 @@ export namespace Prisma {
    */
   export type OrderCountOutputTypeCountOrderItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: OrderItemWhereInput
+  }
+
+
+  /**
+   * Count Type GroupOrderCountOutputType
+   */
+
+  export type GroupOrderCountOutputType = {
+    members: number
+    payments: number
+  }
+
+  export type GroupOrderCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    members?: boolean | GroupOrderCountOutputTypeCountMembersArgs
+    payments?: boolean | GroupOrderCountOutputTypeCountPaymentsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * GroupOrderCountOutputType without action
+   */
+  export type GroupOrderCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GroupOrderCountOutputType
+     */
+    select?: GroupOrderCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * GroupOrderCountOutputType without action
+   */
+  export type GroupOrderCountOutputTypeCountMembersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: GroupMemberWhereInput
+  }
+
+  /**
+   * GroupOrderCountOutputType without action
+   */
+  export type GroupOrderCountOutputTypeCountPaymentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PaymentTransferWhereInput
   }
 
 
@@ -1700,6 +2223,11 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     orders?: boolean | User$ordersArgs<ExtArgs>
+    bankAccounts?: boolean | User$bankAccountsArgs<ExtArgs>
+    groupMembers?: boolean | User$groupMembersArgs<ExtArgs>
+    groupOrders?: boolean | User$groupOrdersArgs<ExtArgs>
+    paymentTransfersFrom?: boolean | User$paymentTransfersFromArgs<ExtArgs>
+    paymentTransfersTo?: boolean | User$paymentTransfersToArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -1736,6 +2264,11 @@ export namespace Prisma {
   export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "password" | "role" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     orders?: boolean | User$ordersArgs<ExtArgs>
+    bankAccounts?: boolean | User$bankAccountsArgs<ExtArgs>
+    groupMembers?: boolean | User$groupMembersArgs<ExtArgs>
+    groupOrders?: boolean | User$groupOrdersArgs<ExtArgs>
+    paymentTransfersFrom?: boolean | User$paymentTransfersFromArgs<ExtArgs>
+    paymentTransfersTo?: boolean | User$paymentTransfersToArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -1745,6 +2278,11 @@ export namespace Prisma {
     name: "User"
     objects: {
       orders: Prisma.$OrderPayload<ExtArgs>[]
+      bankAccounts: Prisma.$BankAccountPayload<ExtArgs>[]
+      groupMembers: Prisma.$GroupMemberPayload<ExtArgs>[]
+      groupOrders: Prisma.$GroupOrderPayload<ExtArgs>[]
+      paymentTransfersFrom: Prisma.$PaymentTransferPayload<ExtArgs>[]
+      paymentTransfersTo: Prisma.$PaymentTransferPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -2149,6 +2687,11 @@ export namespace Prisma {
   export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     orders<T extends User$ordersArgs<ExtArgs> = {}>(args?: Subset<T, User$ordersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    bankAccounts<T extends User$bankAccountsArgs<ExtArgs> = {}>(args?: Subset<T, User$bankAccountsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BankAccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    groupMembers<T extends User$groupMembersArgs<ExtArgs> = {}>(args?: Subset<T, User$groupMembersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GroupMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    groupOrders<T extends User$groupOrdersArgs<ExtArgs> = {}>(args?: Subset<T, User$groupOrdersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GroupOrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    paymentTransfersFrom<T extends User$paymentTransfersFromArgs<ExtArgs> = {}>(args?: Subset<T, User$paymentTransfersFromArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaymentTransferPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    paymentTransfersTo<T extends User$paymentTransfersToArgs<ExtArgs> = {}>(args?: Subset<T, User$paymentTransfersToArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaymentTransferPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2597,6 +3140,126 @@ export namespace Prisma {
   }
 
   /**
+   * User.bankAccounts
+   */
+  export type User$bankAccountsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BankAccount
+     */
+    select?: BankAccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BankAccount
+     */
+    omit?: BankAccountOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BankAccountInclude<ExtArgs> | null
+    where?: BankAccountWhereInput
+    orderBy?: BankAccountOrderByWithRelationInput | BankAccountOrderByWithRelationInput[]
+    cursor?: BankAccountWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: BankAccountScalarFieldEnum | BankAccountScalarFieldEnum[]
+  }
+
+  /**
+   * User.groupMembers
+   */
+  export type User$groupMembersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GroupMember
+     */
+    select?: GroupMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GroupMember
+     */
+    omit?: GroupMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GroupMemberInclude<ExtArgs> | null
+    where?: GroupMemberWhereInput
+    orderBy?: GroupMemberOrderByWithRelationInput | GroupMemberOrderByWithRelationInput[]
+    cursor?: GroupMemberWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: GroupMemberScalarFieldEnum | GroupMemberScalarFieldEnum[]
+  }
+
+  /**
+   * User.groupOrders
+   */
+  export type User$groupOrdersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GroupOrder
+     */
+    select?: GroupOrderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GroupOrder
+     */
+    omit?: GroupOrderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GroupOrderInclude<ExtArgs> | null
+    where?: GroupOrderWhereInput
+    orderBy?: GroupOrderOrderByWithRelationInput | GroupOrderOrderByWithRelationInput[]
+    cursor?: GroupOrderWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: GroupOrderScalarFieldEnum | GroupOrderScalarFieldEnum[]
+  }
+
+  /**
+   * User.paymentTransfersFrom
+   */
+  export type User$paymentTransfersFromArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaymentTransfer
+     */
+    select?: PaymentTransferSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaymentTransfer
+     */
+    omit?: PaymentTransferOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentTransferInclude<ExtArgs> | null
+    where?: PaymentTransferWhereInput
+    orderBy?: PaymentTransferOrderByWithRelationInput | PaymentTransferOrderByWithRelationInput[]
+    cursor?: PaymentTransferWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PaymentTransferScalarFieldEnum | PaymentTransferScalarFieldEnum[]
+  }
+
+  /**
+   * User.paymentTransfersTo
+   */
+  export type User$paymentTransfersToArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaymentTransfer
+     */
+    select?: PaymentTransferSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaymentTransfer
+     */
+    omit?: PaymentTransferOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentTransferInclude<ExtArgs> | null
+    where?: PaymentTransferWhereInput
+    orderBy?: PaymentTransferOrderByWithRelationInput | PaymentTransferOrderByWithRelationInput[]
+    cursor?: PaymentTransferWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PaymentTransferScalarFieldEnum | PaymentTransferScalarFieldEnum[]
+  }
+
+  /**
    * User without action
    */
   export type UserDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2628,7 +3291,9 @@ export namespace Prisma {
   export type RestaurantMinAggregateOutputType = {
     id: string | null
     name: string | null
+    platform: $Enums.Platform | null
     grabLink: string | null
+    shopeeLink: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -2636,7 +3301,9 @@ export namespace Prisma {
   export type RestaurantMaxAggregateOutputType = {
     id: string | null
     name: string | null
+    platform: $Enums.Platform | null
     grabLink: string | null
+    shopeeLink: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -2644,7 +3311,9 @@ export namespace Prisma {
   export type RestaurantCountAggregateOutputType = {
     id: number
     name: number
+    platform: number
     grabLink: number
+    shopeeLink: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -2654,7 +3323,9 @@ export namespace Prisma {
   export type RestaurantMinAggregateInputType = {
     id?: true
     name?: true
+    platform?: true
     grabLink?: true
+    shopeeLink?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -2662,7 +3333,9 @@ export namespace Prisma {
   export type RestaurantMaxAggregateInputType = {
     id?: true
     name?: true
+    platform?: true
     grabLink?: true
+    shopeeLink?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -2670,7 +3343,9 @@ export namespace Prisma {
   export type RestaurantCountAggregateInputType = {
     id?: true
     name?: true
+    platform?: true
     grabLink?: true
+    shopeeLink?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -2751,7 +3426,9 @@ export namespace Prisma {
   export type RestaurantGroupByOutputType = {
     id: string
     name: string
-    grabLink: string
+    platform: $Enums.Platform
+    grabLink: string | null
+    shopeeLink: string | null
     createdAt: Date
     updatedAt: Date
     _count: RestaurantCountAggregateOutputType | null
@@ -2776,17 +3453,22 @@ export namespace Prisma {
   export type RestaurantSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     name?: boolean
+    platform?: boolean
     grabLink?: boolean
+    shopeeLink?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     products?: boolean | Restaurant$productsArgs<ExtArgs>
+    groupOrders?: boolean | Restaurant$groupOrdersArgs<ExtArgs>
     _count?: boolean | RestaurantCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["restaurant"]>
 
   export type RestaurantSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     name?: boolean
+    platform?: boolean
     grabLink?: boolean
+    shopeeLink?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["restaurant"]>
@@ -2794,7 +3476,9 @@ export namespace Prisma {
   export type RestaurantSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     name?: boolean
+    platform?: boolean
     grabLink?: boolean
+    shopeeLink?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["restaurant"]>
@@ -2802,14 +3486,17 @@ export namespace Prisma {
   export type RestaurantSelectScalar = {
     id?: boolean
     name?: boolean
+    platform?: boolean
     grabLink?: boolean
+    shopeeLink?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type RestaurantOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "grabLink" | "createdAt" | "updatedAt", ExtArgs["result"]["restaurant"]>
+  export type RestaurantOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "platform" | "grabLink" | "shopeeLink" | "createdAt" | "updatedAt", ExtArgs["result"]["restaurant"]>
   export type RestaurantInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     products?: boolean | Restaurant$productsArgs<ExtArgs>
+    groupOrders?: boolean | Restaurant$groupOrdersArgs<ExtArgs>
     _count?: boolean | RestaurantCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type RestaurantIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -2819,11 +3506,14 @@ export namespace Prisma {
     name: "Restaurant"
     objects: {
       products: Prisma.$ProductPayload<ExtArgs>[]
+      groupOrders: Prisma.$GroupOrderPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       name: string
-      grabLink: string
+      platform: $Enums.Platform
+      grabLink: string | null
+      shopeeLink: string | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["restaurant"]>
@@ -3221,6 +3911,7 @@ export namespace Prisma {
   export interface Prisma__RestaurantClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     products<T extends Restaurant$productsArgs<ExtArgs> = {}>(args?: Subset<T, Restaurant$productsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    groupOrders<T extends Restaurant$groupOrdersArgs<ExtArgs> = {}>(args?: Subset<T, Restaurant$groupOrdersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GroupOrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3252,7 +3943,9 @@ export namespace Prisma {
   interface RestaurantFieldRefs {
     readonly id: FieldRef<"Restaurant", 'String'>
     readonly name: FieldRef<"Restaurant", 'String'>
+    readonly platform: FieldRef<"Restaurant", 'Platform'>
     readonly grabLink: FieldRef<"Restaurant", 'String'>
+    readonly shopeeLink: FieldRef<"Restaurant", 'String'>
     readonly createdAt: FieldRef<"Restaurant", 'DateTime'>
     readonly updatedAt: FieldRef<"Restaurant", 'DateTime'>
   }
@@ -3664,6 +4357,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: ProductScalarFieldEnum | ProductScalarFieldEnum[]
+  }
+
+  /**
+   * Restaurant.groupOrders
+   */
+  export type Restaurant$groupOrdersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GroupOrder
+     */
+    select?: GroupOrderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GroupOrder
+     */
+    omit?: GroupOrderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GroupOrderInclude<ExtArgs> | null
+    where?: GroupOrderWhereInput
+    orderBy?: GroupOrderOrderByWithRelationInput | GroupOrderOrderByWithRelationInput[]
+    cursor?: GroupOrderWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: GroupOrderScalarFieldEnum | GroupOrderScalarFieldEnum[]
   }
 
   /**
@@ -6022,6 +6739,4806 @@ export namespace Prisma {
 
 
   /**
+   * Model GroupOrder
+   */
+
+  export type AggregateGroupOrder = {
+    _count: GroupOrderCountAggregateOutputType | null
+    _avg: GroupOrderAvgAggregateOutputType | null
+    _sum: GroupOrderSumAggregateOutputType | null
+    _min: GroupOrderMinAggregateOutputType | null
+    _max: GroupOrderMaxAggregateOutputType | null
+  }
+
+  export type GroupOrderAvgAggregateOutputType = {
+    totalAmount: number | null
+    deliveryFee: number | null
+    serviceFee: number | null
+    tax: number | null
+  }
+
+  export type GroupOrderSumAggregateOutputType = {
+    totalAmount: number | null
+    deliveryFee: number | null
+    serviceFee: number | null
+    tax: number | null
+  }
+
+  export type GroupOrderMinAggregateOutputType = {
+    id: string | null
+    groupId: string | null
+    ownerId: string | null
+    restaurantId: string | null
+    platform: $Enums.Platform | null
+    platformOrderId: string | null
+    status: $Enums.GroupOrderStatus | null
+    totalAmount: number | null
+    deliveryFee: number | null
+    serviceFee: number | null
+    tax: number | null
+    lockedAt: Date | null
+    placedAt: Date | null
+    deliveredAt: Date | null
+    paymentDeadline: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type GroupOrderMaxAggregateOutputType = {
+    id: string | null
+    groupId: string | null
+    ownerId: string | null
+    restaurantId: string | null
+    platform: $Enums.Platform | null
+    platformOrderId: string | null
+    status: $Enums.GroupOrderStatus | null
+    totalAmount: number | null
+    deliveryFee: number | null
+    serviceFee: number | null
+    tax: number | null
+    lockedAt: Date | null
+    placedAt: Date | null
+    deliveredAt: Date | null
+    paymentDeadline: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type GroupOrderCountAggregateOutputType = {
+    id: number
+    groupId: number
+    ownerId: number
+    restaurantId: number
+    platform: number
+    platformOrderId: number
+    status: number
+    totalAmount: number
+    deliveryFee: number
+    serviceFee: number
+    tax: number
+    lockedAt: number
+    placedAt: number
+    deliveredAt: number
+    paymentDeadline: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type GroupOrderAvgAggregateInputType = {
+    totalAmount?: true
+    deliveryFee?: true
+    serviceFee?: true
+    tax?: true
+  }
+
+  export type GroupOrderSumAggregateInputType = {
+    totalAmount?: true
+    deliveryFee?: true
+    serviceFee?: true
+    tax?: true
+  }
+
+  export type GroupOrderMinAggregateInputType = {
+    id?: true
+    groupId?: true
+    ownerId?: true
+    restaurantId?: true
+    platform?: true
+    platformOrderId?: true
+    status?: true
+    totalAmount?: true
+    deliveryFee?: true
+    serviceFee?: true
+    tax?: true
+    lockedAt?: true
+    placedAt?: true
+    deliveredAt?: true
+    paymentDeadline?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type GroupOrderMaxAggregateInputType = {
+    id?: true
+    groupId?: true
+    ownerId?: true
+    restaurantId?: true
+    platform?: true
+    platformOrderId?: true
+    status?: true
+    totalAmount?: true
+    deliveryFee?: true
+    serviceFee?: true
+    tax?: true
+    lockedAt?: true
+    placedAt?: true
+    deliveredAt?: true
+    paymentDeadline?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type GroupOrderCountAggregateInputType = {
+    id?: true
+    groupId?: true
+    ownerId?: true
+    restaurantId?: true
+    platform?: true
+    platformOrderId?: true
+    status?: true
+    totalAmount?: true
+    deliveryFee?: true
+    serviceFee?: true
+    tax?: true
+    lockedAt?: true
+    placedAt?: true
+    deliveredAt?: true
+    paymentDeadline?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type GroupOrderAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which GroupOrder to aggregate.
+     */
+    where?: GroupOrderWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of GroupOrders to fetch.
+     */
+    orderBy?: GroupOrderOrderByWithRelationInput | GroupOrderOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: GroupOrderWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` GroupOrders from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` GroupOrders.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned GroupOrders
+    **/
+    _count?: true | GroupOrderCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: GroupOrderAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: GroupOrderSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: GroupOrderMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: GroupOrderMaxAggregateInputType
+  }
+
+  export type GetGroupOrderAggregateType<T extends GroupOrderAggregateArgs> = {
+        [P in keyof T & keyof AggregateGroupOrder]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateGroupOrder[P]>
+      : GetScalarType<T[P], AggregateGroupOrder[P]>
+  }
+
+
+
+
+  export type GroupOrderGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: GroupOrderWhereInput
+    orderBy?: GroupOrderOrderByWithAggregationInput | GroupOrderOrderByWithAggregationInput[]
+    by: GroupOrderScalarFieldEnum[] | GroupOrderScalarFieldEnum
+    having?: GroupOrderScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: GroupOrderCountAggregateInputType | true
+    _avg?: GroupOrderAvgAggregateInputType
+    _sum?: GroupOrderSumAggregateInputType
+    _min?: GroupOrderMinAggregateInputType
+    _max?: GroupOrderMaxAggregateInputType
+  }
+
+  export type GroupOrderGroupByOutputType = {
+    id: string
+    groupId: string
+    ownerId: string
+    restaurantId: string
+    platform: $Enums.Platform
+    platformOrderId: string | null
+    status: $Enums.GroupOrderStatus
+    totalAmount: number
+    deliveryFee: number
+    serviceFee: number
+    tax: number
+    lockedAt: Date | null
+    placedAt: Date | null
+    deliveredAt: Date | null
+    paymentDeadline: Date | null
+    createdAt: Date
+    updatedAt: Date
+    _count: GroupOrderCountAggregateOutputType | null
+    _avg: GroupOrderAvgAggregateOutputType | null
+    _sum: GroupOrderSumAggregateOutputType | null
+    _min: GroupOrderMinAggregateOutputType | null
+    _max: GroupOrderMaxAggregateOutputType | null
+  }
+
+  type GetGroupOrderGroupByPayload<T extends GroupOrderGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<GroupOrderGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof GroupOrderGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], GroupOrderGroupByOutputType[P]>
+            : GetScalarType<T[P], GroupOrderGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type GroupOrderSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    groupId?: boolean
+    ownerId?: boolean
+    restaurantId?: boolean
+    platform?: boolean
+    platformOrderId?: boolean
+    status?: boolean
+    totalAmount?: boolean
+    deliveryFee?: boolean
+    serviceFee?: boolean
+    tax?: boolean
+    lockedAt?: boolean
+    placedAt?: boolean
+    deliveredAt?: boolean
+    paymentDeadline?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    owner?: boolean | UserDefaultArgs<ExtArgs>
+    restaurant?: boolean | RestaurantDefaultArgs<ExtArgs>
+    members?: boolean | GroupOrder$membersArgs<ExtArgs>
+    payments?: boolean | GroupOrder$paymentsArgs<ExtArgs>
+    _count?: boolean | GroupOrderCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["groupOrder"]>
+
+  export type GroupOrderSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    groupId?: boolean
+    ownerId?: boolean
+    restaurantId?: boolean
+    platform?: boolean
+    platformOrderId?: boolean
+    status?: boolean
+    totalAmount?: boolean
+    deliveryFee?: boolean
+    serviceFee?: boolean
+    tax?: boolean
+    lockedAt?: boolean
+    placedAt?: boolean
+    deliveredAt?: boolean
+    paymentDeadline?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    owner?: boolean | UserDefaultArgs<ExtArgs>
+    restaurant?: boolean | RestaurantDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["groupOrder"]>
+
+  export type GroupOrderSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    groupId?: boolean
+    ownerId?: boolean
+    restaurantId?: boolean
+    platform?: boolean
+    platformOrderId?: boolean
+    status?: boolean
+    totalAmount?: boolean
+    deliveryFee?: boolean
+    serviceFee?: boolean
+    tax?: boolean
+    lockedAt?: boolean
+    placedAt?: boolean
+    deliveredAt?: boolean
+    paymentDeadline?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    owner?: boolean | UserDefaultArgs<ExtArgs>
+    restaurant?: boolean | RestaurantDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["groupOrder"]>
+
+  export type GroupOrderSelectScalar = {
+    id?: boolean
+    groupId?: boolean
+    ownerId?: boolean
+    restaurantId?: boolean
+    platform?: boolean
+    platformOrderId?: boolean
+    status?: boolean
+    totalAmount?: boolean
+    deliveryFee?: boolean
+    serviceFee?: boolean
+    tax?: boolean
+    lockedAt?: boolean
+    placedAt?: boolean
+    deliveredAt?: boolean
+    paymentDeadline?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type GroupOrderOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "groupId" | "ownerId" | "restaurantId" | "platform" | "platformOrderId" | "status" | "totalAmount" | "deliveryFee" | "serviceFee" | "tax" | "lockedAt" | "placedAt" | "deliveredAt" | "paymentDeadline" | "createdAt" | "updatedAt", ExtArgs["result"]["groupOrder"]>
+  export type GroupOrderInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    owner?: boolean | UserDefaultArgs<ExtArgs>
+    restaurant?: boolean | RestaurantDefaultArgs<ExtArgs>
+    members?: boolean | GroupOrder$membersArgs<ExtArgs>
+    payments?: boolean | GroupOrder$paymentsArgs<ExtArgs>
+    _count?: boolean | GroupOrderCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type GroupOrderIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    owner?: boolean | UserDefaultArgs<ExtArgs>
+    restaurant?: boolean | RestaurantDefaultArgs<ExtArgs>
+  }
+  export type GroupOrderIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    owner?: boolean | UserDefaultArgs<ExtArgs>
+    restaurant?: boolean | RestaurantDefaultArgs<ExtArgs>
+  }
+
+  export type $GroupOrderPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "GroupOrder"
+    objects: {
+      owner: Prisma.$UserPayload<ExtArgs>
+      restaurant: Prisma.$RestaurantPayload<ExtArgs>
+      members: Prisma.$GroupMemberPayload<ExtArgs>[]
+      payments: Prisma.$PaymentTransferPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      groupId: string
+      ownerId: string
+      restaurantId: string
+      platform: $Enums.Platform
+      platformOrderId: string | null
+      status: $Enums.GroupOrderStatus
+      totalAmount: number
+      deliveryFee: number
+      serviceFee: number
+      tax: number
+      lockedAt: Date | null
+      placedAt: Date | null
+      deliveredAt: Date | null
+      paymentDeadline: Date | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["groupOrder"]>
+    composites: {}
+  }
+
+  type GroupOrderGetPayload<S extends boolean | null | undefined | GroupOrderDefaultArgs> = $Result.GetResult<Prisma.$GroupOrderPayload, S>
+
+  type GroupOrderCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<GroupOrderFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: GroupOrderCountAggregateInputType | true
+    }
+
+  export interface GroupOrderDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['GroupOrder'], meta: { name: 'GroupOrder' } }
+    /**
+     * Find zero or one GroupOrder that matches the filter.
+     * @param {GroupOrderFindUniqueArgs} args - Arguments to find a GroupOrder
+     * @example
+     * // Get one GroupOrder
+     * const groupOrder = await prisma.groupOrder.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends GroupOrderFindUniqueArgs>(args: SelectSubset<T, GroupOrderFindUniqueArgs<ExtArgs>>): Prisma__GroupOrderClient<$Result.GetResult<Prisma.$GroupOrderPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one GroupOrder that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {GroupOrderFindUniqueOrThrowArgs} args - Arguments to find a GroupOrder
+     * @example
+     * // Get one GroupOrder
+     * const groupOrder = await prisma.groupOrder.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends GroupOrderFindUniqueOrThrowArgs>(args: SelectSubset<T, GroupOrderFindUniqueOrThrowArgs<ExtArgs>>): Prisma__GroupOrderClient<$Result.GetResult<Prisma.$GroupOrderPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first GroupOrder that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GroupOrderFindFirstArgs} args - Arguments to find a GroupOrder
+     * @example
+     * // Get one GroupOrder
+     * const groupOrder = await prisma.groupOrder.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends GroupOrderFindFirstArgs>(args?: SelectSubset<T, GroupOrderFindFirstArgs<ExtArgs>>): Prisma__GroupOrderClient<$Result.GetResult<Prisma.$GroupOrderPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first GroupOrder that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GroupOrderFindFirstOrThrowArgs} args - Arguments to find a GroupOrder
+     * @example
+     * // Get one GroupOrder
+     * const groupOrder = await prisma.groupOrder.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends GroupOrderFindFirstOrThrowArgs>(args?: SelectSubset<T, GroupOrderFindFirstOrThrowArgs<ExtArgs>>): Prisma__GroupOrderClient<$Result.GetResult<Prisma.$GroupOrderPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more GroupOrders that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GroupOrderFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all GroupOrders
+     * const groupOrders = await prisma.groupOrder.findMany()
+     * 
+     * // Get first 10 GroupOrders
+     * const groupOrders = await prisma.groupOrder.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const groupOrderWithIdOnly = await prisma.groupOrder.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends GroupOrderFindManyArgs>(args?: SelectSubset<T, GroupOrderFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GroupOrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a GroupOrder.
+     * @param {GroupOrderCreateArgs} args - Arguments to create a GroupOrder.
+     * @example
+     * // Create one GroupOrder
+     * const GroupOrder = await prisma.groupOrder.create({
+     *   data: {
+     *     // ... data to create a GroupOrder
+     *   }
+     * })
+     * 
+     */
+    create<T extends GroupOrderCreateArgs>(args: SelectSubset<T, GroupOrderCreateArgs<ExtArgs>>): Prisma__GroupOrderClient<$Result.GetResult<Prisma.$GroupOrderPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many GroupOrders.
+     * @param {GroupOrderCreateManyArgs} args - Arguments to create many GroupOrders.
+     * @example
+     * // Create many GroupOrders
+     * const groupOrder = await prisma.groupOrder.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends GroupOrderCreateManyArgs>(args?: SelectSubset<T, GroupOrderCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many GroupOrders and returns the data saved in the database.
+     * @param {GroupOrderCreateManyAndReturnArgs} args - Arguments to create many GroupOrders.
+     * @example
+     * // Create many GroupOrders
+     * const groupOrder = await prisma.groupOrder.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many GroupOrders and only return the `id`
+     * const groupOrderWithIdOnly = await prisma.groupOrder.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends GroupOrderCreateManyAndReturnArgs>(args?: SelectSubset<T, GroupOrderCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GroupOrderPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a GroupOrder.
+     * @param {GroupOrderDeleteArgs} args - Arguments to delete one GroupOrder.
+     * @example
+     * // Delete one GroupOrder
+     * const GroupOrder = await prisma.groupOrder.delete({
+     *   where: {
+     *     // ... filter to delete one GroupOrder
+     *   }
+     * })
+     * 
+     */
+    delete<T extends GroupOrderDeleteArgs>(args: SelectSubset<T, GroupOrderDeleteArgs<ExtArgs>>): Prisma__GroupOrderClient<$Result.GetResult<Prisma.$GroupOrderPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one GroupOrder.
+     * @param {GroupOrderUpdateArgs} args - Arguments to update one GroupOrder.
+     * @example
+     * // Update one GroupOrder
+     * const groupOrder = await prisma.groupOrder.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends GroupOrderUpdateArgs>(args: SelectSubset<T, GroupOrderUpdateArgs<ExtArgs>>): Prisma__GroupOrderClient<$Result.GetResult<Prisma.$GroupOrderPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more GroupOrders.
+     * @param {GroupOrderDeleteManyArgs} args - Arguments to filter GroupOrders to delete.
+     * @example
+     * // Delete a few GroupOrders
+     * const { count } = await prisma.groupOrder.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends GroupOrderDeleteManyArgs>(args?: SelectSubset<T, GroupOrderDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more GroupOrders.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GroupOrderUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many GroupOrders
+     * const groupOrder = await prisma.groupOrder.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends GroupOrderUpdateManyArgs>(args: SelectSubset<T, GroupOrderUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more GroupOrders and returns the data updated in the database.
+     * @param {GroupOrderUpdateManyAndReturnArgs} args - Arguments to update many GroupOrders.
+     * @example
+     * // Update many GroupOrders
+     * const groupOrder = await prisma.groupOrder.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more GroupOrders and only return the `id`
+     * const groupOrderWithIdOnly = await prisma.groupOrder.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends GroupOrderUpdateManyAndReturnArgs>(args: SelectSubset<T, GroupOrderUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GroupOrderPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one GroupOrder.
+     * @param {GroupOrderUpsertArgs} args - Arguments to update or create a GroupOrder.
+     * @example
+     * // Update or create a GroupOrder
+     * const groupOrder = await prisma.groupOrder.upsert({
+     *   create: {
+     *     // ... data to create a GroupOrder
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the GroupOrder we want to update
+     *   }
+     * })
+     */
+    upsert<T extends GroupOrderUpsertArgs>(args: SelectSubset<T, GroupOrderUpsertArgs<ExtArgs>>): Prisma__GroupOrderClient<$Result.GetResult<Prisma.$GroupOrderPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of GroupOrders.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GroupOrderCountArgs} args - Arguments to filter GroupOrders to count.
+     * @example
+     * // Count the number of GroupOrders
+     * const count = await prisma.groupOrder.count({
+     *   where: {
+     *     // ... the filter for the GroupOrders we want to count
+     *   }
+     * })
+    **/
+    count<T extends GroupOrderCountArgs>(
+      args?: Subset<T, GroupOrderCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], GroupOrderCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a GroupOrder.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GroupOrderAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends GroupOrderAggregateArgs>(args: Subset<T, GroupOrderAggregateArgs>): Prisma.PrismaPromise<GetGroupOrderAggregateType<T>>
+
+    /**
+     * Group by GroupOrder.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GroupOrderGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends GroupOrderGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: GroupOrderGroupByArgs['orderBy'] }
+        : { orderBy?: GroupOrderGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, GroupOrderGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetGroupOrderGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the GroupOrder model
+   */
+  readonly fields: GroupOrderFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for GroupOrder.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__GroupOrderClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    owner<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    restaurant<T extends RestaurantDefaultArgs<ExtArgs> = {}>(args?: Subset<T, RestaurantDefaultArgs<ExtArgs>>): Prisma__RestaurantClient<$Result.GetResult<Prisma.$RestaurantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    members<T extends GroupOrder$membersArgs<ExtArgs> = {}>(args?: Subset<T, GroupOrder$membersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GroupMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    payments<T extends GroupOrder$paymentsArgs<ExtArgs> = {}>(args?: Subset<T, GroupOrder$paymentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaymentTransferPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the GroupOrder model
+   */
+  interface GroupOrderFieldRefs {
+    readonly id: FieldRef<"GroupOrder", 'String'>
+    readonly groupId: FieldRef<"GroupOrder", 'String'>
+    readonly ownerId: FieldRef<"GroupOrder", 'String'>
+    readonly restaurantId: FieldRef<"GroupOrder", 'String'>
+    readonly platform: FieldRef<"GroupOrder", 'Platform'>
+    readonly platformOrderId: FieldRef<"GroupOrder", 'String'>
+    readonly status: FieldRef<"GroupOrder", 'GroupOrderStatus'>
+    readonly totalAmount: FieldRef<"GroupOrder", 'Float'>
+    readonly deliveryFee: FieldRef<"GroupOrder", 'Float'>
+    readonly serviceFee: FieldRef<"GroupOrder", 'Float'>
+    readonly tax: FieldRef<"GroupOrder", 'Float'>
+    readonly lockedAt: FieldRef<"GroupOrder", 'DateTime'>
+    readonly placedAt: FieldRef<"GroupOrder", 'DateTime'>
+    readonly deliveredAt: FieldRef<"GroupOrder", 'DateTime'>
+    readonly paymentDeadline: FieldRef<"GroupOrder", 'DateTime'>
+    readonly createdAt: FieldRef<"GroupOrder", 'DateTime'>
+    readonly updatedAt: FieldRef<"GroupOrder", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * GroupOrder findUnique
+   */
+  export type GroupOrderFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GroupOrder
+     */
+    select?: GroupOrderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GroupOrder
+     */
+    omit?: GroupOrderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GroupOrderInclude<ExtArgs> | null
+    /**
+     * Filter, which GroupOrder to fetch.
+     */
+    where: GroupOrderWhereUniqueInput
+  }
+
+  /**
+   * GroupOrder findUniqueOrThrow
+   */
+  export type GroupOrderFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GroupOrder
+     */
+    select?: GroupOrderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GroupOrder
+     */
+    omit?: GroupOrderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GroupOrderInclude<ExtArgs> | null
+    /**
+     * Filter, which GroupOrder to fetch.
+     */
+    where: GroupOrderWhereUniqueInput
+  }
+
+  /**
+   * GroupOrder findFirst
+   */
+  export type GroupOrderFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GroupOrder
+     */
+    select?: GroupOrderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GroupOrder
+     */
+    omit?: GroupOrderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GroupOrderInclude<ExtArgs> | null
+    /**
+     * Filter, which GroupOrder to fetch.
+     */
+    where?: GroupOrderWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of GroupOrders to fetch.
+     */
+    orderBy?: GroupOrderOrderByWithRelationInput | GroupOrderOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for GroupOrders.
+     */
+    cursor?: GroupOrderWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` GroupOrders from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` GroupOrders.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of GroupOrders.
+     */
+    distinct?: GroupOrderScalarFieldEnum | GroupOrderScalarFieldEnum[]
+  }
+
+  /**
+   * GroupOrder findFirstOrThrow
+   */
+  export type GroupOrderFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GroupOrder
+     */
+    select?: GroupOrderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GroupOrder
+     */
+    omit?: GroupOrderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GroupOrderInclude<ExtArgs> | null
+    /**
+     * Filter, which GroupOrder to fetch.
+     */
+    where?: GroupOrderWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of GroupOrders to fetch.
+     */
+    orderBy?: GroupOrderOrderByWithRelationInput | GroupOrderOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for GroupOrders.
+     */
+    cursor?: GroupOrderWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` GroupOrders from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` GroupOrders.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of GroupOrders.
+     */
+    distinct?: GroupOrderScalarFieldEnum | GroupOrderScalarFieldEnum[]
+  }
+
+  /**
+   * GroupOrder findMany
+   */
+  export type GroupOrderFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GroupOrder
+     */
+    select?: GroupOrderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GroupOrder
+     */
+    omit?: GroupOrderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GroupOrderInclude<ExtArgs> | null
+    /**
+     * Filter, which GroupOrders to fetch.
+     */
+    where?: GroupOrderWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of GroupOrders to fetch.
+     */
+    orderBy?: GroupOrderOrderByWithRelationInput | GroupOrderOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing GroupOrders.
+     */
+    cursor?: GroupOrderWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` GroupOrders from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` GroupOrders.
+     */
+    skip?: number
+    distinct?: GroupOrderScalarFieldEnum | GroupOrderScalarFieldEnum[]
+  }
+
+  /**
+   * GroupOrder create
+   */
+  export type GroupOrderCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GroupOrder
+     */
+    select?: GroupOrderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GroupOrder
+     */
+    omit?: GroupOrderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GroupOrderInclude<ExtArgs> | null
+    /**
+     * The data needed to create a GroupOrder.
+     */
+    data: XOR<GroupOrderCreateInput, GroupOrderUncheckedCreateInput>
+  }
+
+  /**
+   * GroupOrder createMany
+   */
+  export type GroupOrderCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many GroupOrders.
+     */
+    data: GroupOrderCreateManyInput | GroupOrderCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * GroupOrder createManyAndReturn
+   */
+  export type GroupOrderCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GroupOrder
+     */
+    select?: GroupOrderSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the GroupOrder
+     */
+    omit?: GroupOrderOmit<ExtArgs> | null
+    /**
+     * The data used to create many GroupOrders.
+     */
+    data: GroupOrderCreateManyInput | GroupOrderCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GroupOrderIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * GroupOrder update
+   */
+  export type GroupOrderUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GroupOrder
+     */
+    select?: GroupOrderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GroupOrder
+     */
+    omit?: GroupOrderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GroupOrderInclude<ExtArgs> | null
+    /**
+     * The data needed to update a GroupOrder.
+     */
+    data: XOR<GroupOrderUpdateInput, GroupOrderUncheckedUpdateInput>
+    /**
+     * Choose, which GroupOrder to update.
+     */
+    where: GroupOrderWhereUniqueInput
+  }
+
+  /**
+   * GroupOrder updateMany
+   */
+  export type GroupOrderUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update GroupOrders.
+     */
+    data: XOR<GroupOrderUpdateManyMutationInput, GroupOrderUncheckedUpdateManyInput>
+    /**
+     * Filter which GroupOrders to update
+     */
+    where?: GroupOrderWhereInput
+    /**
+     * Limit how many GroupOrders to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * GroupOrder updateManyAndReturn
+   */
+  export type GroupOrderUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GroupOrder
+     */
+    select?: GroupOrderSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the GroupOrder
+     */
+    omit?: GroupOrderOmit<ExtArgs> | null
+    /**
+     * The data used to update GroupOrders.
+     */
+    data: XOR<GroupOrderUpdateManyMutationInput, GroupOrderUncheckedUpdateManyInput>
+    /**
+     * Filter which GroupOrders to update
+     */
+    where?: GroupOrderWhereInput
+    /**
+     * Limit how many GroupOrders to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GroupOrderIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * GroupOrder upsert
+   */
+  export type GroupOrderUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GroupOrder
+     */
+    select?: GroupOrderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GroupOrder
+     */
+    omit?: GroupOrderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GroupOrderInclude<ExtArgs> | null
+    /**
+     * The filter to search for the GroupOrder to update in case it exists.
+     */
+    where: GroupOrderWhereUniqueInput
+    /**
+     * In case the GroupOrder found by the `where` argument doesn't exist, create a new GroupOrder with this data.
+     */
+    create: XOR<GroupOrderCreateInput, GroupOrderUncheckedCreateInput>
+    /**
+     * In case the GroupOrder was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<GroupOrderUpdateInput, GroupOrderUncheckedUpdateInput>
+  }
+
+  /**
+   * GroupOrder delete
+   */
+  export type GroupOrderDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GroupOrder
+     */
+    select?: GroupOrderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GroupOrder
+     */
+    omit?: GroupOrderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GroupOrderInclude<ExtArgs> | null
+    /**
+     * Filter which GroupOrder to delete.
+     */
+    where: GroupOrderWhereUniqueInput
+  }
+
+  /**
+   * GroupOrder deleteMany
+   */
+  export type GroupOrderDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which GroupOrders to delete
+     */
+    where?: GroupOrderWhereInput
+    /**
+     * Limit how many GroupOrders to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * GroupOrder.members
+   */
+  export type GroupOrder$membersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GroupMember
+     */
+    select?: GroupMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GroupMember
+     */
+    omit?: GroupMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GroupMemberInclude<ExtArgs> | null
+    where?: GroupMemberWhereInput
+    orderBy?: GroupMemberOrderByWithRelationInput | GroupMemberOrderByWithRelationInput[]
+    cursor?: GroupMemberWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: GroupMemberScalarFieldEnum | GroupMemberScalarFieldEnum[]
+  }
+
+  /**
+   * GroupOrder.payments
+   */
+  export type GroupOrder$paymentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaymentTransfer
+     */
+    select?: PaymentTransferSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaymentTransfer
+     */
+    omit?: PaymentTransferOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentTransferInclude<ExtArgs> | null
+    where?: PaymentTransferWhereInput
+    orderBy?: PaymentTransferOrderByWithRelationInput | PaymentTransferOrderByWithRelationInput[]
+    cursor?: PaymentTransferWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PaymentTransferScalarFieldEnum | PaymentTransferScalarFieldEnum[]
+  }
+
+  /**
+   * GroupOrder without action
+   */
+  export type GroupOrderDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GroupOrder
+     */
+    select?: GroupOrderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GroupOrder
+     */
+    omit?: GroupOrderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GroupOrderInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model GroupMember
+   */
+
+  export type AggregateGroupMember = {
+    _count: GroupMemberCountAggregateOutputType | null
+    _avg: GroupMemberAvgAggregateOutputType | null
+    _sum: GroupMemberSumAggregateOutputType | null
+    _min: GroupMemberMinAggregateOutputType | null
+    _max: GroupMemberMaxAggregateOutputType | null
+  }
+
+  export type GroupMemberAvgAggregateOutputType = {
+    cartTotal: number | null
+  }
+
+  export type GroupMemberSumAggregateOutputType = {
+    cartTotal: number | null
+  }
+
+  export type GroupMemberMinAggregateOutputType = {
+    id: string | null
+    groupOrderId: string | null
+    userId: string | null
+    role: $Enums.GroupRole | null
+    cartTotal: number | null
+    joinedAt: Date | null
+    leftAt: Date | null
+  }
+
+  export type GroupMemberMaxAggregateOutputType = {
+    id: string | null
+    groupOrderId: string | null
+    userId: string | null
+    role: $Enums.GroupRole | null
+    cartTotal: number | null
+    joinedAt: Date | null
+    leftAt: Date | null
+  }
+
+  export type GroupMemberCountAggregateOutputType = {
+    id: number
+    groupOrderId: number
+    userId: number
+    role: number
+    cartTotal: number
+    joinedAt: number
+    leftAt: number
+    _all: number
+  }
+
+
+  export type GroupMemberAvgAggregateInputType = {
+    cartTotal?: true
+  }
+
+  export type GroupMemberSumAggregateInputType = {
+    cartTotal?: true
+  }
+
+  export type GroupMemberMinAggregateInputType = {
+    id?: true
+    groupOrderId?: true
+    userId?: true
+    role?: true
+    cartTotal?: true
+    joinedAt?: true
+    leftAt?: true
+  }
+
+  export type GroupMemberMaxAggregateInputType = {
+    id?: true
+    groupOrderId?: true
+    userId?: true
+    role?: true
+    cartTotal?: true
+    joinedAt?: true
+    leftAt?: true
+  }
+
+  export type GroupMemberCountAggregateInputType = {
+    id?: true
+    groupOrderId?: true
+    userId?: true
+    role?: true
+    cartTotal?: true
+    joinedAt?: true
+    leftAt?: true
+    _all?: true
+  }
+
+  export type GroupMemberAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which GroupMember to aggregate.
+     */
+    where?: GroupMemberWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of GroupMembers to fetch.
+     */
+    orderBy?: GroupMemberOrderByWithRelationInput | GroupMemberOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: GroupMemberWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` GroupMembers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` GroupMembers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned GroupMembers
+    **/
+    _count?: true | GroupMemberCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: GroupMemberAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: GroupMemberSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: GroupMemberMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: GroupMemberMaxAggregateInputType
+  }
+
+  export type GetGroupMemberAggregateType<T extends GroupMemberAggregateArgs> = {
+        [P in keyof T & keyof AggregateGroupMember]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateGroupMember[P]>
+      : GetScalarType<T[P], AggregateGroupMember[P]>
+  }
+
+
+
+
+  export type GroupMemberGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: GroupMemberWhereInput
+    orderBy?: GroupMemberOrderByWithAggregationInput | GroupMemberOrderByWithAggregationInput[]
+    by: GroupMemberScalarFieldEnum[] | GroupMemberScalarFieldEnum
+    having?: GroupMemberScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: GroupMemberCountAggregateInputType | true
+    _avg?: GroupMemberAvgAggregateInputType
+    _sum?: GroupMemberSumAggregateInputType
+    _min?: GroupMemberMinAggregateInputType
+    _max?: GroupMemberMaxAggregateInputType
+  }
+
+  export type GroupMemberGroupByOutputType = {
+    id: string
+    groupOrderId: string
+    userId: string
+    role: $Enums.GroupRole
+    cartTotal: number
+    joinedAt: Date
+    leftAt: Date | null
+    _count: GroupMemberCountAggregateOutputType | null
+    _avg: GroupMemberAvgAggregateOutputType | null
+    _sum: GroupMemberSumAggregateOutputType | null
+    _min: GroupMemberMinAggregateOutputType | null
+    _max: GroupMemberMaxAggregateOutputType | null
+  }
+
+  type GetGroupMemberGroupByPayload<T extends GroupMemberGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<GroupMemberGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof GroupMemberGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], GroupMemberGroupByOutputType[P]>
+            : GetScalarType<T[P], GroupMemberGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type GroupMemberSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    groupOrderId?: boolean
+    userId?: boolean
+    role?: boolean
+    cartTotal?: boolean
+    joinedAt?: boolean
+    leftAt?: boolean
+    groupOrder?: boolean | GroupOrderDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["groupMember"]>
+
+  export type GroupMemberSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    groupOrderId?: boolean
+    userId?: boolean
+    role?: boolean
+    cartTotal?: boolean
+    joinedAt?: boolean
+    leftAt?: boolean
+    groupOrder?: boolean | GroupOrderDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["groupMember"]>
+
+  export type GroupMemberSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    groupOrderId?: boolean
+    userId?: boolean
+    role?: boolean
+    cartTotal?: boolean
+    joinedAt?: boolean
+    leftAt?: boolean
+    groupOrder?: boolean | GroupOrderDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["groupMember"]>
+
+  export type GroupMemberSelectScalar = {
+    id?: boolean
+    groupOrderId?: boolean
+    userId?: boolean
+    role?: boolean
+    cartTotal?: boolean
+    joinedAt?: boolean
+    leftAt?: boolean
+  }
+
+  export type GroupMemberOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "groupOrderId" | "userId" | "role" | "cartTotal" | "joinedAt" | "leftAt", ExtArgs["result"]["groupMember"]>
+  export type GroupMemberInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    groupOrder?: boolean | GroupOrderDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type GroupMemberIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    groupOrder?: boolean | GroupOrderDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type GroupMemberIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    groupOrder?: boolean | GroupOrderDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $GroupMemberPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "GroupMember"
+    objects: {
+      groupOrder: Prisma.$GroupOrderPayload<ExtArgs>
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      groupOrderId: string
+      userId: string
+      role: $Enums.GroupRole
+      cartTotal: number
+      joinedAt: Date
+      leftAt: Date | null
+    }, ExtArgs["result"]["groupMember"]>
+    composites: {}
+  }
+
+  type GroupMemberGetPayload<S extends boolean | null | undefined | GroupMemberDefaultArgs> = $Result.GetResult<Prisma.$GroupMemberPayload, S>
+
+  type GroupMemberCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<GroupMemberFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: GroupMemberCountAggregateInputType | true
+    }
+
+  export interface GroupMemberDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['GroupMember'], meta: { name: 'GroupMember' } }
+    /**
+     * Find zero or one GroupMember that matches the filter.
+     * @param {GroupMemberFindUniqueArgs} args - Arguments to find a GroupMember
+     * @example
+     * // Get one GroupMember
+     * const groupMember = await prisma.groupMember.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends GroupMemberFindUniqueArgs>(args: SelectSubset<T, GroupMemberFindUniqueArgs<ExtArgs>>): Prisma__GroupMemberClient<$Result.GetResult<Prisma.$GroupMemberPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one GroupMember that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {GroupMemberFindUniqueOrThrowArgs} args - Arguments to find a GroupMember
+     * @example
+     * // Get one GroupMember
+     * const groupMember = await prisma.groupMember.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends GroupMemberFindUniqueOrThrowArgs>(args: SelectSubset<T, GroupMemberFindUniqueOrThrowArgs<ExtArgs>>): Prisma__GroupMemberClient<$Result.GetResult<Prisma.$GroupMemberPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first GroupMember that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GroupMemberFindFirstArgs} args - Arguments to find a GroupMember
+     * @example
+     * // Get one GroupMember
+     * const groupMember = await prisma.groupMember.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends GroupMemberFindFirstArgs>(args?: SelectSubset<T, GroupMemberFindFirstArgs<ExtArgs>>): Prisma__GroupMemberClient<$Result.GetResult<Prisma.$GroupMemberPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first GroupMember that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GroupMemberFindFirstOrThrowArgs} args - Arguments to find a GroupMember
+     * @example
+     * // Get one GroupMember
+     * const groupMember = await prisma.groupMember.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends GroupMemberFindFirstOrThrowArgs>(args?: SelectSubset<T, GroupMemberFindFirstOrThrowArgs<ExtArgs>>): Prisma__GroupMemberClient<$Result.GetResult<Prisma.$GroupMemberPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more GroupMembers that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GroupMemberFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all GroupMembers
+     * const groupMembers = await prisma.groupMember.findMany()
+     * 
+     * // Get first 10 GroupMembers
+     * const groupMembers = await prisma.groupMember.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const groupMemberWithIdOnly = await prisma.groupMember.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends GroupMemberFindManyArgs>(args?: SelectSubset<T, GroupMemberFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GroupMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a GroupMember.
+     * @param {GroupMemberCreateArgs} args - Arguments to create a GroupMember.
+     * @example
+     * // Create one GroupMember
+     * const GroupMember = await prisma.groupMember.create({
+     *   data: {
+     *     // ... data to create a GroupMember
+     *   }
+     * })
+     * 
+     */
+    create<T extends GroupMemberCreateArgs>(args: SelectSubset<T, GroupMemberCreateArgs<ExtArgs>>): Prisma__GroupMemberClient<$Result.GetResult<Prisma.$GroupMemberPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many GroupMembers.
+     * @param {GroupMemberCreateManyArgs} args - Arguments to create many GroupMembers.
+     * @example
+     * // Create many GroupMembers
+     * const groupMember = await prisma.groupMember.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends GroupMemberCreateManyArgs>(args?: SelectSubset<T, GroupMemberCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many GroupMembers and returns the data saved in the database.
+     * @param {GroupMemberCreateManyAndReturnArgs} args - Arguments to create many GroupMembers.
+     * @example
+     * // Create many GroupMembers
+     * const groupMember = await prisma.groupMember.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many GroupMembers and only return the `id`
+     * const groupMemberWithIdOnly = await prisma.groupMember.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends GroupMemberCreateManyAndReturnArgs>(args?: SelectSubset<T, GroupMemberCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GroupMemberPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a GroupMember.
+     * @param {GroupMemberDeleteArgs} args - Arguments to delete one GroupMember.
+     * @example
+     * // Delete one GroupMember
+     * const GroupMember = await prisma.groupMember.delete({
+     *   where: {
+     *     // ... filter to delete one GroupMember
+     *   }
+     * })
+     * 
+     */
+    delete<T extends GroupMemberDeleteArgs>(args: SelectSubset<T, GroupMemberDeleteArgs<ExtArgs>>): Prisma__GroupMemberClient<$Result.GetResult<Prisma.$GroupMemberPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one GroupMember.
+     * @param {GroupMemberUpdateArgs} args - Arguments to update one GroupMember.
+     * @example
+     * // Update one GroupMember
+     * const groupMember = await prisma.groupMember.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends GroupMemberUpdateArgs>(args: SelectSubset<T, GroupMemberUpdateArgs<ExtArgs>>): Prisma__GroupMemberClient<$Result.GetResult<Prisma.$GroupMemberPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more GroupMembers.
+     * @param {GroupMemberDeleteManyArgs} args - Arguments to filter GroupMembers to delete.
+     * @example
+     * // Delete a few GroupMembers
+     * const { count } = await prisma.groupMember.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends GroupMemberDeleteManyArgs>(args?: SelectSubset<T, GroupMemberDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more GroupMembers.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GroupMemberUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many GroupMembers
+     * const groupMember = await prisma.groupMember.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends GroupMemberUpdateManyArgs>(args: SelectSubset<T, GroupMemberUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more GroupMembers and returns the data updated in the database.
+     * @param {GroupMemberUpdateManyAndReturnArgs} args - Arguments to update many GroupMembers.
+     * @example
+     * // Update many GroupMembers
+     * const groupMember = await prisma.groupMember.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more GroupMembers and only return the `id`
+     * const groupMemberWithIdOnly = await prisma.groupMember.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends GroupMemberUpdateManyAndReturnArgs>(args: SelectSubset<T, GroupMemberUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GroupMemberPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one GroupMember.
+     * @param {GroupMemberUpsertArgs} args - Arguments to update or create a GroupMember.
+     * @example
+     * // Update or create a GroupMember
+     * const groupMember = await prisma.groupMember.upsert({
+     *   create: {
+     *     // ... data to create a GroupMember
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the GroupMember we want to update
+     *   }
+     * })
+     */
+    upsert<T extends GroupMemberUpsertArgs>(args: SelectSubset<T, GroupMemberUpsertArgs<ExtArgs>>): Prisma__GroupMemberClient<$Result.GetResult<Prisma.$GroupMemberPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of GroupMembers.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GroupMemberCountArgs} args - Arguments to filter GroupMembers to count.
+     * @example
+     * // Count the number of GroupMembers
+     * const count = await prisma.groupMember.count({
+     *   where: {
+     *     // ... the filter for the GroupMembers we want to count
+     *   }
+     * })
+    **/
+    count<T extends GroupMemberCountArgs>(
+      args?: Subset<T, GroupMemberCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], GroupMemberCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a GroupMember.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GroupMemberAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends GroupMemberAggregateArgs>(args: Subset<T, GroupMemberAggregateArgs>): Prisma.PrismaPromise<GetGroupMemberAggregateType<T>>
+
+    /**
+     * Group by GroupMember.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GroupMemberGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends GroupMemberGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: GroupMemberGroupByArgs['orderBy'] }
+        : { orderBy?: GroupMemberGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, GroupMemberGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetGroupMemberGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the GroupMember model
+   */
+  readonly fields: GroupMemberFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for GroupMember.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__GroupMemberClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    groupOrder<T extends GroupOrderDefaultArgs<ExtArgs> = {}>(args?: Subset<T, GroupOrderDefaultArgs<ExtArgs>>): Prisma__GroupOrderClient<$Result.GetResult<Prisma.$GroupOrderPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the GroupMember model
+   */
+  interface GroupMemberFieldRefs {
+    readonly id: FieldRef<"GroupMember", 'String'>
+    readonly groupOrderId: FieldRef<"GroupMember", 'String'>
+    readonly userId: FieldRef<"GroupMember", 'String'>
+    readonly role: FieldRef<"GroupMember", 'GroupRole'>
+    readonly cartTotal: FieldRef<"GroupMember", 'Float'>
+    readonly joinedAt: FieldRef<"GroupMember", 'DateTime'>
+    readonly leftAt: FieldRef<"GroupMember", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * GroupMember findUnique
+   */
+  export type GroupMemberFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GroupMember
+     */
+    select?: GroupMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GroupMember
+     */
+    omit?: GroupMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GroupMemberInclude<ExtArgs> | null
+    /**
+     * Filter, which GroupMember to fetch.
+     */
+    where: GroupMemberWhereUniqueInput
+  }
+
+  /**
+   * GroupMember findUniqueOrThrow
+   */
+  export type GroupMemberFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GroupMember
+     */
+    select?: GroupMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GroupMember
+     */
+    omit?: GroupMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GroupMemberInclude<ExtArgs> | null
+    /**
+     * Filter, which GroupMember to fetch.
+     */
+    where: GroupMemberWhereUniqueInput
+  }
+
+  /**
+   * GroupMember findFirst
+   */
+  export type GroupMemberFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GroupMember
+     */
+    select?: GroupMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GroupMember
+     */
+    omit?: GroupMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GroupMemberInclude<ExtArgs> | null
+    /**
+     * Filter, which GroupMember to fetch.
+     */
+    where?: GroupMemberWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of GroupMembers to fetch.
+     */
+    orderBy?: GroupMemberOrderByWithRelationInput | GroupMemberOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for GroupMembers.
+     */
+    cursor?: GroupMemberWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` GroupMembers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` GroupMembers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of GroupMembers.
+     */
+    distinct?: GroupMemberScalarFieldEnum | GroupMemberScalarFieldEnum[]
+  }
+
+  /**
+   * GroupMember findFirstOrThrow
+   */
+  export type GroupMemberFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GroupMember
+     */
+    select?: GroupMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GroupMember
+     */
+    omit?: GroupMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GroupMemberInclude<ExtArgs> | null
+    /**
+     * Filter, which GroupMember to fetch.
+     */
+    where?: GroupMemberWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of GroupMembers to fetch.
+     */
+    orderBy?: GroupMemberOrderByWithRelationInput | GroupMemberOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for GroupMembers.
+     */
+    cursor?: GroupMemberWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` GroupMembers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` GroupMembers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of GroupMembers.
+     */
+    distinct?: GroupMemberScalarFieldEnum | GroupMemberScalarFieldEnum[]
+  }
+
+  /**
+   * GroupMember findMany
+   */
+  export type GroupMemberFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GroupMember
+     */
+    select?: GroupMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GroupMember
+     */
+    omit?: GroupMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GroupMemberInclude<ExtArgs> | null
+    /**
+     * Filter, which GroupMembers to fetch.
+     */
+    where?: GroupMemberWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of GroupMembers to fetch.
+     */
+    orderBy?: GroupMemberOrderByWithRelationInput | GroupMemberOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing GroupMembers.
+     */
+    cursor?: GroupMemberWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` GroupMembers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` GroupMembers.
+     */
+    skip?: number
+    distinct?: GroupMemberScalarFieldEnum | GroupMemberScalarFieldEnum[]
+  }
+
+  /**
+   * GroupMember create
+   */
+  export type GroupMemberCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GroupMember
+     */
+    select?: GroupMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GroupMember
+     */
+    omit?: GroupMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GroupMemberInclude<ExtArgs> | null
+    /**
+     * The data needed to create a GroupMember.
+     */
+    data: XOR<GroupMemberCreateInput, GroupMemberUncheckedCreateInput>
+  }
+
+  /**
+   * GroupMember createMany
+   */
+  export type GroupMemberCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many GroupMembers.
+     */
+    data: GroupMemberCreateManyInput | GroupMemberCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * GroupMember createManyAndReturn
+   */
+  export type GroupMemberCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GroupMember
+     */
+    select?: GroupMemberSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the GroupMember
+     */
+    omit?: GroupMemberOmit<ExtArgs> | null
+    /**
+     * The data used to create many GroupMembers.
+     */
+    data: GroupMemberCreateManyInput | GroupMemberCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GroupMemberIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * GroupMember update
+   */
+  export type GroupMemberUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GroupMember
+     */
+    select?: GroupMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GroupMember
+     */
+    omit?: GroupMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GroupMemberInclude<ExtArgs> | null
+    /**
+     * The data needed to update a GroupMember.
+     */
+    data: XOR<GroupMemberUpdateInput, GroupMemberUncheckedUpdateInput>
+    /**
+     * Choose, which GroupMember to update.
+     */
+    where: GroupMemberWhereUniqueInput
+  }
+
+  /**
+   * GroupMember updateMany
+   */
+  export type GroupMemberUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update GroupMembers.
+     */
+    data: XOR<GroupMemberUpdateManyMutationInput, GroupMemberUncheckedUpdateManyInput>
+    /**
+     * Filter which GroupMembers to update
+     */
+    where?: GroupMemberWhereInput
+    /**
+     * Limit how many GroupMembers to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * GroupMember updateManyAndReturn
+   */
+  export type GroupMemberUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GroupMember
+     */
+    select?: GroupMemberSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the GroupMember
+     */
+    omit?: GroupMemberOmit<ExtArgs> | null
+    /**
+     * The data used to update GroupMembers.
+     */
+    data: XOR<GroupMemberUpdateManyMutationInput, GroupMemberUncheckedUpdateManyInput>
+    /**
+     * Filter which GroupMembers to update
+     */
+    where?: GroupMemberWhereInput
+    /**
+     * Limit how many GroupMembers to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GroupMemberIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * GroupMember upsert
+   */
+  export type GroupMemberUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GroupMember
+     */
+    select?: GroupMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GroupMember
+     */
+    omit?: GroupMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GroupMemberInclude<ExtArgs> | null
+    /**
+     * The filter to search for the GroupMember to update in case it exists.
+     */
+    where: GroupMemberWhereUniqueInput
+    /**
+     * In case the GroupMember found by the `where` argument doesn't exist, create a new GroupMember with this data.
+     */
+    create: XOR<GroupMemberCreateInput, GroupMemberUncheckedCreateInput>
+    /**
+     * In case the GroupMember was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<GroupMemberUpdateInput, GroupMemberUncheckedUpdateInput>
+  }
+
+  /**
+   * GroupMember delete
+   */
+  export type GroupMemberDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GroupMember
+     */
+    select?: GroupMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GroupMember
+     */
+    omit?: GroupMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GroupMemberInclude<ExtArgs> | null
+    /**
+     * Filter which GroupMember to delete.
+     */
+    where: GroupMemberWhereUniqueInput
+  }
+
+  /**
+   * GroupMember deleteMany
+   */
+  export type GroupMemberDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which GroupMembers to delete
+     */
+    where?: GroupMemberWhereInput
+    /**
+     * Limit how many GroupMembers to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * GroupMember without action
+   */
+  export type GroupMemberDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GroupMember
+     */
+    select?: GroupMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GroupMember
+     */
+    omit?: GroupMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GroupMemberInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model BankAccount
+   */
+
+  export type AggregateBankAccount = {
+    _count: BankAccountCountAggregateOutputType | null
+    _min: BankAccountMinAggregateOutputType | null
+    _max: BankAccountMaxAggregateOutputType | null
+  }
+
+  export type BankAccountMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    bankName: string | null
+    accountNumber: string | null
+    accountHolderName: string | null
+    isDefault: boolean | null
+    isActive: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type BankAccountMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    bankName: string | null
+    accountNumber: string | null
+    accountHolderName: string | null
+    isDefault: boolean | null
+    isActive: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type BankAccountCountAggregateOutputType = {
+    id: number
+    userId: number
+    bankName: number
+    accountNumber: number
+    accountHolderName: number
+    isDefault: number
+    isActive: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type BankAccountMinAggregateInputType = {
+    id?: true
+    userId?: true
+    bankName?: true
+    accountNumber?: true
+    accountHolderName?: true
+    isDefault?: true
+    isActive?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type BankAccountMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    bankName?: true
+    accountNumber?: true
+    accountHolderName?: true
+    isDefault?: true
+    isActive?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type BankAccountCountAggregateInputType = {
+    id?: true
+    userId?: true
+    bankName?: true
+    accountNumber?: true
+    accountHolderName?: true
+    isDefault?: true
+    isActive?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type BankAccountAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which BankAccount to aggregate.
+     */
+    where?: BankAccountWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of BankAccounts to fetch.
+     */
+    orderBy?: BankAccountOrderByWithRelationInput | BankAccountOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: BankAccountWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` BankAccounts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` BankAccounts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned BankAccounts
+    **/
+    _count?: true | BankAccountCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: BankAccountMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: BankAccountMaxAggregateInputType
+  }
+
+  export type GetBankAccountAggregateType<T extends BankAccountAggregateArgs> = {
+        [P in keyof T & keyof AggregateBankAccount]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateBankAccount[P]>
+      : GetScalarType<T[P], AggregateBankAccount[P]>
+  }
+
+
+
+
+  export type BankAccountGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: BankAccountWhereInput
+    orderBy?: BankAccountOrderByWithAggregationInput | BankAccountOrderByWithAggregationInput[]
+    by: BankAccountScalarFieldEnum[] | BankAccountScalarFieldEnum
+    having?: BankAccountScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: BankAccountCountAggregateInputType | true
+    _min?: BankAccountMinAggregateInputType
+    _max?: BankAccountMaxAggregateInputType
+  }
+
+  export type BankAccountGroupByOutputType = {
+    id: string
+    userId: string
+    bankName: string
+    accountNumber: string
+    accountHolderName: string
+    isDefault: boolean
+    isActive: boolean
+    createdAt: Date
+    updatedAt: Date
+    _count: BankAccountCountAggregateOutputType | null
+    _min: BankAccountMinAggregateOutputType | null
+    _max: BankAccountMaxAggregateOutputType | null
+  }
+
+  type GetBankAccountGroupByPayload<T extends BankAccountGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<BankAccountGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof BankAccountGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], BankAccountGroupByOutputType[P]>
+            : GetScalarType<T[P], BankAccountGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type BankAccountSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    bankName?: boolean
+    accountNumber?: boolean
+    accountHolderName?: boolean
+    isDefault?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["bankAccount"]>
+
+  export type BankAccountSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    bankName?: boolean
+    accountNumber?: boolean
+    accountHolderName?: boolean
+    isDefault?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["bankAccount"]>
+
+  export type BankAccountSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    bankName?: boolean
+    accountNumber?: boolean
+    accountHolderName?: boolean
+    isDefault?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["bankAccount"]>
+
+  export type BankAccountSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    bankName?: boolean
+    accountNumber?: boolean
+    accountHolderName?: boolean
+    isDefault?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type BankAccountOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "bankName" | "accountNumber" | "accountHolderName" | "isDefault" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["bankAccount"]>
+  export type BankAccountInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type BankAccountIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type BankAccountIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $BankAccountPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "BankAccount"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      bankName: string
+      accountNumber: string
+      accountHolderName: string
+      isDefault: boolean
+      isActive: boolean
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["bankAccount"]>
+    composites: {}
+  }
+
+  type BankAccountGetPayload<S extends boolean | null | undefined | BankAccountDefaultArgs> = $Result.GetResult<Prisma.$BankAccountPayload, S>
+
+  type BankAccountCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<BankAccountFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: BankAccountCountAggregateInputType | true
+    }
+
+  export interface BankAccountDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['BankAccount'], meta: { name: 'BankAccount' } }
+    /**
+     * Find zero or one BankAccount that matches the filter.
+     * @param {BankAccountFindUniqueArgs} args - Arguments to find a BankAccount
+     * @example
+     * // Get one BankAccount
+     * const bankAccount = await prisma.bankAccount.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends BankAccountFindUniqueArgs>(args: SelectSubset<T, BankAccountFindUniqueArgs<ExtArgs>>): Prisma__BankAccountClient<$Result.GetResult<Prisma.$BankAccountPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one BankAccount that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {BankAccountFindUniqueOrThrowArgs} args - Arguments to find a BankAccount
+     * @example
+     * // Get one BankAccount
+     * const bankAccount = await prisma.bankAccount.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends BankAccountFindUniqueOrThrowArgs>(args: SelectSubset<T, BankAccountFindUniqueOrThrowArgs<ExtArgs>>): Prisma__BankAccountClient<$Result.GetResult<Prisma.$BankAccountPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first BankAccount that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BankAccountFindFirstArgs} args - Arguments to find a BankAccount
+     * @example
+     * // Get one BankAccount
+     * const bankAccount = await prisma.bankAccount.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends BankAccountFindFirstArgs>(args?: SelectSubset<T, BankAccountFindFirstArgs<ExtArgs>>): Prisma__BankAccountClient<$Result.GetResult<Prisma.$BankAccountPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first BankAccount that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BankAccountFindFirstOrThrowArgs} args - Arguments to find a BankAccount
+     * @example
+     * // Get one BankAccount
+     * const bankAccount = await prisma.bankAccount.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends BankAccountFindFirstOrThrowArgs>(args?: SelectSubset<T, BankAccountFindFirstOrThrowArgs<ExtArgs>>): Prisma__BankAccountClient<$Result.GetResult<Prisma.$BankAccountPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more BankAccounts that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BankAccountFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all BankAccounts
+     * const bankAccounts = await prisma.bankAccount.findMany()
+     * 
+     * // Get first 10 BankAccounts
+     * const bankAccounts = await prisma.bankAccount.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const bankAccountWithIdOnly = await prisma.bankAccount.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends BankAccountFindManyArgs>(args?: SelectSubset<T, BankAccountFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BankAccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a BankAccount.
+     * @param {BankAccountCreateArgs} args - Arguments to create a BankAccount.
+     * @example
+     * // Create one BankAccount
+     * const BankAccount = await prisma.bankAccount.create({
+     *   data: {
+     *     // ... data to create a BankAccount
+     *   }
+     * })
+     * 
+     */
+    create<T extends BankAccountCreateArgs>(args: SelectSubset<T, BankAccountCreateArgs<ExtArgs>>): Prisma__BankAccountClient<$Result.GetResult<Prisma.$BankAccountPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many BankAccounts.
+     * @param {BankAccountCreateManyArgs} args - Arguments to create many BankAccounts.
+     * @example
+     * // Create many BankAccounts
+     * const bankAccount = await prisma.bankAccount.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends BankAccountCreateManyArgs>(args?: SelectSubset<T, BankAccountCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many BankAccounts and returns the data saved in the database.
+     * @param {BankAccountCreateManyAndReturnArgs} args - Arguments to create many BankAccounts.
+     * @example
+     * // Create many BankAccounts
+     * const bankAccount = await prisma.bankAccount.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many BankAccounts and only return the `id`
+     * const bankAccountWithIdOnly = await prisma.bankAccount.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends BankAccountCreateManyAndReturnArgs>(args?: SelectSubset<T, BankAccountCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BankAccountPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a BankAccount.
+     * @param {BankAccountDeleteArgs} args - Arguments to delete one BankAccount.
+     * @example
+     * // Delete one BankAccount
+     * const BankAccount = await prisma.bankAccount.delete({
+     *   where: {
+     *     // ... filter to delete one BankAccount
+     *   }
+     * })
+     * 
+     */
+    delete<T extends BankAccountDeleteArgs>(args: SelectSubset<T, BankAccountDeleteArgs<ExtArgs>>): Prisma__BankAccountClient<$Result.GetResult<Prisma.$BankAccountPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one BankAccount.
+     * @param {BankAccountUpdateArgs} args - Arguments to update one BankAccount.
+     * @example
+     * // Update one BankAccount
+     * const bankAccount = await prisma.bankAccount.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends BankAccountUpdateArgs>(args: SelectSubset<T, BankAccountUpdateArgs<ExtArgs>>): Prisma__BankAccountClient<$Result.GetResult<Prisma.$BankAccountPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more BankAccounts.
+     * @param {BankAccountDeleteManyArgs} args - Arguments to filter BankAccounts to delete.
+     * @example
+     * // Delete a few BankAccounts
+     * const { count } = await prisma.bankAccount.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends BankAccountDeleteManyArgs>(args?: SelectSubset<T, BankAccountDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more BankAccounts.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BankAccountUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many BankAccounts
+     * const bankAccount = await prisma.bankAccount.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends BankAccountUpdateManyArgs>(args: SelectSubset<T, BankAccountUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more BankAccounts and returns the data updated in the database.
+     * @param {BankAccountUpdateManyAndReturnArgs} args - Arguments to update many BankAccounts.
+     * @example
+     * // Update many BankAccounts
+     * const bankAccount = await prisma.bankAccount.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more BankAccounts and only return the `id`
+     * const bankAccountWithIdOnly = await prisma.bankAccount.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends BankAccountUpdateManyAndReturnArgs>(args: SelectSubset<T, BankAccountUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BankAccountPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one BankAccount.
+     * @param {BankAccountUpsertArgs} args - Arguments to update or create a BankAccount.
+     * @example
+     * // Update or create a BankAccount
+     * const bankAccount = await prisma.bankAccount.upsert({
+     *   create: {
+     *     // ... data to create a BankAccount
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the BankAccount we want to update
+     *   }
+     * })
+     */
+    upsert<T extends BankAccountUpsertArgs>(args: SelectSubset<T, BankAccountUpsertArgs<ExtArgs>>): Prisma__BankAccountClient<$Result.GetResult<Prisma.$BankAccountPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of BankAccounts.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BankAccountCountArgs} args - Arguments to filter BankAccounts to count.
+     * @example
+     * // Count the number of BankAccounts
+     * const count = await prisma.bankAccount.count({
+     *   where: {
+     *     // ... the filter for the BankAccounts we want to count
+     *   }
+     * })
+    **/
+    count<T extends BankAccountCountArgs>(
+      args?: Subset<T, BankAccountCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], BankAccountCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a BankAccount.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BankAccountAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends BankAccountAggregateArgs>(args: Subset<T, BankAccountAggregateArgs>): Prisma.PrismaPromise<GetBankAccountAggregateType<T>>
+
+    /**
+     * Group by BankAccount.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BankAccountGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends BankAccountGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: BankAccountGroupByArgs['orderBy'] }
+        : { orderBy?: BankAccountGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, BankAccountGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetBankAccountGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the BankAccount model
+   */
+  readonly fields: BankAccountFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for BankAccount.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__BankAccountClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the BankAccount model
+   */
+  interface BankAccountFieldRefs {
+    readonly id: FieldRef<"BankAccount", 'String'>
+    readonly userId: FieldRef<"BankAccount", 'String'>
+    readonly bankName: FieldRef<"BankAccount", 'String'>
+    readonly accountNumber: FieldRef<"BankAccount", 'String'>
+    readonly accountHolderName: FieldRef<"BankAccount", 'String'>
+    readonly isDefault: FieldRef<"BankAccount", 'Boolean'>
+    readonly isActive: FieldRef<"BankAccount", 'Boolean'>
+    readonly createdAt: FieldRef<"BankAccount", 'DateTime'>
+    readonly updatedAt: FieldRef<"BankAccount", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * BankAccount findUnique
+   */
+  export type BankAccountFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BankAccount
+     */
+    select?: BankAccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BankAccount
+     */
+    omit?: BankAccountOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BankAccountInclude<ExtArgs> | null
+    /**
+     * Filter, which BankAccount to fetch.
+     */
+    where: BankAccountWhereUniqueInput
+  }
+
+  /**
+   * BankAccount findUniqueOrThrow
+   */
+  export type BankAccountFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BankAccount
+     */
+    select?: BankAccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BankAccount
+     */
+    omit?: BankAccountOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BankAccountInclude<ExtArgs> | null
+    /**
+     * Filter, which BankAccount to fetch.
+     */
+    where: BankAccountWhereUniqueInput
+  }
+
+  /**
+   * BankAccount findFirst
+   */
+  export type BankAccountFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BankAccount
+     */
+    select?: BankAccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BankAccount
+     */
+    omit?: BankAccountOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BankAccountInclude<ExtArgs> | null
+    /**
+     * Filter, which BankAccount to fetch.
+     */
+    where?: BankAccountWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of BankAccounts to fetch.
+     */
+    orderBy?: BankAccountOrderByWithRelationInput | BankAccountOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for BankAccounts.
+     */
+    cursor?: BankAccountWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` BankAccounts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` BankAccounts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of BankAccounts.
+     */
+    distinct?: BankAccountScalarFieldEnum | BankAccountScalarFieldEnum[]
+  }
+
+  /**
+   * BankAccount findFirstOrThrow
+   */
+  export type BankAccountFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BankAccount
+     */
+    select?: BankAccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BankAccount
+     */
+    omit?: BankAccountOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BankAccountInclude<ExtArgs> | null
+    /**
+     * Filter, which BankAccount to fetch.
+     */
+    where?: BankAccountWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of BankAccounts to fetch.
+     */
+    orderBy?: BankAccountOrderByWithRelationInput | BankAccountOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for BankAccounts.
+     */
+    cursor?: BankAccountWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` BankAccounts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` BankAccounts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of BankAccounts.
+     */
+    distinct?: BankAccountScalarFieldEnum | BankAccountScalarFieldEnum[]
+  }
+
+  /**
+   * BankAccount findMany
+   */
+  export type BankAccountFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BankAccount
+     */
+    select?: BankAccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BankAccount
+     */
+    omit?: BankAccountOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BankAccountInclude<ExtArgs> | null
+    /**
+     * Filter, which BankAccounts to fetch.
+     */
+    where?: BankAccountWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of BankAccounts to fetch.
+     */
+    orderBy?: BankAccountOrderByWithRelationInput | BankAccountOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing BankAccounts.
+     */
+    cursor?: BankAccountWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` BankAccounts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` BankAccounts.
+     */
+    skip?: number
+    distinct?: BankAccountScalarFieldEnum | BankAccountScalarFieldEnum[]
+  }
+
+  /**
+   * BankAccount create
+   */
+  export type BankAccountCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BankAccount
+     */
+    select?: BankAccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BankAccount
+     */
+    omit?: BankAccountOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BankAccountInclude<ExtArgs> | null
+    /**
+     * The data needed to create a BankAccount.
+     */
+    data: XOR<BankAccountCreateInput, BankAccountUncheckedCreateInput>
+  }
+
+  /**
+   * BankAccount createMany
+   */
+  export type BankAccountCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many BankAccounts.
+     */
+    data: BankAccountCreateManyInput | BankAccountCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * BankAccount createManyAndReturn
+   */
+  export type BankAccountCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BankAccount
+     */
+    select?: BankAccountSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the BankAccount
+     */
+    omit?: BankAccountOmit<ExtArgs> | null
+    /**
+     * The data used to create many BankAccounts.
+     */
+    data: BankAccountCreateManyInput | BankAccountCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BankAccountIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * BankAccount update
+   */
+  export type BankAccountUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BankAccount
+     */
+    select?: BankAccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BankAccount
+     */
+    omit?: BankAccountOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BankAccountInclude<ExtArgs> | null
+    /**
+     * The data needed to update a BankAccount.
+     */
+    data: XOR<BankAccountUpdateInput, BankAccountUncheckedUpdateInput>
+    /**
+     * Choose, which BankAccount to update.
+     */
+    where: BankAccountWhereUniqueInput
+  }
+
+  /**
+   * BankAccount updateMany
+   */
+  export type BankAccountUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update BankAccounts.
+     */
+    data: XOR<BankAccountUpdateManyMutationInput, BankAccountUncheckedUpdateManyInput>
+    /**
+     * Filter which BankAccounts to update
+     */
+    where?: BankAccountWhereInput
+    /**
+     * Limit how many BankAccounts to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * BankAccount updateManyAndReturn
+   */
+  export type BankAccountUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BankAccount
+     */
+    select?: BankAccountSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the BankAccount
+     */
+    omit?: BankAccountOmit<ExtArgs> | null
+    /**
+     * The data used to update BankAccounts.
+     */
+    data: XOR<BankAccountUpdateManyMutationInput, BankAccountUncheckedUpdateManyInput>
+    /**
+     * Filter which BankAccounts to update
+     */
+    where?: BankAccountWhereInput
+    /**
+     * Limit how many BankAccounts to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BankAccountIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * BankAccount upsert
+   */
+  export type BankAccountUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BankAccount
+     */
+    select?: BankAccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BankAccount
+     */
+    omit?: BankAccountOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BankAccountInclude<ExtArgs> | null
+    /**
+     * The filter to search for the BankAccount to update in case it exists.
+     */
+    where: BankAccountWhereUniqueInput
+    /**
+     * In case the BankAccount found by the `where` argument doesn't exist, create a new BankAccount with this data.
+     */
+    create: XOR<BankAccountCreateInput, BankAccountUncheckedCreateInput>
+    /**
+     * In case the BankAccount was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<BankAccountUpdateInput, BankAccountUncheckedUpdateInput>
+  }
+
+  /**
+   * BankAccount delete
+   */
+  export type BankAccountDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BankAccount
+     */
+    select?: BankAccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BankAccount
+     */
+    omit?: BankAccountOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BankAccountInclude<ExtArgs> | null
+    /**
+     * Filter which BankAccount to delete.
+     */
+    where: BankAccountWhereUniqueInput
+  }
+
+  /**
+   * BankAccount deleteMany
+   */
+  export type BankAccountDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which BankAccounts to delete
+     */
+    where?: BankAccountWhereInput
+    /**
+     * Limit how many BankAccounts to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * BankAccount without action
+   */
+  export type BankAccountDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BankAccount
+     */
+    select?: BankAccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BankAccount
+     */
+    omit?: BankAccountOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BankAccountInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model PaymentTransfer
+   */
+
+  export type AggregatePaymentTransfer = {
+    _count: PaymentTransferCountAggregateOutputType | null
+    _avg: PaymentTransferAvgAggregateOutputType | null
+    _sum: PaymentTransferSumAggregateOutputType | null
+    _min: PaymentTransferMinAggregateOutputType | null
+    _max: PaymentTransferMaxAggregateOutputType | null
+  }
+
+  export type PaymentTransferAvgAggregateOutputType = {
+    amount: number | null
+  }
+
+  export type PaymentTransferSumAggregateOutputType = {
+    amount: number | null
+  }
+
+  export type PaymentTransferMinAggregateOutputType = {
+    id: string | null
+    groupOrderId: string | null
+    fromUserId: string | null
+    toUserId: string | null
+    amount: number | null
+    status: $Enums.PaymentTransferStatus | null
+    transactionId: string | null
+    bankName: string | null
+    transferDate: Date | null
+    verifiedAt: Date | null
+    verifiedBy: string | null
+    notes: string | null
+    screenshotUrl: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type PaymentTransferMaxAggregateOutputType = {
+    id: string | null
+    groupOrderId: string | null
+    fromUserId: string | null
+    toUserId: string | null
+    amount: number | null
+    status: $Enums.PaymentTransferStatus | null
+    transactionId: string | null
+    bankName: string | null
+    transferDate: Date | null
+    verifiedAt: Date | null
+    verifiedBy: string | null
+    notes: string | null
+    screenshotUrl: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type PaymentTransferCountAggregateOutputType = {
+    id: number
+    groupOrderId: number
+    fromUserId: number
+    toUserId: number
+    amount: number
+    status: number
+    transactionId: number
+    bankName: number
+    transferDate: number
+    verifiedAt: number
+    verifiedBy: number
+    notes: number
+    screenshotUrl: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type PaymentTransferAvgAggregateInputType = {
+    amount?: true
+  }
+
+  export type PaymentTransferSumAggregateInputType = {
+    amount?: true
+  }
+
+  export type PaymentTransferMinAggregateInputType = {
+    id?: true
+    groupOrderId?: true
+    fromUserId?: true
+    toUserId?: true
+    amount?: true
+    status?: true
+    transactionId?: true
+    bankName?: true
+    transferDate?: true
+    verifiedAt?: true
+    verifiedBy?: true
+    notes?: true
+    screenshotUrl?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type PaymentTransferMaxAggregateInputType = {
+    id?: true
+    groupOrderId?: true
+    fromUserId?: true
+    toUserId?: true
+    amount?: true
+    status?: true
+    transactionId?: true
+    bankName?: true
+    transferDate?: true
+    verifiedAt?: true
+    verifiedBy?: true
+    notes?: true
+    screenshotUrl?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type PaymentTransferCountAggregateInputType = {
+    id?: true
+    groupOrderId?: true
+    fromUserId?: true
+    toUserId?: true
+    amount?: true
+    status?: true
+    transactionId?: true
+    bankName?: true
+    transferDate?: true
+    verifiedAt?: true
+    verifiedBy?: true
+    notes?: true
+    screenshotUrl?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type PaymentTransferAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PaymentTransfer to aggregate.
+     */
+    where?: PaymentTransferWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PaymentTransfers to fetch.
+     */
+    orderBy?: PaymentTransferOrderByWithRelationInput | PaymentTransferOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: PaymentTransferWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PaymentTransfers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PaymentTransfers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned PaymentTransfers
+    **/
+    _count?: true | PaymentTransferCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: PaymentTransferAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: PaymentTransferSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: PaymentTransferMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: PaymentTransferMaxAggregateInputType
+  }
+
+  export type GetPaymentTransferAggregateType<T extends PaymentTransferAggregateArgs> = {
+        [P in keyof T & keyof AggregatePaymentTransfer]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregatePaymentTransfer[P]>
+      : GetScalarType<T[P], AggregatePaymentTransfer[P]>
+  }
+
+
+
+
+  export type PaymentTransferGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PaymentTransferWhereInput
+    orderBy?: PaymentTransferOrderByWithAggregationInput | PaymentTransferOrderByWithAggregationInput[]
+    by: PaymentTransferScalarFieldEnum[] | PaymentTransferScalarFieldEnum
+    having?: PaymentTransferScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: PaymentTransferCountAggregateInputType | true
+    _avg?: PaymentTransferAvgAggregateInputType
+    _sum?: PaymentTransferSumAggregateInputType
+    _min?: PaymentTransferMinAggregateInputType
+    _max?: PaymentTransferMaxAggregateInputType
+  }
+
+  export type PaymentTransferGroupByOutputType = {
+    id: string
+    groupOrderId: string
+    fromUserId: string
+    toUserId: string
+    amount: number
+    status: $Enums.PaymentTransferStatus
+    transactionId: string | null
+    bankName: string | null
+    transferDate: Date | null
+    verifiedAt: Date | null
+    verifiedBy: string | null
+    notes: string | null
+    screenshotUrl: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: PaymentTransferCountAggregateOutputType | null
+    _avg: PaymentTransferAvgAggregateOutputType | null
+    _sum: PaymentTransferSumAggregateOutputType | null
+    _min: PaymentTransferMinAggregateOutputType | null
+    _max: PaymentTransferMaxAggregateOutputType | null
+  }
+
+  type GetPaymentTransferGroupByPayload<T extends PaymentTransferGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<PaymentTransferGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof PaymentTransferGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], PaymentTransferGroupByOutputType[P]>
+            : GetScalarType<T[P], PaymentTransferGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type PaymentTransferSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    groupOrderId?: boolean
+    fromUserId?: boolean
+    toUserId?: boolean
+    amount?: boolean
+    status?: boolean
+    transactionId?: boolean
+    bankName?: boolean
+    transferDate?: boolean
+    verifiedAt?: boolean
+    verifiedBy?: boolean
+    notes?: boolean
+    screenshotUrl?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    groupOrder?: boolean | GroupOrderDefaultArgs<ExtArgs>
+    fromUser?: boolean | UserDefaultArgs<ExtArgs>
+    toUser?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["paymentTransfer"]>
+
+  export type PaymentTransferSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    groupOrderId?: boolean
+    fromUserId?: boolean
+    toUserId?: boolean
+    amount?: boolean
+    status?: boolean
+    transactionId?: boolean
+    bankName?: boolean
+    transferDate?: boolean
+    verifiedAt?: boolean
+    verifiedBy?: boolean
+    notes?: boolean
+    screenshotUrl?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    groupOrder?: boolean | GroupOrderDefaultArgs<ExtArgs>
+    fromUser?: boolean | UserDefaultArgs<ExtArgs>
+    toUser?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["paymentTransfer"]>
+
+  export type PaymentTransferSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    groupOrderId?: boolean
+    fromUserId?: boolean
+    toUserId?: boolean
+    amount?: boolean
+    status?: boolean
+    transactionId?: boolean
+    bankName?: boolean
+    transferDate?: boolean
+    verifiedAt?: boolean
+    verifiedBy?: boolean
+    notes?: boolean
+    screenshotUrl?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    groupOrder?: boolean | GroupOrderDefaultArgs<ExtArgs>
+    fromUser?: boolean | UserDefaultArgs<ExtArgs>
+    toUser?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["paymentTransfer"]>
+
+  export type PaymentTransferSelectScalar = {
+    id?: boolean
+    groupOrderId?: boolean
+    fromUserId?: boolean
+    toUserId?: boolean
+    amount?: boolean
+    status?: boolean
+    transactionId?: boolean
+    bankName?: boolean
+    transferDate?: boolean
+    verifiedAt?: boolean
+    verifiedBy?: boolean
+    notes?: boolean
+    screenshotUrl?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type PaymentTransferOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "groupOrderId" | "fromUserId" | "toUserId" | "amount" | "status" | "transactionId" | "bankName" | "transferDate" | "verifiedAt" | "verifiedBy" | "notes" | "screenshotUrl" | "createdAt" | "updatedAt", ExtArgs["result"]["paymentTransfer"]>
+  export type PaymentTransferInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    groupOrder?: boolean | GroupOrderDefaultArgs<ExtArgs>
+    fromUser?: boolean | UserDefaultArgs<ExtArgs>
+    toUser?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type PaymentTransferIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    groupOrder?: boolean | GroupOrderDefaultArgs<ExtArgs>
+    fromUser?: boolean | UserDefaultArgs<ExtArgs>
+    toUser?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type PaymentTransferIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    groupOrder?: boolean | GroupOrderDefaultArgs<ExtArgs>
+    fromUser?: boolean | UserDefaultArgs<ExtArgs>
+    toUser?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $PaymentTransferPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "PaymentTransfer"
+    objects: {
+      groupOrder: Prisma.$GroupOrderPayload<ExtArgs>
+      fromUser: Prisma.$UserPayload<ExtArgs>
+      toUser: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      groupOrderId: string
+      fromUserId: string
+      toUserId: string
+      amount: number
+      status: $Enums.PaymentTransferStatus
+      transactionId: string | null
+      bankName: string | null
+      transferDate: Date | null
+      verifiedAt: Date | null
+      verifiedBy: string | null
+      notes: string | null
+      screenshotUrl: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["paymentTransfer"]>
+    composites: {}
+  }
+
+  type PaymentTransferGetPayload<S extends boolean | null | undefined | PaymentTransferDefaultArgs> = $Result.GetResult<Prisma.$PaymentTransferPayload, S>
+
+  type PaymentTransferCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<PaymentTransferFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: PaymentTransferCountAggregateInputType | true
+    }
+
+  export interface PaymentTransferDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['PaymentTransfer'], meta: { name: 'PaymentTransfer' } }
+    /**
+     * Find zero or one PaymentTransfer that matches the filter.
+     * @param {PaymentTransferFindUniqueArgs} args - Arguments to find a PaymentTransfer
+     * @example
+     * // Get one PaymentTransfer
+     * const paymentTransfer = await prisma.paymentTransfer.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends PaymentTransferFindUniqueArgs>(args: SelectSubset<T, PaymentTransferFindUniqueArgs<ExtArgs>>): Prisma__PaymentTransferClient<$Result.GetResult<Prisma.$PaymentTransferPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one PaymentTransfer that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {PaymentTransferFindUniqueOrThrowArgs} args - Arguments to find a PaymentTransfer
+     * @example
+     * // Get one PaymentTransfer
+     * const paymentTransfer = await prisma.paymentTransfer.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends PaymentTransferFindUniqueOrThrowArgs>(args: SelectSubset<T, PaymentTransferFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PaymentTransferClient<$Result.GetResult<Prisma.$PaymentTransferPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PaymentTransfer that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PaymentTransferFindFirstArgs} args - Arguments to find a PaymentTransfer
+     * @example
+     * // Get one PaymentTransfer
+     * const paymentTransfer = await prisma.paymentTransfer.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends PaymentTransferFindFirstArgs>(args?: SelectSubset<T, PaymentTransferFindFirstArgs<ExtArgs>>): Prisma__PaymentTransferClient<$Result.GetResult<Prisma.$PaymentTransferPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PaymentTransfer that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PaymentTransferFindFirstOrThrowArgs} args - Arguments to find a PaymentTransfer
+     * @example
+     * // Get one PaymentTransfer
+     * const paymentTransfer = await prisma.paymentTransfer.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends PaymentTransferFindFirstOrThrowArgs>(args?: SelectSubset<T, PaymentTransferFindFirstOrThrowArgs<ExtArgs>>): Prisma__PaymentTransferClient<$Result.GetResult<Prisma.$PaymentTransferPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more PaymentTransfers that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PaymentTransferFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all PaymentTransfers
+     * const paymentTransfers = await prisma.paymentTransfer.findMany()
+     * 
+     * // Get first 10 PaymentTransfers
+     * const paymentTransfers = await prisma.paymentTransfer.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const paymentTransferWithIdOnly = await prisma.paymentTransfer.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends PaymentTransferFindManyArgs>(args?: SelectSubset<T, PaymentTransferFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaymentTransferPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a PaymentTransfer.
+     * @param {PaymentTransferCreateArgs} args - Arguments to create a PaymentTransfer.
+     * @example
+     * // Create one PaymentTransfer
+     * const PaymentTransfer = await prisma.paymentTransfer.create({
+     *   data: {
+     *     // ... data to create a PaymentTransfer
+     *   }
+     * })
+     * 
+     */
+    create<T extends PaymentTransferCreateArgs>(args: SelectSubset<T, PaymentTransferCreateArgs<ExtArgs>>): Prisma__PaymentTransferClient<$Result.GetResult<Prisma.$PaymentTransferPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many PaymentTransfers.
+     * @param {PaymentTransferCreateManyArgs} args - Arguments to create many PaymentTransfers.
+     * @example
+     * // Create many PaymentTransfers
+     * const paymentTransfer = await prisma.paymentTransfer.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends PaymentTransferCreateManyArgs>(args?: SelectSubset<T, PaymentTransferCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many PaymentTransfers and returns the data saved in the database.
+     * @param {PaymentTransferCreateManyAndReturnArgs} args - Arguments to create many PaymentTransfers.
+     * @example
+     * // Create many PaymentTransfers
+     * const paymentTransfer = await prisma.paymentTransfer.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many PaymentTransfers and only return the `id`
+     * const paymentTransferWithIdOnly = await prisma.paymentTransfer.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends PaymentTransferCreateManyAndReturnArgs>(args?: SelectSubset<T, PaymentTransferCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaymentTransferPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a PaymentTransfer.
+     * @param {PaymentTransferDeleteArgs} args - Arguments to delete one PaymentTransfer.
+     * @example
+     * // Delete one PaymentTransfer
+     * const PaymentTransfer = await prisma.paymentTransfer.delete({
+     *   where: {
+     *     // ... filter to delete one PaymentTransfer
+     *   }
+     * })
+     * 
+     */
+    delete<T extends PaymentTransferDeleteArgs>(args: SelectSubset<T, PaymentTransferDeleteArgs<ExtArgs>>): Prisma__PaymentTransferClient<$Result.GetResult<Prisma.$PaymentTransferPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one PaymentTransfer.
+     * @param {PaymentTransferUpdateArgs} args - Arguments to update one PaymentTransfer.
+     * @example
+     * // Update one PaymentTransfer
+     * const paymentTransfer = await prisma.paymentTransfer.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends PaymentTransferUpdateArgs>(args: SelectSubset<T, PaymentTransferUpdateArgs<ExtArgs>>): Prisma__PaymentTransferClient<$Result.GetResult<Prisma.$PaymentTransferPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more PaymentTransfers.
+     * @param {PaymentTransferDeleteManyArgs} args - Arguments to filter PaymentTransfers to delete.
+     * @example
+     * // Delete a few PaymentTransfers
+     * const { count } = await prisma.paymentTransfer.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends PaymentTransferDeleteManyArgs>(args?: SelectSubset<T, PaymentTransferDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PaymentTransfers.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PaymentTransferUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many PaymentTransfers
+     * const paymentTransfer = await prisma.paymentTransfer.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends PaymentTransferUpdateManyArgs>(args: SelectSubset<T, PaymentTransferUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PaymentTransfers and returns the data updated in the database.
+     * @param {PaymentTransferUpdateManyAndReturnArgs} args - Arguments to update many PaymentTransfers.
+     * @example
+     * // Update many PaymentTransfers
+     * const paymentTransfer = await prisma.paymentTransfer.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more PaymentTransfers and only return the `id`
+     * const paymentTransferWithIdOnly = await prisma.paymentTransfer.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends PaymentTransferUpdateManyAndReturnArgs>(args: SelectSubset<T, PaymentTransferUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaymentTransferPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one PaymentTransfer.
+     * @param {PaymentTransferUpsertArgs} args - Arguments to update or create a PaymentTransfer.
+     * @example
+     * // Update or create a PaymentTransfer
+     * const paymentTransfer = await prisma.paymentTransfer.upsert({
+     *   create: {
+     *     // ... data to create a PaymentTransfer
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the PaymentTransfer we want to update
+     *   }
+     * })
+     */
+    upsert<T extends PaymentTransferUpsertArgs>(args: SelectSubset<T, PaymentTransferUpsertArgs<ExtArgs>>): Prisma__PaymentTransferClient<$Result.GetResult<Prisma.$PaymentTransferPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of PaymentTransfers.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PaymentTransferCountArgs} args - Arguments to filter PaymentTransfers to count.
+     * @example
+     * // Count the number of PaymentTransfers
+     * const count = await prisma.paymentTransfer.count({
+     *   where: {
+     *     // ... the filter for the PaymentTransfers we want to count
+     *   }
+     * })
+    **/
+    count<T extends PaymentTransferCountArgs>(
+      args?: Subset<T, PaymentTransferCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], PaymentTransferCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a PaymentTransfer.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PaymentTransferAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends PaymentTransferAggregateArgs>(args: Subset<T, PaymentTransferAggregateArgs>): Prisma.PrismaPromise<GetPaymentTransferAggregateType<T>>
+
+    /**
+     * Group by PaymentTransfer.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PaymentTransferGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends PaymentTransferGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: PaymentTransferGroupByArgs['orderBy'] }
+        : { orderBy?: PaymentTransferGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, PaymentTransferGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPaymentTransferGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the PaymentTransfer model
+   */
+  readonly fields: PaymentTransferFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for PaymentTransfer.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__PaymentTransferClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    groupOrder<T extends GroupOrderDefaultArgs<ExtArgs> = {}>(args?: Subset<T, GroupOrderDefaultArgs<ExtArgs>>): Prisma__GroupOrderClient<$Result.GetResult<Prisma.$GroupOrderPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    fromUser<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    toUser<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the PaymentTransfer model
+   */
+  interface PaymentTransferFieldRefs {
+    readonly id: FieldRef<"PaymentTransfer", 'String'>
+    readonly groupOrderId: FieldRef<"PaymentTransfer", 'String'>
+    readonly fromUserId: FieldRef<"PaymentTransfer", 'String'>
+    readonly toUserId: FieldRef<"PaymentTransfer", 'String'>
+    readonly amount: FieldRef<"PaymentTransfer", 'Float'>
+    readonly status: FieldRef<"PaymentTransfer", 'PaymentTransferStatus'>
+    readonly transactionId: FieldRef<"PaymentTransfer", 'String'>
+    readonly bankName: FieldRef<"PaymentTransfer", 'String'>
+    readonly transferDate: FieldRef<"PaymentTransfer", 'DateTime'>
+    readonly verifiedAt: FieldRef<"PaymentTransfer", 'DateTime'>
+    readonly verifiedBy: FieldRef<"PaymentTransfer", 'String'>
+    readonly notes: FieldRef<"PaymentTransfer", 'String'>
+    readonly screenshotUrl: FieldRef<"PaymentTransfer", 'String'>
+    readonly createdAt: FieldRef<"PaymentTransfer", 'DateTime'>
+    readonly updatedAt: FieldRef<"PaymentTransfer", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * PaymentTransfer findUnique
+   */
+  export type PaymentTransferFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaymentTransfer
+     */
+    select?: PaymentTransferSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaymentTransfer
+     */
+    omit?: PaymentTransferOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentTransferInclude<ExtArgs> | null
+    /**
+     * Filter, which PaymentTransfer to fetch.
+     */
+    where: PaymentTransferWhereUniqueInput
+  }
+
+  /**
+   * PaymentTransfer findUniqueOrThrow
+   */
+  export type PaymentTransferFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaymentTransfer
+     */
+    select?: PaymentTransferSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaymentTransfer
+     */
+    omit?: PaymentTransferOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentTransferInclude<ExtArgs> | null
+    /**
+     * Filter, which PaymentTransfer to fetch.
+     */
+    where: PaymentTransferWhereUniqueInput
+  }
+
+  /**
+   * PaymentTransfer findFirst
+   */
+  export type PaymentTransferFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaymentTransfer
+     */
+    select?: PaymentTransferSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaymentTransfer
+     */
+    omit?: PaymentTransferOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentTransferInclude<ExtArgs> | null
+    /**
+     * Filter, which PaymentTransfer to fetch.
+     */
+    where?: PaymentTransferWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PaymentTransfers to fetch.
+     */
+    orderBy?: PaymentTransferOrderByWithRelationInput | PaymentTransferOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PaymentTransfers.
+     */
+    cursor?: PaymentTransferWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PaymentTransfers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PaymentTransfers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PaymentTransfers.
+     */
+    distinct?: PaymentTransferScalarFieldEnum | PaymentTransferScalarFieldEnum[]
+  }
+
+  /**
+   * PaymentTransfer findFirstOrThrow
+   */
+  export type PaymentTransferFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaymentTransfer
+     */
+    select?: PaymentTransferSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaymentTransfer
+     */
+    omit?: PaymentTransferOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentTransferInclude<ExtArgs> | null
+    /**
+     * Filter, which PaymentTransfer to fetch.
+     */
+    where?: PaymentTransferWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PaymentTransfers to fetch.
+     */
+    orderBy?: PaymentTransferOrderByWithRelationInput | PaymentTransferOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PaymentTransfers.
+     */
+    cursor?: PaymentTransferWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PaymentTransfers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PaymentTransfers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PaymentTransfers.
+     */
+    distinct?: PaymentTransferScalarFieldEnum | PaymentTransferScalarFieldEnum[]
+  }
+
+  /**
+   * PaymentTransfer findMany
+   */
+  export type PaymentTransferFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaymentTransfer
+     */
+    select?: PaymentTransferSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaymentTransfer
+     */
+    omit?: PaymentTransferOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentTransferInclude<ExtArgs> | null
+    /**
+     * Filter, which PaymentTransfers to fetch.
+     */
+    where?: PaymentTransferWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PaymentTransfers to fetch.
+     */
+    orderBy?: PaymentTransferOrderByWithRelationInput | PaymentTransferOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing PaymentTransfers.
+     */
+    cursor?: PaymentTransferWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PaymentTransfers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PaymentTransfers.
+     */
+    skip?: number
+    distinct?: PaymentTransferScalarFieldEnum | PaymentTransferScalarFieldEnum[]
+  }
+
+  /**
+   * PaymentTransfer create
+   */
+  export type PaymentTransferCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaymentTransfer
+     */
+    select?: PaymentTransferSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaymentTransfer
+     */
+    omit?: PaymentTransferOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentTransferInclude<ExtArgs> | null
+    /**
+     * The data needed to create a PaymentTransfer.
+     */
+    data: XOR<PaymentTransferCreateInput, PaymentTransferUncheckedCreateInput>
+  }
+
+  /**
+   * PaymentTransfer createMany
+   */
+  export type PaymentTransferCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many PaymentTransfers.
+     */
+    data: PaymentTransferCreateManyInput | PaymentTransferCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * PaymentTransfer createManyAndReturn
+   */
+  export type PaymentTransferCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaymentTransfer
+     */
+    select?: PaymentTransferSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaymentTransfer
+     */
+    omit?: PaymentTransferOmit<ExtArgs> | null
+    /**
+     * The data used to create many PaymentTransfers.
+     */
+    data: PaymentTransferCreateManyInput | PaymentTransferCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentTransferIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * PaymentTransfer update
+   */
+  export type PaymentTransferUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaymentTransfer
+     */
+    select?: PaymentTransferSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaymentTransfer
+     */
+    omit?: PaymentTransferOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentTransferInclude<ExtArgs> | null
+    /**
+     * The data needed to update a PaymentTransfer.
+     */
+    data: XOR<PaymentTransferUpdateInput, PaymentTransferUncheckedUpdateInput>
+    /**
+     * Choose, which PaymentTransfer to update.
+     */
+    where: PaymentTransferWhereUniqueInput
+  }
+
+  /**
+   * PaymentTransfer updateMany
+   */
+  export type PaymentTransferUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update PaymentTransfers.
+     */
+    data: XOR<PaymentTransferUpdateManyMutationInput, PaymentTransferUncheckedUpdateManyInput>
+    /**
+     * Filter which PaymentTransfers to update
+     */
+    where?: PaymentTransferWhereInput
+    /**
+     * Limit how many PaymentTransfers to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * PaymentTransfer updateManyAndReturn
+   */
+  export type PaymentTransferUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaymentTransfer
+     */
+    select?: PaymentTransferSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaymentTransfer
+     */
+    omit?: PaymentTransferOmit<ExtArgs> | null
+    /**
+     * The data used to update PaymentTransfers.
+     */
+    data: XOR<PaymentTransferUpdateManyMutationInput, PaymentTransferUncheckedUpdateManyInput>
+    /**
+     * Filter which PaymentTransfers to update
+     */
+    where?: PaymentTransferWhereInput
+    /**
+     * Limit how many PaymentTransfers to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentTransferIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * PaymentTransfer upsert
+   */
+  export type PaymentTransferUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaymentTransfer
+     */
+    select?: PaymentTransferSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaymentTransfer
+     */
+    omit?: PaymentTransferOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentTransferInclude<ExtArgs> | null
+    /**
+     * The filter to search for the PaymentTransfer to update in case it exists.
+     */
+    where: PaymentTransferWhereUniqueInput
+    /**
+     * In case the PaymentTransfer found by the `where` argument doesn't exist, create a new PaymentTransfer with this data.
+     */
+    create: XOR<PaymentTransferCreateInput, PaymentTransferUncheckedCreateInput>
+    /**
+     * In case the PaymentTransfer was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<PaymentTransferUpdateInput, PaymentTransferUncheckedUpdateInput>
+  }
+
+  /**
+   * PaymentTransfer delete
+   */
+  export type PaymentTransferDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaymentTransfer
+     */
+    select?: PaymentTransferSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaymentTransfer
+     */
+    omit?: PaymentTransferOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentTransferInclude<ExtArgs> | null
+    /**
+     * Filter which PaymentTransfer to delete.
+     */
+    where: PaymentTransferWhereUniqueInput
+  }
+
+  /**
+   * PaymentTransfer deleteMany
+   */
+  export type PaymentTransferDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PaymentTransfers to delete
+     */
+    where?: PaymentTransferWhereInput
+    /**
+     * Limit how many PaymentTransfers to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * PaymentTransfer without action
+   */
+  export type PaymentTransferDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaymentTransfer
+     */
+    select?: PaymentTransferSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaymentTransfer
+     */
+    omit?: PaymentTransferOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentTransferInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Model OrderItem
    */
 
@@ -8260,7 +13777,9 @@ export namespace Prisma {
   export const RestaurantScalarFieldEnum: {
     id: 'id',
     name: 'name',
+    platform: 'platform',
     grabLink: 'grabLink',
+    shopeeLink: 'shopeeLink',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -8293,6 +13812,78 @@ export namespace Prisma {
   };
 
   export type OrderScalarFieldEnum = (typeof OrderScalarFieldEnum)[keyof typeof OrderScalarFieldEnum]
+
+
+  export const GroupOrderScalarFieldEnum: {
+    id: 'id',
+    groupId: 'groupId',
+    ownerId: 'ownerId',
+    restaurantId: 'restaurantId',
+    platform: 'platform',
+    platformOrderId: 'platformOrderId',
+    status: 'status',
+    totalAmount: 'totalAmount',
+    deliveryFee: 'deliveryFee',
+    serviceFee: 'serviceFee',
+    tax: 'tax',
+    lockedAt: 'lockedAt',
+    placedAt: 'placedAt',
+    deliveredAt: 'deliveredAt',
+    paymentDeadline: 'paymentDeadline',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type GroupOrderScalarFieldEnum = (typeof GroupOrderScalarFieldEnum)[keyof typeof GroupOrderScalarFieldEnum]
+
+
+  export const GroupMemberScalarFieldEnum: {
+    id: 'id',
+    groupOrderId: 'groupOrderId',
+    userId: 'userId',
+    role: 'role',
+    cartTotal: 'cartTotal',
+    joinedAt: 'joinedAt',
+    leftAt: 'leftAt'
+  };
+
+  export type GroupMemberScalarFieldEnum = (typeof GroupMemberScalarFieldEnum)[keyof typeof GroupMemberScalarFieldEnum]
+
+
+  export const BankAccountScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    bankName: 'bankName',
+    accountNumber: 'accountNumber',
+    accountHolderName: 'accountHolderName',
+    isDefault: 'isDefault',
+    isActive: 'isActive',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type BankAccountScalarFieldEnum = (typeof BankAccountScalarFieldEnum)[keyof typeof BankAccountScalarFieldEnum]
+
+
+  export const PaymentTransferScalarFieldEnum: {
+    id: 'id',
+    groupOrderId: 'groupOrderId',
+    fromUserId: 'fromUserId',
+    toUserId: 'toUserId',
+    amount: 'amount',
+    status: 'status',
+    transactionId: 'transactionId',
+    bankName: 'bankName',
+    transferDate: 'transferDate',
+    verifiedAt: 'verifiedAt',
+    verifiedBy: 'verifiedBy',
+    notes: 'notes',
+    screenshotUrl: 'screenshotUrl',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type PaymentTransferScalarFieldEnum = (typeof PaymentTransferScalarFieldEnum)[keyof typeof PaymentTransferScalarFieldEnum]
 
 
   export const OrderItemScalarFieldEnum: {
@@ -8390,6 +13981,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'Platform'
+   */
+  export type EnumPlatformFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Platform'>
+    
+
+
+  /**
+   * Reference to a field of type 'Platform[]'
+   */
+  export type ListEnumPlatformFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Platform[]'>
+    
+
+
+  /**
    * Reference to a field of type 'Float'
    */
   export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -8428,6 +14033,55 @@ export namespace Prisma {
    * Reference to a field of type 'OrderStatus[]'
    */
   export type ListEnumOrderStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'OrderStatus[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'GroupOrderStatus'
+   */
+  export type EnumGroupOrderStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'GroupOrderStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'GroupOrderStatus[]'
+   */
+  export type ListEnumGroupOrderStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'GroupOrderStatus[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'GroupRole'
+   */
+  export type EnumGroupRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'GroupRole'>
+    
+
+
+  /**
+   * Reference to a field of type 'GroupRole[]'
+   */
+  export type ListEnumGroupRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'GroupRole[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'Boolean'
+   */
+  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+  /**
+   * Reference to a field of type 'PaymentTransferStatus'
+   */
+  export type EnumPaymentTransferStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentTransferStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'PaymentTransferStatus[]'
+   */
+  export type ListEnumPaymentTransferStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentTransferStatus[]'>
     
 
 
@@ -8474,6 +14128,11 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     orders?: OrderListRelationFilter
+    bankAccounts?: BankAccountListRelationFilter
+    groupMembers?: GroupMemberListRelationFilter
+    groupOrders?: GroupOrderListRelationFilter
+    paymentTransfersFrom?: PaymentTransferListRelationFilter
+    paymentTransfersTo?: PaymentTransferListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -8485,6 +14144,11 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     orders?: OrderOrderByRelationAggregateInput
+    bankAccounts?: BankAccountOrderByRelationAggregateInput
+    groupMembers?: GroupMemberOrderByRelationAggregateInput
+    groupOrders?: GroupOrderOrderByRelationAggregateInput
+    paymentTransfersFrom?: PaymentTransferOrderByRelationAggregateInput
+    paymentTransfersTo?: PaymentTransferOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -8499,6 +14163,11 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     orders?: OrderListRelationFilter
+    bankAccounts?: BankAccountListRelationFilter
+    groupMembers?: GroupMemberListRelationFilter
+    groupOrders?: GroupOrderListRelationFilter
+    paymentTransfersFrom?: PaymentTransferListRelationFilter
+    paymentTransfersTo?: PaymentTransferListRelationFilter
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -8533,37 +14202,48 @@ export namespace Prisma {
     NOT?: RestaurantWhereInput | RestaurantWhereInput[]
     id?: StringFilter<"Restaurant"> | string
     name?: StringFilter<"Restaurant"> | string
-    grabLink?: StringFilter<"Restaurant"> | string
+    platform?: EnumPlatformFilter<"Restaurant"> | $Enums.Platform
+    grabLink?: StringNullableFilter<"Restaurant"> | string | null
+    shopeeLink?: StringNullableFilter<"Restaurant"> | string | null
     createdAt?: DateTimeFilter<"Restaurant"> | Date | string
     updatedAt?: DateTimeFilter<"Restaurant"> | Date | string
     products?: ProductListRelationFilter
+    groupOrders?: GroupOrderListRelationFilter
   }
 
   export type RestaurantOrderByWithRelationInput = {
     id?: SortOrder
     name?: SortOrder
-    grabLink?: SortOrder
+    platform?: SortOrder
+    grabLink?: SortOrderInput | SortOrder
+    shopeeLink?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     products?: ProductOrderByRelationAggregateInput
+    groupOrders?: GroupOrderOrderByRelationAggregateInput
   }
 
   export type RestaurantWhereUniqueInput = Prisma.AtLeast<{
     id?: string
     grabLink?: string
+    shopeeLink?: string
     AND?: RestaurantWhereInput | RestaurantWhereInput[]
     OR?: RestaurantWhereInput[]
     NOT?: RestaurantWhereInput | RestaurantWhereInput[]
     name?: StringFilter<"Restaurant"> | string
+    platform?: EnumPlatformFilter<"Restaurant"> | $Enums.Platform
     createdAt?: DateTimeFilter<"Restaurant"> | Date | string
     updatedAt?: DateTimeFilter<"Restaurant"> | Date | string
     products?: ProductListRelationFilter
-  }, "id" | "grabLink">
+    groupOrders?: GroupOrderListRelationFilter
+  }, "id" | "grabLink" | "shopeeLink">
 
   export type RestaurantOrderByWithAggregationInput = {
     id?: SortOrder
     name?: SortOrder
-    grabLink?: SortOrder
+    platform?: SortOrder
+    grabLink?: SortOrderInput | SortOrder
+    shopeeLink?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: RestaurantCountOrderByAggregateInput
@@ -8577,7 +14257,9 @@ export namespace Prisma {
     NOT?: RestaurantScalarWhereWithAggregatesInput | RestaurantScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Restaurant"> | string
     name?: StringWithAggregatesFilter<"Restaurant"> | string
-    grabLink?: StringWithAggregatesFilter<"Restaurant"> | string
+    platform?: EnumPlatformWithAggregatesFilter<"Restaurant"> | $Enums.Platform
+    grabLink?: StringNullableWithAggregatesFilter<"Restaurant"> | string | null
+    shopeeLink?: StringNullableWithAggregatesFilter<"Restaurant"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Restaurant"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Restaurant"> | Date | string
   }
@@ -8730,6 +14412,391 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"Order"> | Date | string
   }
 
+  export type GroupOrderWhereInput = {
+    AND?: GroupOrderWhereInput | GroupOrderWhereInput[]
+    OR?: GroupOrderWhereInput[]
+    NOT?: GroupOrderWhereInput | GroupOrderWhereInput[]
+    id?: StringFilter<"GroupOrder"> | string
+    groupId?: StringFilter<"GroupOrder"> | string
+    ownerId?: StringFilter<"GroupOrder"> | string
+    restaurantId?: StringFilter<"GroupOrder"> | string
+    platform?: EnumPlatformFilter<"GroupOrder"> | $Enums.Platform
+    platformOrderId?: StringNullableFilter<"GroupOrder"> | string | null
+    status?: EnumGroupOrderStatusFilter<"GroupOrder"> | $Enums.GroupOrderStatus
+    totalAmount?: FloatFilter<"GroupOrder"> | number
+    deliveryFee?: FloatFilter<"GroupOrder"> | number
+    serviceFee?: FloatFilter<"GroupOrder"> | number
+    tax?: FloatFilter<"GroupOrder"> | number
+    lockedAt?: DateTimeNullableFilter<"GroupOrder"> | Date | string | null
+    placedAt?: DateTimeNullableFilter<"GroupOrder"> | Date | string | null
+    deliveredAt?: DateTimeNullableFilter<"GroupOrder"> | Date | string | null
+    paymentDeadline?: DateTimeNullableFilter<"GroupOrder"> | Date | string | null
+    createdAt?: DateTimeFilter<"GroupOrder"> | Date | string
+    updatedAt?: DateTimeFilter<"GroupOrder"> | Date | string
+    owner?: XOR<UserScalarRelationFilter, UserWhereInput>
+    restaurant?: XOR<RestaurantScalarRelationFilter, RestaurantWhereInput>
+    members?: GroupMemberListRelationFilter
+    payments?: PaymentTransferListRelationFilter
+  }
+
+  export type GroupOrderOrderByWithRelationInput = {
+    id?: SortOrder
+    groupId?: SortOrder
+    ownerId?: SortOrder
+    restaurantId?: SortOrder
+    platform?: SortOrder
+    platformOrderId?: SortOrderInput | SortOrder
+    status?: SortOrder
+    totalAmount?: SortOrder
+    deliveryFee?: SortOrder
+    serviceFee?: SortOrder
+    tax?: SortOrder
+    lockedAt?: SortOrderInput | SortOrder
+    placedAt?: SortOrderInput | SortOrder
+    deliveredAt?: SortOrderInput | SortOrder
+    paymentDeadline?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    owner?: UserOrderByWithRelationInput
+    restaurant?: RestaurantOrderByWithRelationInput
+    members?: GroupMemberOrderByRelationAggregateInput
+    payments?: PaymentTransferOrderByRelationAggregateInput
+  }
+
+  export type GroupOrderWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    groupId?: string
+    AND?: GroupOrderWhereInput | GroupOrderWhereInput[]
+    OR?: GroupOrderWhereInput[]
+    NOT?: GroupOrderWhereInput | GroupOrderWhereInput[]
+    ownerId?: StringFilter<"GroupOrder"> | string
+    restaurantId?: StringFilter<"GroupOrder"> | string
+    platform?: EnumPlatformFilter<"GroupOrder"> | $Enums.Platform
+    platformOrderId?: StringNullableFilter<"GroupOrder"> | string | null
+    status?: EnumGroupOrderStatusFilter<"GroupOrder"> | $Enums.GroupOrderStatus
+    totalAmount?: FloatFilter<"GroupOrder"> | number
+    deliveryFee?: FloatFilter<"GroupOrder"> | number
+    serviceFee?: FloatFilter<"GroupOrder"> | number
+    tax?: FloatFilter<"GroupOrder"> | number
+    lockedAt?: DateTimeNullableFilter<"GroupOrder"> | Date | string | null
+    placedAt?: DateTimeNullableFilter<"GroupOrder"> | Date | string | null
+    deliveredAt?: DateTimeNullableFilter<"GroupOrder"> | Date | string | null
+    paymentDeadline?: DateTimeNullableFilter<"GroupOrder"> | Date | string | null
+    createdAt?: DateTimeFilter<"GroupOrder"> | Date | string
+    updatedAt?: DateTimeFilter<"GroupOrder"> | Date | string
+    owner?: XOR<UserScalarRelationFilter, UserWhereInput>
+    restaurant?: XOR<RestaurantScalarRelationFilter, RestaurantWhereInput>
+    members?: GroupMemberListRelationFilter
+    payments?: PaymentTransferListRelationFilter
+  }, "id" | "groupId">
+
+  export type GroupOrderOrderByWithAggregationInput = {
+    id?: SortOrder
+    groupId?: SortOrder
+    ownerId?: SortOrder
+    restaurantId?: SortOrder
+    platform?: SortOrder
+    platformOrderId?: SortOrderInput | SortOrder
+    status?: SortOrder
+    totalAmount?: SortOrder
+    deliveryFee?: SortOrder
+    serviceFee?: SortOrder
+    tax?: SortOrder
+    lockedAt?: SortOrderInput | SortOrder
+    placedAt?: SortOrderInput | SortOrder
+    deliveredAt?: SortOrderInput | SortOrder
+    paymentDeadline?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: GroupOrderCountOrderByAggregateInput
+    _avg?: GroupOrderAvgOrderByAggregateInput
+    _max?: GroupOrderMaxOrderByAggregateInput
+    _min?: GroupOrderMinOrderByAggregateInput
+    _sum?: GroupOrderSumOrderByAggregateInput
+  }
+
+  export type GroupOrderScalarWhereWithAggregatesInput = {
+    AND?: GroupOrderScalarWhereWithAggregatesInput | GroupOrderScalarWhereWithAggregatesInput[]
+    OR?: GroupOrderScalarWhereWithAggregatesInput[]
+    NOT?: GroupOrderScalarWhereWithAggregatesInput | GroupOrderScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"GroupOrder"> | string
+    groupId?: StringWithAggregatesFilter<"GroupOrder"> | string
+    ownerId?: StringWithAggregatesFilter<"GroupOrder"> | string
+    restaurantId?: StringWithAggregatesFilter<"GroupOrder"> | string
+    platform?: EnumPlatformWithAggregatesFilter<"GroupOrder"> | $Enums.Platform
+    platformOrderId?: StringNullableWithAggregatesFilter<"GroupOrder"> | string | null
+    status?: EnumGroupOrderStatusWithAggregatesFilter<"GroupOrder"> | $Enums.GroupOrderStatus
+    totalAmount?: FloatWithAggregatesFilter<"GroupOrder"> | number
+    deliveryFee?: FloatWithAggregatesFilter<"GroupOrder"> | number
+    serviceFee?: FloatWithAggregatesFilter<"GroupOrder"> | number
+    tax?: FloatWithAggregatesFilter<"GroupOrder"> | number
+    lockedAt?: DateTimeNullableWithAggregatesFilter<"GroupOrder"> | Date | string | null
+    placedAt?: DateTimeNullableWithAggregatesFilter<"GroupOrder"> | Date | string | null
+    deliveredAt?: DateTimeNullableWithAggregatesFilter<"GroupOrder"> | Date | string | null
+    paymentDeadline?: DateTimeNullableWithAggregatesFilter<"GroupOrder"> | Date | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"GroupOrder"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"GroupOrder"> | Date | string
+  }
+
+  export type GroupMemberWhereInput = {
+    AND?: GroupMemberWhereInput | GroupMemberWhereInput[]
+    OR?: GroupMemberWhereInput[]
+    NOT?: GroupMemberWhereInput | GroupMemberWhereInput[]
+    id?: StringFilter<"GroupMember"> | string
+    groupOrderId?: StringFilter<"GroupMember"> | string
+    userId?: StringFilter<"GroupMember"> | string
+    role?: EnumGroupRoleFilter<"GroupMember"> | $Enums.GroupRole
+    cartTotal?: FloatFilter<"GroupMember"> | number
+    joinedAt?: DateTimeFilter<"GroupMember"> | Date | string
+    leftAt?: DateTimeNullableFilter<"GroupMember"> | Date | string | null
+    groupOrder?: XOR<GroupOrderScalarRelationFilter, GroupOrderWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type GroupMemberOrderByWithRelationInput = {
+    id?: SortOrder
+    groupOrderId?: SortOrder
+    userId?: SortOrder
+    role?: SortOrder
+    cartTotal?: SortOrder
+    joinedAt?: SortOrder
+    leftAt?: SortOrderInput | SortOrder
+    groupOrder?: GroupOrderOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type GroupMemberWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    groupOrderId_userId?: GroupMemberGroupOrderIdUserIdCompoundUniqueInput
+    AND?: GroupMemberWhereInput | GroupMemberWhereInput[]
+    OR?: GroupMemberWhereInput[]
+    NOT?: GroupMemberWhereInput | GroupMemberWhereInput[]
+    groupOrderId?: StringFilter<"GroupMember"> | string
+    userId?: StringFilter<"GroupMember"> | string
+    role?: EnumGroupRoleFilter<"GroupMember"> | $Enums.GroupRole
+    cartTotal?: FloatFilter<"GroupMember"> | number
+    joinedAt?: DateTimeFilter<"GroupMember"> | Date | string
+    leftAt?: DateTimeNullableFilter<"GroupMember"> | Date | string | null
+    groupOrder?: XOR<GroupOrderScalarRelationFilter, GroupOrderWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id" | "groupOrderId_userId">
+
+  export type GroupMemberOrderByWithAggregationInput = {
+    id?: SortOrder
+    groupOrderId?: SortOrder
+    userId?: SortOrder
+    role?: SortOrder
+    cartTotal?: SortOrder
+    joinedAt?: SortOrder
+    leftAt?: SortOrderInput | SortOrder
+    _count?: GroupMemberCountOrderByAggregateInput
+    _avg?: GroupMemberAvgOrderByAggregateInput
+    _max?: GroupMemberMaxOrderByAggregateInput
+    _min?: GroupMemberMinOrderByAggregateInput
+    _sum?: GroupMemberSumOrderByAggregateInput
+  }
+
+  export type GroupMemberScalarWhereWithAggregatesInput = {
+    AND?: GroupMemberScalarWhereWithAggregatesInput | GroupMemberScalarWhereWithAggregatesInput[]
+    OR?: GroupMemberScalarWhereWithAggregatesInput[]
+    NOT?: GroupMemberScalarWhereWithAggregatesInput | GroupMemberScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"GroupMember"> | string
+    groupOrderId?: StringWithAggregatesFilter<"GroupMember"> | string
+    userId?: StringWithAggregatesFilter<"GroupMember"> | string
+    role?: EnumGroupRoleWithAggregatesFilter<"GroupMember"> | $Enums.GroupRole
+    cartTotal?: FloatWithAggregatesFilter<"GroupMember"> | number
+    joinedAt?: DateTimeWithAggregatesFilter<"GroupMember"> | Date | string
+    leftAt?: DateTimeNullableWithAggregatesFilter<"GroupMember"> | Date | string | null
+  }
+
+  export type BankAccountWhereInput = {
+    AND?: BankAccountWhereInput | BankAccountWhereInput[]
+    OR?: BankAccountWhereInput[]
+    NOT?: BankAccountWhereInput | BankAccountWhereInput[]
+    id?: StringFilter<"BankAccount"> | string
+    userId?: StringFilter<"BankAccount"> | string
+    bankName?: StringFilter<"BankAccount"> | string
+    accountNumber?: StringFilter<"BankAccount"> | string
+    accountHolderName?: StringFilter<"BankAccount"> | string
+    isDefault?: BoolFilter<"BankAccount"> | boolean
+    isActive?: BoolFilter<"BankAccount"> | boolean
+    createdAt?: DateTimeFilter<"BankAccount"> | Date | string
+    updatedAt?: DateTimeFilter<"BankAccount"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type BankAccountOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    bankName?: SortOrder
+    accountNumber?: SortOrder
+    accountHolderName?: SortOrder
+    isDefault?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type BankAccountWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: BankAccountWhereInput | BankAccountWhereInput[]
+    OR?: BankAccountWhereInput[]
+    NOT?: BankAccountWhereInput | BankAccountWhereInput[]
+    userId?: StringFilter<"BankAccount"> | string
+    bankName?: StringFilter<"BankAccount"> | string
+    accountNumber?: StringFilter<"BankAccount"> | string
+    accountHolderName?: StringFilter<"BankAccount"> | string
+    isDefault?: BoolFilter<"BankAccount"> | boolean
+    isActive?: BoolFilter<"BankAccount"> | boolean
+    createdAt?: DateTimeFilter<"BankAccount"> | Date | string
+    updatedAt?: DateTimeFilter<"BankAccount"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id">
+
+  export type BankAccountOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    bankName?: SortOrder
+    accountNumber?: SortOrder
+    accountHolderName?: SortOrder
+    isDefault?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: BankAccountCountOrderByAggregateInput
+    _max?: BankAccountMaxOrderByAggregateInput
+    _min?: BankAccountMinOrderByAggregateInput
+  }
+
+  export type BankAccountScalarWhereWithAggregatesInput = {
+    AND?: BankAccountScalarWhereWithAggregatesInput | BankAccountScalarWhereWithAggregatesInput[]
+    OR?: BankAccountScalarWhereWithAggregatesInput[]
+    NOT?: BankAccountScalarWhereWithAggregatesInput | BankAccountScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"BankAccount"> | string
+    userId?: StringWithAggregatesFilter<"BankAccount"> | string
+    bankName?: StringWithAggregatesFilter<"BankAccount"> | string
+    accountNumber?: StringWithAggregatesFilter<"BankAccount"> | string
+    accountHolderName?: StringWithAggregatesFilter<"BankAccount"> | string
+    isDefault?: BoolWithAggregatesFilter<"BankAccount"> | boolean
+    isActive?: BoolWithAggregatesFilter<"BankAccount"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"BankAccount"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"BankAccount"> | Date | string
+  }
+
+  export type PaymentTransferWhereInput = {
+    AND?: PaymentTransferWhereInput | PaymentTransferWhereInput[]
+    OR?: PaymentTransferWhereInput[]
+    NOT?: PaymentTransferWhereInput | PaymentTransferWhereInput[]
+    id?: StringFilter<"PaymentTransfer"> | string
+    groupOrderId?: StringFilter<"PaymentTransfer"> | string
+    fromUserId?: StringFilter<"PaymentTransfer"> | string
+    toUserId?: StringFilter<"PaymentTransfer"> | string
+    amount?: FloatFilter<"PaymentTransfer"> | number
+    status?: EnumPaymentTransferStatusFilter<"PaymentTransfer"> | $Enums.PaymentTransferStatus
+    transactionId?: StringNullableFilter<"PaymentTransfer"> | string | null
+    bankName?: StringNullableFilter<"PaymentTransfer"> | string | null
+    transferDate?: DateTimeNullableFilter<"PaymentTransfer"> | Date | string | null
+    verifiedAt?: DateTimeNullableFilter<"PaymentTransfer"> | Date | string | null
+    verifiedBy?: StringNullableFilter<"PaymentTransfer"> | string | null
+    notes?: StringNullableFilter<"PaymentTransfer"> | string | null
+    screenshotUrl?: StringNullableFilter<"PaymentTransfer"> | string | null
+    createdAt?: DateTimeFilter<"PaymentTransfer"> | Date | string
+    updatedAt?: DateTimeFilter<"PaymentTransfer"> | Date | string
+    groupOrder?: XOR<GroupOrderScalarRelationFilter, GroupOrderWhereInput>
+    fromUser?: XOR<UserScalarRelationFilter, UserWhereInput>
+    toUser?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type PaymentTransferOrderByWithRelationInput = {
+    id?: SortOrder
+    groupOrderId?: SortOrder
+    fromUserId?: SortOrder
+    toUserId?: SortOrder
+    amount?: SortOrder
+    status?: SortOrder
+    transactionId?: SortOrderInput | SortOrder
+    bankName?: SortOrderInput | SortOrder
+    transferDate?: SortOrderInput | SortOrder
+    verifiedAt?: SortOrderInput | SortOrder
+    verifiedBy?: SortOrderInput | SortOrder
+    notes?: SortOrderInput | SortOrder
+    screenshotUrl?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    groupOrder?: GroupOrderOrderByWithRelationInput
+    fromUser?: UserOrderByWithRelationInput
+    toUser?: UserOrderByWithRelationInput
+  }
+
+  export type PaymentTransferWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: PaymentTransferWhereInput | PaymentTransferWhereInput[]
+    OR?: PaymentTransferWhereInput[]
+    NOT?: PaymentTransferWhereInput | PaymentTransferWhereInput[]
+    groupOrderId?: StringFilter<"PaymentTransfer"> | string
+    fromUserId?: StringFilter<"PaymentTransfer"> | string
+    toUserId?: StringFilter<"PaymentTransfer"> | string
+    amount?: FloatFilter<"PaymentTransfer"> | number
+    status?: EnumPaymentTransferStatusFilter<"PaymentTransfer"> | $Enums.PaymentTransferStatus
+    transactionId?: StringNullableFilter<"PaymentTransfer"> | string | null
+    bankName?: StringNullableFilter<"PaymentTransfer"> | string | null
+    transferDate?: DateTimeNullableFilter<"PaymentTransfer"> | Date | string | null
+    verifiedAt?: DateTimeNullableFilter<"PaymentTransfer"> | Date | string | null
+    verifiedBy?: StringNullableFilter<"PaymentTransfer"> | string | null
+    notes?: StringNullableFilter<"PaymentTransfer"> | string | null
+    screenshotUrl?: StringNullableFilter<"PaymentTransfer"> | string | null
+    createdAt?: DateTimeFilter<"PaymentTransfer"> | Date | string
+    updatedAt?: DateTimeFilter<"PaymentTransfer"> | Date | string
+    groupOrder?: XOR<GroupOrderScalarRelationFilter, GroupOrderWhereInput>
+    fromUser?: XOR<UserScalarRelationFilter, UserWhereInput>
+    toUser?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id">
+
+  export type PaymentTransferOrderByWithAggregationInput = {
+    id?: SortOrder
+    groupOrderId?: SortOrder
+    fromUserId?: SortOrder
+    toUserId?: SortOrder
+    amount?: SortOrder
+    status?: SortOrder
+    transactionId?: SortOrderInput | SortOrder
+    bankName?: SortOrderInput | SortOrder
+    transferDate?: SortOrderInput | SortOrder
+    verifiedAt?: SortOrderInput | SortOrder
+    verifiedBy?: SortOrderInput | SortOrder
+    notes?: SortOrderInput | SortOrder
+    screenshotUrl?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: PaymentTransferCountOrderByAggregateInput
+    _avg?: PaymentTransferAvgOrderByAggregateInput
+    _max?: PaymentTransferMaxOrderByAggregateInput
+    _min?: PaymentTransferMinOrderByAggregateInput
+    _sum?: PaymentTransferSumOrderByAggregateInput
+  }
+
+  export type PaymentTransferScalarWhereWithAggregatesInput = {
+    AND?: PaymentTransferScalarWhereWithAggregatesInput | PaymentTransferScalarWhereWithAggregatesInput[]
+    OR?: PaymentTransferScalarWhereWithAggregatesInput[]
+    NOT?: PaymentTransferScalarWhereWithAggregatesInput | PaymentTransferScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"PaymentTransfer"> | string
+    groupOrderId?: StringWithAggregatesFilter<"PaymentTransfer"> | string
+    fromUserId?: StringWithAggregatesFilter<"PaymentTransfer"> | string
+    toUserId?: StringWithAggregatesFilter<"PaymentTransfer"> | string
+    amount?: FloatWithAggregatesFilter<"PaymentTransfer"> | number
+    status?: EnumPaymentTransferStatusWithAggregatesFilter<"PaymentTransfer"> | $Enums.PaymentTransferStatus
+    transactionId?: StringNullableWithAggregatesFilter<"PaymentTransfer"> | string | null
+    bankName?: StringNullableWithAggregatesFilter<"PaymentTransfer"> | string | null
+    transferDate?: DateTimeNullableWithAggregatesFilter<"PaymentTransfer"> | Date | string | null
+    verifiedAt?: DateTimeNullableWithAggregatesFilter<"PaymentTransfer"> | Date | string | null
+    verifiedBy?: StringNullableWithAggregatesFilter<"PaymentTransfer"> | string | null
+    notes?: StringNullableWithAggregatesFilter<"PaymentTransfer"> | string | null
+    screenshotUrl?: StringNullableWithAggregatesFilter<"PaymentTransfer"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"PaymentTransfer"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"PaymentTransfer"> | Date | string
+  }
+
   export type OrderItemWhereInput = {
     AND?: OrderItemWhereInput | OrderItemWhereInput[]
     OR?: OrderItemWhereInput[]
@@ -8861,6 +14928,11 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     orders?: OrderCreateNestedManyWithoutUserInput
+    bankAccounts?: BankAccountCreateNestedManyWithoutUserInput
+    groupMembers?: GroupMemberCreateNestedManyWithoutUserInput
+    groupOrders?: GroupOrderCreateNestedManyWithoutOwnerInput
+    paymentTransfersFrom?: PaymentTransferCreateNestedManyWithoutFromUserInput
+    paymentTransfersTo?: PaymentTransferCreateNestedManyWithoutToUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -8872,6 +14944,11 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     orders?: OrderUncheckedCreateNestedManyWithoutUserInput
+    bankAccounts?: BankAccountUncheckedCreateNestedManyWithoutUserInput
+    groupMembers?: GroupMemberUncheckedCreateNestedManyWithoutUserInput
+    groupOrders?: GroupOrderUncheckedCreateNestedManyWithoutOwnerInput
+    paymentTransfersFrom?: PaymentTransferUncheckedCreateNestedManyWithoutFromUserInput
+    paymentTransfersTo?: PaymentTransferUncheckedCreateNestedManyWithoutToUserInput
   }
 
   export type UserUpdateInput = {
@@ -8883,6 +14960,11 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     orders?: OrderUpdateManyWithoutUserNestedInput
+    bankAccounts?: BankAccountUpdateManyWithoutUserNestedInput
+    groupMembers?: GroupMemberUpdateManyWithoutUserNestedInput
+    groupOrders?: GroupOrderUpdateManyWithoutOwnerNestedInput
+    paymentTransfersFrom?: PaymentTransferUpdateManyWithoutFromUserNestedInput
+    paymentTransfersTo?: PaymentTransferUpdateManyWithoutToUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -8894,6 +14976,11 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
+    bankAccounts?: BankAccountUncheckedUpdateManyWithoutUserNestedInput
+    groupMembers?: GroupMemberUncheckedUpdateManyWithoutUserNestedInput
+    groupOrders?: GroupOrderUncheckedUpdateManyWithoutOwnerNestedInput
+    paymentTransfersFrom?: PaymentTransferUncheckedUpdateManyWithoutFromUserNestedInput
+    paymentTransfersTo?: PaymentTransferUncheckedUpdateManyWithoutToUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -8929,43 +15016,57 @@ export namespace Prisma {
   export type RestaurantCreateInput = {
     id?: string
     name: string
-    grabLink: string
+    platform?: $Enums.Platform
+    grabLink?: string | null
+    shopeeLink?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     products?: ProductCreateNestedManyWithoutRestaurantInput
+    groupOrders?: GroupOrderCreateNestedManyWithoutRestaurantInput
   }
 
   export type RestaurantUncheckedCreateInput = {
     id?: string
     name: string
-    grabLink: string
+    platform?: $Enums.Platform
+    grabLink?: string | null
+    shopeeLink?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     products?: ProductUncheckedCreateNestedManyWithoutRestaurantInput
+    groupOrders?: GroupOrderUncheckedCreateNestedManyWithoutRestaurantInput
   }
 
   export type RestaurantUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    grabLink?: StringFieldUpdateOperationsInput | string
+    platform?: EnumPlatformFieldUpdateOperationsInput | $Enums.Platform
+    grabLink?: NullableStringFieldUpdateOperationsInput | string | null
+    shopeeLink?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     products?: ProductUpdateManyWithoutRestaurantNestedInput
+    groupOrders?: GroupOrderUpdateManyWithoutRestaurantNestedInput
   }
 
   export type RestaurantUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    grabLink?: StringFieldUpdateOperationsInput | string
+    platform?: EnumPlatformFieldUpdateOperationsInput | $Enums.Platform
+    grabLink?: NullableStringFieldUpdateOperationsInput | string | null
+    shopeeLink?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     products?: ProductUncheckedUpdateManyWithoutRestaurantNestedInput
+    groupOrders?: GroupOrderUncheckedUpdateManyWithoutRestaurantNestedInput
   }
 
   export type RestaurantCreateManyInput = {
     id?: string
     name: string
-    grabLink: string
+    platform?: $Enums.Platform
+    grabLink?: string | null
+    shopeeLink?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -8973,7 +15074,9 @@ export namespace Prisma {
   export type RestaurantUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    grabLink?: StringFieldUpdateOperationsInput | string
+    platform?: EnumPlatformFieldUpdateOperationsInput | $Enums.Platform
+    grabLink?: NullableStringFieldUpdateOperationsInput | string | null
+    shopeeLink?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -8981,7 +15084,9 @@ export namespace Prisma {
   export type RestaurantUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    grabLink?: StringFieldUpdateOperationsInput | string
+    platform?: EnumPlatformFieldUpdateOperationsInput | $Enums.Platform
+    grabLink?: NullableStringFieldUpdateOperationsInput | string | null
+    shopeeLink?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -9143,6 +15248,426 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type GroupOrderCreateInput = {
+    id?: string
+    groupId: string
+    platform?: $Enums.Platform
+    platformOrderId?: string | null
+    status?: $Enums.GroupOrderStatus
+    totalAmount?: number
+    deliveryFee?: number
+    serviceFee?: number
+    tax?: number
+    lockedAt?: Date | string | null
+    placedAt?: Date | string | null
+    deliveredAt?: Date | string | null
+    paymentDeadline?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    owner: UserCreateNestedOneWithoutGroupOrdersInput
+    restaurant: RestaurantCreateNestedOneWithoutGroupOrdersInput
+    members?: GroupMemberCreateNestedManyWithoutGroupOrderInput
+    payments?: PaymentTransferCreateNestedManyWithoutGroupOrderInput
+  }
+
+  export type GroupOrderUncheckedCreateInput = {
+    id?: string
+    groupId: string
+    ownerId: string
+    restaurantId: string
+    platform?: $Enums.Platform
+    platformOrderId?: string | null
+    status?: $Enums.GroupOrderStatus
+    totalAmount?: number
+    deliveryFee?: number
+    serviceFee?: number
+    tax?: number
+    lockedAt?: Date | string | null
+    placedAt?: Date | string | null
+    deliveredAt?: Date | string | null
+    paymentDeadline?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    members?: GroupMemberUncheckedCreateNestedManyWithoutGroupOrderInput
+    payments?: PaymentTransferUncheckedCreateNestedManyWithoutGroupOrderInput
+  }
+
+  export type GroupOrderUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    groupId?: StringFieldUpdateOperationsInput | string
+    platform?: EnumPlatformFieldUpdateOperationsInput | $Enums.Platform
+    platformOrderId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumGroupOrderStatusFieldUpdateOperationsInput | $Enums.GroupOrderStatus
+    totalAmount?: FloatFieldUpdateOperationsInput | number
+    deliveryFee?: FloatFieldUpdateOperationsInput | number
+    serviceFee?: FloatFieldUpdateOperationsInput | number
+    tax?: FloatFieldUpdateOperationsInput | number
+    lockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    placedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paymentDeadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    owner?: UserUpdateOneRequiredWithoutGroupOrdersNestedInput
+    restaurant?: RestaurantUpdateOneRequiredWithoutGroupOrdersNestedInput
+    members?: GroupMemberUpdateManyWithoutGroupOrderNestedInput
+    payments?: PaymentTransferUpdateManyWithoutGroupOrderNestedInput
+  }
+
+  export type GroupOrderUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    groupId?: StringFieldUpdateOperationsInput | string
+    ownerId?: StringFieldUpdateOperationsInput | string
+    restaurantId?: StringFieldUpdateOperationsInput | string
+    platform?: EnumPlatformFieldUpdateOperationsInput | $Enums.Platform
+    platformOrderId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumGroupOrderStatusFieldUpdateOperationsInput | $Enums.GroupOrderStatus
+    totalAmount?: FloatFieldUpdateOperationsInput | number
+    deliveryFee?: FloatFieldUpdateOperationsInput | number
+    serviceFee?: FloatFieldUpdateOperationsInput | number
+    tax?: FloatFieldUpdateOperationsInput | number
+    lockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    placedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paymentDeadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    members?: GroupMemberUncheckedUpdateManyWithoutGroupOrderNestedInput
+    payments?: PaymentTransferUncheckedUpdateManyWithoutGroupOrderNestedInput
+  }
+
+  export type GroupOrderCreateManyInput = {
+    id?: string
+    groupId: string
+    ownerId: string
+    restaurantId: string
+    platform?: $Enums.Platform
+    platformOrderId?: string | null
+    status?: $Enums.GroupOrderStatus
+    totalAmount?: number
+    deliveryFee?: number
+    serviceFee?: number
+    tax?: number
+    lockedAt?: Date | string | null
+    placedAt?: Date | string | null
+    deliveredAt?: Date | string | null
+    paymentDeadline?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type GroupOrderUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    groupId?: StringFieldUpdateOperationsInput | string
+    platform?: EnumPlatformFieldUpdateOperationsInput | $Enums.Platform
+    platformOrderId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumGroupOrderStatusFieldUpdateOperationsInput | $Enums.GroupOrderStatus
+    totalAmount?: FloatFieldUpdateOperationsInput | number
+    deliveryFee?: FloatFieldUpdateOperationsInput | number
+    serviceFee?: FloatFieldUpdateOperationsInput | number
+    tax?: FloatFieldUpdateOperationsInput | number
+    lockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    placedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paymentDeadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type GroupOrderUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    groupId?: StringFieldUpdateOperationsInput | string
+    ownerId?: StringFieldUpdateOperationsInput | string
+    restaurantId?: StringFieldUpdateOperationsInput | string
+    platform?: EnumPlatformFieldUpdateOperationsInput | $Enums.Platform
+    platformOrderId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumGroupOrderStatusFieldUpdateOperationsInput | $Enums.GroupOrderStatus
+    totalAmount?: FloatFieldUpdateOperationsInput | number
+    deliveryFee?: FloatFieldUpdateOperationsInput | number
+    serviceFee?: FloatFieldUpdateOperationsInput | number
+    tax?: FloatFieldUpdateOperationsInput | number
+    lockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    placedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paymentDeadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type GroupMemberCreateInput = {
+    id?: string
+    role?: $Enums.GroupRole
+    cartTotal?: number
+    joinedAt?: Date | string
+    leftAt?: Date | string | null
+    groupOrder: GroupOrderCreateNestedOneWithoutMembersInput
+    user: UserCreateNestedOneWithoutGroupMembersInput
+  }
+
+  export type GroupMemberUncheckedCreateInput = {
+    id?: string
+    groupOrderId: string
+    userId: string
+    role?: $Enums.GroupRole
+    cartTotal?: number
+    joinedAt?: Date | string
+    leftAt?: Date | string | null
+  }
+
+  export type GroupMemberUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    role?: EnumGroupRoleFieldUpdateOperationsInput | $Enums.GroupRole
+    cartTotal?: FloatFieldUpdateOperationsInput | number
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    leftAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    groupOrder?: GroupOrderUpdateOneRequiredWithoutMembersNestedInput
+    user?: UserUpdateOneRequiredWithoutGroupMembersNestedInput
+  }
+
+  export type GroupMemberUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    groupOrderId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    role?: EnumGroupRoleFieldUpdateOperationsInput | $Enums.GroupRole
+    cartTotal?: FloatFieldUpdateOperationsInput | number
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    leftAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type GroupMemberCreateManyInput = {
+    id?: string
+    groupOrderId: string
+    userId: string
+    role?: $Enums.GroupRole
+    cartTotal?: number
+    joinedAt?: Date | string
+    leftAt?: Date | string | null
+  }
+
+  export type GroupMemberUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    role?: EnumGroupRoleFieldUpdateOperationsInput | $Enums.GroupRole
+    cartTotal?: FloatFieldUpdateOperationsInput | number
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    leftAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type GroupMemberUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    groupOrderId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    role?: EnumGroupRoleFieldUpdateOperationsInput | $Enums.GroupRole
+    cartTotal?: FloatFieldUpdateOperationsInput | number
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    leftAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type BankAccountCreateInput = {
+    id?: string
+    bankName: string
+    accountNumber: string
+    accountHolderName: string
+    isDefault?: boolean
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutBankAccountsInput
+  }
+
+  export type BankAccountUncheckedCreateInput = {
+    id?: string
+    userId: string
+    bankName: string
+    accountNumber: string
+    accountHolderName: string
+    isDefault?: boolean
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type BankAccountUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    bankName?: StringFieldUpdateOperationsInput | string
+    accountNumber?: StringFieldUpdateOperationsInput | string
+    accountHolderName?: StringFieldUpdateOperationsInput | string
+    isDefault?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutBankAccountsNestedInput
+  }
+
+  export type BankAccountUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    bankName?: StringFieldUpdateOperationsInput | string
+    accountNumber?: StringFieldUpdateOperationsInput | string
+    accountHolderName?: StringFieldUpdateOperationsInput | string
+    isDefault?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BankAccountCreateManyInput = {
+    id?: string
+    userId: string
+    bankName: string
+    accountNumber: string
+    accountHolderName: string
+    isDefault?: boolean
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type BankAccountUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    bankName?: StringFieldUpdateOperationsInput | string
+    accountNumber?: StringFieldUpdateOperationsInput | string
+    accountHolderName?: StringFieldUpdateOperationsInput | string
+    isDefault?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BankAccountUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    bankName?: StringFieldUpdateOperationsInput | string
+    accountNumber?: StringFieldUpdateOperationsInput | string
+    accountHolderName?: StringFieldUpdateOperationsInput | string
+    isDefault?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PaymentTransferCreateInput = {
+    id?: string
+    amount: number
+    status?: $Enums.PaymentTransferStatus
+    transactionId?: string | null
+    bankName?: string | null
+    transferDate?: Date | string | null
+    verifiedAt?: Date | string | null
+    verifiedBy?: string | null
+    notes?: string | null
+    screenshotUrl?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    groupOrder: GroupOrderCreateNestedOneWithoutPaymentsInput
+    fromUser: UserCreateNestedOneWithoutPaymentTransfersFromInput
+    toUser: UserCreateNestedOneWithoutPaymentTransfersToInput
+  }
+
+  export type PaymentTransferUncheckedCreateInput = {
+    id?: string
+    groupOrderId: string
+    fromUserId: string
+    toUserId: string
+    amount: number
+    status?: $Enums.PaymentTransferStatus
+    transactionId?: string | null
+    bankName?: string | null
+    transferDate?: Date | string | null
+    verifiedAt?: Date | string | null
+    verifiedBy?: string | null
+    notes?: string | null
+    screenshotUrl?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PaymentTransferUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    amount?: FloatFieldUpdateOperationsInput | number
+    status?: EnumPaymentTransferStatusFieldUpdateOperationsInput | $Enums.PaymentTransferStatus
+    transactionId?: NullableStringFieldUpdateOperationsInput | string | null
+    bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    transferDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    verifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    verifiedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    screenshotUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    groupOrder?: GroupOrderUpdateOneRequiredWithoutPaymentsNestedInput
+    fromUser?: UserUpdateOneRequiredWithoutPaymentTransfersFromNestedInput
+    toUser?: UserUpdateOneRequiredWithoutPaymentTransfersToNestedInput
+  }
+
+  export type PaymentTransferUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    groupOrderId?: StringFieldUpdateOperationsInput | string
+    fromUserId?: StringFieldUpdateOperationsInput | string
+    toUserId?: StringFieldUpdateOperationsInput | string
+    amount?: FloatFieldUpdateOperationsInput | number
+    status?: EnumPaymentTransferStatusFieldUpdateOperationsInput | $Enums.PaymentTransferStatus
+    transactionId?: NullableStringFieldUpdateOperationsInput | string | null
+    bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    transferDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    verifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    verifiedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    screenshotUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PaymentTransferCreateManyInput = {
+    id?: string
+    groupOrderId: string
+    fromUserId: string
+    toUserId: string
+    amount: number
+    status?: $Enums.PaymentTransferStatus
+    transactionId?: string | null
+    bankName?: string | null
+    transferDate?: Date | string | null
+    verifiedAt?: Date | string | null
+    verifiedBy?: string | null
+    notes?: string | null
+    screenshotUrl?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PaymentTransferUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    amount?: FloatFieldUpdateOperationsInput | number
+    status?: EnumPaymentTransferStatusFieldUpdateOperationsInput | $Enums.PaymentTransferStatus
+    transactionId?: NullableStringFieldUpdateOperationsInput | string | null
+    bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    transferDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    verifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    verifiedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    screenshotUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PaymentTransferUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    groupOrderId?: StringFieldUpdateOperationsInput | string
+    fromUserId?: StringFieldUpdateOperationsInput | string
+    toUserId?: StringFieldUpdateOperationsInput | string
+    amount?: FloatFieldUpdateOperationsInput | number
+    status?: EnumPaymentTransferStatusFieldUpdateOperationsInput | $Enums.PaymentTransferStatus
+    transactionId?: NullableStringFieldUpdateOperationsInput | string | null
+    bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    transferDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    verifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    verifiedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    screenshotUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type OrderItemCreateInput = {
     id?: string
     quantity?: number
@@ -9298,7 +15823,47 @@ export namespace Prisma {
     none?: OrderWhereInput
   }
 
+  export type BankAccountListRelationFilter = {
+    every?: BankAccountWhereInput
+    some?: BankAccountWhereInput
+    none?: BankAccountWhereInput
+  }
+
+  export type GroupMemberListRelationFilter = {
+    every?: GroupMemberWhereInput
+    some?: GroupMemberWhereInput
+    none?: GroupMemberWhereInput
+  }
+
+  export type GroupOrderListRelationFilter = {
+    every?: GroupOrderWhereInput
+    some?: GroupOrderWhereInput
+    none?: GroupOrderWhereInput
+  }
+
+  export type PaymentTransferListRelationFilter = {
+    every?: PaymentTransferWhereInput
+    some?: PaymentTransferWhereInput
+    none?: PaymentTransferWhereInput
+  }
+
   export type OrderOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type BankAccountOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type GroupMemberOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type GroupOrderOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type PaymentTransferOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -9374,38 +15939,11 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
-  export type ProductListRelationFilter = {
-    every?: ProductWhereInput
-    some?: ProductWhereInput
-    none?: ProductWhereInput
-  }
-
-  export type ProductOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type RestaurantCountOrderByAggregateInput = {
-    id?: SortOrder
-    name?: SortOrder
-    grabLink?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type RestaurantMaxOrderByAggregateInput = {
-    id?: SortOrder
-    name?: SortOrder
-    grabLink?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type RestaurantMinOrderByAggregateInput = {
-    id?: SortOrder
-    name?: SortOrder
-    grabLink?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
+  export type EnumPlatformFilter<$PrismaModel = never> = {
+    equals?: $Enums.Platform | EnumPlatformFieldRefInput<$PrismaModel>
+    in?: $Enums.Platform[] | ListEnumPlatformFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Platform[] | ListEnumPlatformFieldRefInput<$PrismaModel>
+    not?: NestedEnumPlatformFilter<$PrismaModel> | $Enums.Platform
   }
 
   export type StringNullableFilter<$PrismaModel = never> = {
@@ -9421,6 +15959,79 @@ export namespace Prisma {
     endsWith?: string | StringFieldRefInput<$PrismaModel>
     mode?: QueryMode
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
+  }
+
+  export type ProductListRelationFilter = {
+    every?: ProductWhereInput
+    some?: ProductWhereInput
+    none?: ProductWhereInput
+  }
+
+  export type SortOrderInput = {
+    sort: SortOrder
+    nulls?: NullsOrder
+  }
+
+  export type ProductOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type RestaurantCountOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    platform?: SortOrder
+    grabLink?: SortOrder
+    shopeeLink?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type RestaurantMaxOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    platform?: SortOrder
+    grabLink?: SortOrder
+    shopeeLink?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type RestaurantMinOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    platform?: SortOrder
+    grabLink?: SortOrder
+    shopeeLink?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EnumPlatformWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Platform | EnumPlatformFieldRefInput<$PrismaModel>
+    in?: $Enums.Platform[] | ListEnumPlatformFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Platform[] | ListEnumPlatformFieldRefInput<$PrismaModel>
+    not?: NestedEnumPlatformWithAggregatesFilter<$PrismaModel> | $Enums.Platform
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumPlatformFilter<$PrismaModel>
+    _max?: NestedEnumPlatformFilter<$PrismaModel>
+  }
+
+  export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
+    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedStringNullableFilter<$PrismaModel>
+    _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
   export type FloatFilter<$PrismaModel = never> = {
@@ -9454,11 +16065,6 @@ export namespace Prisma {
     every?: OrderItemWhereInput
     some?: OrderItemWhereInput
     none?: OrderItemWhereInput
-  }
-
-  export type SortOrderInput = {
-    sort: SortOrder
-    nulls?: NullsOrder
   }
 
   export type OrderItemOrderByRelationAggregateInput = {
@@ -9509,24 +16115,6 @@ export namespace Prisma {
   export type ProductSumOrderByAggregateInput = {
     price?: SortOrder
     stock?: SortOrder
-  }
-
-  export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    mode?: QueryMode
-    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedStringNullableFilter<$PrismaModel>
-    _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
   export type FloatWithAggregatesFilter<$PrismaModel = never> = {
@@ -9621,6 +16209,315 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumOrderStatusFilter<$PrismaModel>
     _max?: NestedEnumOrderStatusFilter<$PrismaModel>
+  }
+
+  export type EnumGroupOrderStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.GroupOrderStatus | EnumGroupOrderStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.GroupOrderStatus[] | ListEnumGroupOrderStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.GroupOrderStatus[] | ListEnumGroupOrderStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumGroupOrderStatusFilter<$PrismaModel> | $Enums.GroupOrderStatus
+  }
+
+  export type DateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
+  export type GroupOrderCountOrderByAggregateInput = {
+    id?: SortOrder
+    groupId?: SortOrder
+    ownerId?: SortOrder
+    restaurantId?: SortOrder
+    platform?: SortOrder
+    platformOrderId?: SortOrder
+    status?: SortOrder
+    totalAmount?: SortOrder
+    deliveryFee?: SortOrder
+    serviceFee?: SortOrder
+    tax?: SortOrder
+    lockedAt?: SortOrder
+    placedAt?: SortOrder
+    deliveredAt?: SortOrder
+    paymentDeadline?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type GroupOrderAvgOrderByAggregateInput = {
+    totalAmount?: SortOrder
+    deliveryFee?: SortOrder
+    serviceFee?: SortOrder
+    tax?: SortOrder
+  }
+
+  export type GroupOrderMaxOrderByAggregateInput = {
+    id?: SortOrder
+    groupId?: SortOrder
+    ownerId?: SortOrder
+    restaurantId?: SortOrder
+    platform?: SortOrder
+    platformOrderId?: SortOrder
+    status?: SortOrder
+    totalAmount?: SortOrder
+    deliveryFee?: SortOrder
+    serviceFee?: SortOrder
+    tax?: SortOrder
+    lockedAt?: SortOrder
+    placedAt?: SortOrder
+    deliveredAt?: SortOrder
+    paymentDeadline?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type GroupOrderMinOrderByAggregateInput = {
+    id?: SortOrder
+    groupId?: SortOrder
+    ownerId?: SortOrder
+    restaurantId?: SortOrder
+    platform?: SortOrder
+    platformOrderId?: SortOrder
+    status?: SortOrder
+    totalAmount?: SortOrder
+    deliveryFee?: SortOrder
+    serviceFee?: SortOrder
+    tax?: SortOrder
+    lockedAt?: SortOrder
+    placedAt?: SortOrder
+    deliveredAt?: SortOrder
+    paymentDeadline?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type GroupOrderSumOrderByAggregateInput = {
+    totalAmount?: SortOrder
+    deliveryFee?: SortOrder
+    serviceFee?: SortOrder
+    tax?: SortOrder
+  }
+
+  export type EnumGroupOrderStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.GroupOrderStatus | EnumGroupOrderStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.GroupOrderStatus[] | ListEnumGroupOrderStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.GroupOrderStatus[] | ListEnumGroupOrderStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumGroupOrderStatusWithAggregatesFilter<$PrismaModel> | $Enums.GroupOrderStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumGroupOrderStatusFilter<$PrismaModel>
+    _max?: NestedEnumGroupOrderStatusFilter<$PrismaModel>
+  }
+
+  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
+  }
+
+  export type EnumGroupRoleFilter<$PrismaModel = never> = {
+    equals?: $Enums.GroupRole | EnumGroupRoleFieldRefInput<$PrismaModel>
+    in?: $Enums.GroupRole[] | ListEnumGroupRoleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.GroupRole[] | ListEnumGroupRoleFieldRefInput<$PrismaModel>
+    not?: NestedEnumGroupRoleFilter<$PrismaModel> | $Enums.GroupRole
+  }
+
+  export type GroupOrderScalarRelationFilter = {
+    is?: GroupOrderWhereInput
+    isNot?: GroupOrderWhereInput
+  }
+
+  export type GroupMemberGroupOrderIdUserIdCompoundUniqueInput = {
+    groupOrderId: string
+    userId: string
+  }
+
+  export type GroupMemberCountOrderByAggregateInput = {
+    id?: SortOrder
+    groupOrderId?: SortOrder
+    userId?: SortOrder
+    role?: SortOrder
+    cartTotal?: SortOrder
+    joinedAt?: SortOrder
+    leftAt?: SortOrder
+  }
+
+  export type GroupMemberAvgOrderByAggregateInput = {
+    cartTotal?: SortOrder
+  }
+
+  export type GroupMemberMaxOrderByAggregateInput = {
+    id?: SortOrder
+    groupOrderId?: SortOrder
+    userId?: SortOrder
+    role?: SortOrder
+    cartTotal?: SortOrder
+    joinedAt?: SortOrder
+    leftAt?: SortOrder
+  }
+
+  export type GroupMemberMinOrderByAggregateInput = {
+    id?: SortOrder
+    groupOrderId?: SortOrder
+    userId?: SortOrder
+    role?: SortOrder
+    cartTotal?: SortOrder
+    joinedAt?: SortOrder
+    leftAt?: SortOrder
+  }
+
+  export type GroupMemberSumOrderByAggregateInput = {
+    cartTotal?: SortOrder
+  }
+
+  export type EnumGroupRoleWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.GroupRole | EnumGroupRoleFieldRefInput<$PrismaModel>
+    in?: $Enums.GroupRole[] | ListEnumGroupRoleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.GroupRole[] | ListEnumGroupRoleFieldRefInput<$PrismaModel>
+    not?: NestedEnumGroupRoleWithAggregatesFilter<$PrismaModel> | $Enums.GroupRole
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumGroupRoleFilter<$PrismaModel>
+    _max?: NestedEnumGroupRoleFilter<$PrismaModel>
+  }
+
+  export type BoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
+  export type BankAccountCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    bankName?: SortOrder
+    accountNumber?: SortOrder
+    accountHolderName?: SortOrder
+    isDefault?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type BankAccountMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    bankName?: SortOrder
+    accountNumber?: SortOrder
+    accountHolderName?: SortOrder
+    isDefault?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type BankAccountMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    bankName?: SortOrder
+    accountNumber?: SortOrder
+    accountHolderName?: SortOrder
+    isDefault?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
+  }
+
+  export type EnumPaymentTransferStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.PaymentTransferStatus | EnumPaymentTransferStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.PaymentTransferStatus[] | ListEnumPaymentTransferStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PaymentTransferStatus[] | ListEnumPaymentTransferStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumPaymentTransferStatusFilter<$PrismaModel> | $Enums.PaymentTransferStatus
+  }
+
+  export type PaymentTransferCountOrderByAggregateInput = {
+    id?: SortOrder
+    groupOrderId?: SortOrder
+    fromUserId?: SortOrder
+    toUserId?: SortOrder
+    amount?: SortOrder
+    status?: SortOrder
+    transactionId?: SortOrder
+    bankName?: SortOrder
+    transferDate?: SortOrder
+    verifiedAt?: SortOrder
+    verifiedBy?: SortOrder
+    notes?: SortOrder
+    screenshotUrl?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PaymentTransferAvgOrderByAggregateInput = {
+    amount?: SortOrder
+  }
+
+  export type PaymentTransferMaxOrderByAggregateInput = {
+    id?: SortOrder
+    groupOrderId?: SortOrder
+    fromUserId?: SortOrder
+    toUserId?: SortOrder
+    amount?: SortOrder
+    status?: SortOrder
+    transactionId?: SortOrder
+    bankName?: SortOrder
+    transferDate?: SortOrder
+    verifiedAt?: SortOrder
+    verifiedBy?: SortOrder
+    notes?: SortOrder
+    screenshotUrl?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PaymentTransferMinOrderByAggregateInput = {
+    id?: SortOrder
+    groupOrderId?: SortOrder
+    fromUserId?: SortOrder
+    toUserId?: SortOrder
+    amount?: SortOrder
+    status?: SortOrder
+    transactionId?: SortOrder
+    bankName?: SortOrder
+    transferDate?: SortOrder
+    verifiedAt?: SortOrder
+    verifiedBy?: SortOrder
+    notes?: SortOrder
+    screenshotUrl?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PaymentTransferSumOrderByAggregateInput = {
+    amount?: SortOrder
+  }
+
+  export type EnumPaymentTransferStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.PaymentTransferStatus | EnumPaymentTransferStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.PaymentTransferStatus[] | ListEnumPaymentTransferStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PaymentTransferStatus[] | ListEnumPaymentTransferStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumPaymentTransferStatusWithAggregatesFilter<$PrismaModel> | $Enums.PaymentTransferStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumPaymentTransferStatusFilter<$PrismaModel>
+    _max?: NestedEnumPaymentTransferStatusFilter<$PrismaModel>
   }
 
   export type OrderScalarRelationFilter = {
@@ -9743,11 +16640,81 @@ export namespace Prisma {
     connect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
   }
 
+  export type BankAccountCreateNestedManyWithoutUserInput = {
+    create?: XOR<BankAccountCreateWithoutUserInput, BankAccountUncheckedCreateWithoutUserInput> | BankAccountCreateWithoutUserInput[] | BankAccountUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: BankAccountCreateOrConnectWithoutUserInput | BankAccountCreateOrConnectWithoutUserInput[]
+    createMany?: BankAccountCreateManyUserInputEnvelope
+    connect?: BankAccountWhereUniqueInput | BankAccountWhereUniqueInput[]
+  }
+
+  export type GroupMemberCreateNestedManyWithoutUserInput = {
+    create?: XOR<GroupMemberCreateWithoutUserInput, GroupMemberUncheckedCreateWithoutUserInput> | GroupMemberCreateWithoutUserInput[] | GroupMemberUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: GroupMemberCreateOrConnectWithoutUserInput | GroupMemberCreateOrConnectWithoutUserInput[]
+    createMany?: GroupMemberCreateManyUserInputEnvelope
+    connect?: GroupMemberWhereUniqueInput | GroupMemberWhereUniqueInput[]
+  }
+
+  export type GroupOrderCreateNestedManyWithoutOwnerInput = {
+    create?: XOR<GroupOrderCreateWithoutOwnerInput, GroupOrderUncheckedCreateWithoutOwnerInput> | GroupOrderCreateWithoutOwnerInput[] | GroupOrderUncheckedCreateWithoutOwnerInput[]
+    connectOrCreate?: GroupOrderCreateOrConnectWithoutOwnerInput | GroupOrderCreateOrConnectWithoutOwnerInput[]
+    createMany?: GroupOrderCreateManyOwnerInputEnvelope
+    connect?: GroupOrderWhereUniqueInput | GroupOrderWhereUniqueInput[]
+  }
+
+  export type PaymentTransferCreateNestedManyWithoutFromUserInput = {
+    create?: XOR<PaymentTransferCreateWithoutFromUserInput, PaymentTransferUncheckedCreateWithoutFromUserInput> | PaymentTransferCreateWithoutFromUserInput[] | PaymentTransferUncheckedCreateWithoutFromUserInput[]
+    connectOrCreate?: PaymentTransferCreateOrConnectWithoutFromUserInput | PaymentTransferCreateOrConnectWithoutFromUserInput[]
+    createMany?: PaymentTransferCreateManyFromUserInputEnvelope
+    connect?: PaymentTransferWhereUniqueInput | PaymentTransferWhereUniqueInput[]
+  }
+
+  export type PaymentTransferCreateNestedManyWithoutToUserInput = {
+    create?: XOR<PaymentTransferCreateWithoutToUserInput, PaymentTransferUncheckedCreateWithoutToUserInput> | PaymentTransferCreateWithoutToUserInput[] | PaymentTransferUncheckedCreateWithoutToUserInput[]
+    connectOrCreate?: PaymentTransferCreateOrConnectWithoutToUserInput | PaymentTransferCreateOrConnectWithoutToUserInput[]
+    createMany?: PaymentTransferCreateManyToUserInputEnvelope
+    connect?: PaymentTransferWhereUniqueInput | PaymentTransferWhereUniqueInput[]
+  }
+
   export type OrderUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<OrderCreateWithoutUserInput, OrderUncheckedCreateWithoutUserInput> | OrderCreateWithoutUserInput[] | OrderUncheckedCreateWithoutUserInput[]
     connectOrCreate?: OrderCreateOrConnectWithoutUserInput | OrderCreateOrConnectWithoutUserInput[]
     createMany?: OrderCreateManyUserInputEnvelope
     connect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
+  }
+
+  export type BankAccountUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<BankAccountCreateWithoutUserInput, BankAccountUncheckedCreateWithoutUserInput> | BankAccountCreateWithoutUserInput[] | BankAccountUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: BankAccountCreateOrConnectWithoutUserInput | BankAccountCreateOrConnectWithoutUserInput[]
+    createMany?: BankAccountCreateManyUserInputEnvelope
+    connect?: BankAccountWhereUniqueInput | BankAccountWhereUniqueInput[]
+  }
+
+  export type GroupMemberUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<GroupMemberCreateWithoutUserInput, GroupMemberUncheckedCreateWithoutUserInput> | GroupMemberCreateWithoutUserInput[] | GroupMemberUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: GroupMemberCreateOrConnectWithoutUserInput | GroupMemberCreateOrConnectWithoutUserInput[]
+    createMany?: GroupMemberCreateManyUserInputEnvelope
+    connect?: GroupMemberWhereUniqueInput | GroupMemberWhereUniqueInput[]
+  }
+
+  export type GroupOrderUncheckedCreateNestedManyWithoutOwnerInput = {
+    create?: XOR<GroupOrderCreateWithoutOwnerInput, GroupOrderUncheckedCreateWithoutOwnerInput> | GroupOrderCreateWithoutOwnerInput[] | GroupOrderUncheckedCreateWithoutOwnerInput[]
+    connectOrCreate?: GroupOrderCreateOrConnectWithoutOwnerInput | GroupOrderCreateOrConnectWithoutOwnerInput[]
+    createMany?: GroupOrderCreateManyOwnerInputEnvelope
+    connect?: GroupOrderWhereUniqueInput | GroupOrderWhereUniqueInput[]
+  }
+
+  export type PaymentTransferUncheckedCreateNestedManyWithoutFromUserInput = {
+    create?: XOR<PaymentTransferCreateWithoutFromUserInput, PaymentTransferUncheckedCreateWithoutFromUserInput> | PaymentTransferCreateWithoutFromUserInput[] | PaymentTransferUncheckedCreateWithoutFromUserInput[]
+    connectOrCreate?: PaymentTransferCreateOrConnectWithoutFromUserInput | PaymentTransferCreateOrConnectWithoutFromUserInput[]
+    createMany?: PaymentTransferCreateManyFromUserInputEnvelope
+    connect?: PaymentTransferWhereUniqueInput | PaymentTransferWhereUniqueInput[]
+  }
+
+  export type PaymentTransferUncheckedCreateNestedManyWithoutToUserInput = {
+    create?: XOR<PaymentTransferCreateWithoutToUserInput, PaymentTransferUncheckedCreateWithoutToUserInput> | PaymentTransferCreateWithoutToUserInput[] | PaymentTransferUncheckedCreateWithoutToUserInput[]
+    connectOrCreate?: PaymentTransferCreateOrConnectWithoutToUserInput | PaymentTransferCreateOrConnectWithoutToUserInput[]
+    createMany?: PaymentTransferCreateManyToUserInputEnvelope
+    connect?: PaymentTransferWhereUniqueInput | PaymentTransferWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -9776,6 +16743,76 @@ export namespace Prisma {
     deleteMany?: OrderScalarWhereInput | OrderScalarWhereInput[]
   }
 
+  export type BankAccountUpdateManyWithoutUserNestedInput = {
+    create?: XOR<BankAccountCreateWithoutUserInput, BankAccountUncheckedCreateWithoutUserInput> | BankAccountCreateWithoutUserInput[] | BankAccountUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: BankAccountCreateOrConnectWithoutUserInput | BankAccountCreateOrConnectWithoutUserInput[]
+    upsert?: BankAccountUpsertWithWhereUniqueWithoutUserInput | BankAccountUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: BankAccountCreateManyUserInputEnvelope
+    set?: BankAccountWhereUniqueInput | BankAccountWhereUniqueInput[]
+    disconnect?: BankAccountWhereUniqueInput | BankAccountWhereUniqueInput[]
+    delete?: BankAccountWhereUniqueInput | BankAccountWhereUniqueInput[]
+    connect?: BankAccountWhereUniqueInput | BankAccountWhereUniqueInput[]
+    update?: BankAccountUpdateWithWhereUniqueWithoutUserInput | BankAccountUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: BankAccountUpdateManyWithWhereWithoutUserInput | BankAccountUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: BankAccountScalarWhereInput | BankAccountScalarWhereInput[]
+  }
+
+  export type GroupMemberUpdateManyWithoutUserNestedInput = {
+    create?: XOR<GroupMemberCreateWithoutUserInput, GroupMemberUncheckedCreateWithoutUserInput> | GroupMemberCreateWithoutUserInput[] | GroupMemberUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: GroupMemberCreateOrConnectWithoutUserInput | GroupMemberCreateOrConnectWithoutUserInput[]
+    upsert?: GroupMemberUpsertWithWhereUniqueWithoutUserInput | GroupMemberUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: GroupMemberCreateManyUserInputEnvelope
+    set?: GroupMemberWhereUniqueInput | GroupMemberWhereUniqueInput[]
+    disconnect?: GroupMemberWhereUniqueInput | GroupMemberWhereUniqueInput[]
+    delete?: GroupMemberWhereUniqueInput | GroupMemberWhereUniqueInput[]
+    connect?: GroupMemberWhereUniqueInput | GroupMemberWhereUniqueInput[]
+    update?: GroupMemberUpdateWithWhereUniqueWithoutUserInput | GroupMemberUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: GroupMemberUpdateManyWithWhereWithoutUserInput | GroupMemberUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: GroupMemberScalarWhereInput | GroupMemberScalarWhereInput[]
+  }
+
+  export type GroupOrderUpdateManyWithoutOwnerNestedInput = {
+    create?: XOR<GroupOrderCreateWithoutOwnerInput, GroupOrderUncheckedCreateWithoutOwnerInput> | GroupOrderCreateWithoutOwnerInput[] | GroupOrderUncheckedCreateWithoutOwnerInput[]
+    connectOrCreate?: GroupOrderCreateOrConnectWithoutOwnerInput | GroupOrderCreateOrConnectWithoutOwnerInput[]
+    upsert?: GroupOrderUpsertWithWhereUniqueWithoutOwnerInput | GroupOrderUpsertWithWhereUniqueWithoutOwnerInput[]
+    createMany?: GroupOrderCreateManyOwnerInputEnvelope
+    set?: GroupOrderWhereUniqueInput | GroupOrderWhereUniqueInput[]
+    disconnect?: GroupOrderWhereUniqueInput | GroupOrderWhereUniqueInput[]
+    delete?: GroupOrderWhereUniqueInput | GroupOrderWhereUniqueInput[]
+    connect?: GroupOrderWhereUniqueInput | GroupOrderWhereUniqueInput[]
+    update?: GroupOrderUpdateWithWhereUniqueWithoutOwnerInput | GroupOrderUpdateWithWhereUniqueWithoutOwnerInput[]
+    updateMany?: GroupOrderUpdateManyWithWhereWithoutOwnerInput | GroupOrderUpdateManyWithWhereWithoutOwnerInput[]
+    deleteMany?: GroupOrderScalarWhereInput | GroupOrderScalarWhereInput[]
+  }
+
+  export type PaymentTransferUpdateManyWithoutFromUserNestedInput = {
+    create?: XOR<PaymentTransferCreateWithoutFromUserInput, PaymentTransferUncheckedCreateWithoutFromUserInput> | PaymentTransferCreateWithoutFromUserInput[] | PaymentTransferUncheckedCreateWithoutFromUserInput[]
+    connectOrCreate?: PaymentTransferCreateOrConnectWithoutFromUserInput | PaymentTransferCreateOrConnectWithoutFromUserInput[]
+    upsert?: PaymentTransferUpsertWithWhereUniqueWithoutFromUserInput | PaymentTransferUpsertWithWhereUniqueWithoutFromUserInput[]
+    createMany?: PaymentTransferCreateManyFromUserInputEnvelope
+    set?: PaymentTransferWhereUniqueInput | PaymentTransferWhereUniqueInput[]
+    disconnect?: PaymentTransferWhereUniqueInput | PaymentTransferWhereUniqueInput[]
+    delete?: PaymentTransferWhereUniqueInput | PaymentTransferWhereUniqueInput[]
+    connect?: PaymentTransferWhereUniqueInput | PaymentTransferWhereUniqueInput[]
+    update?: PaymentTransferUpdateWithWhereUniqueWithoutFromUserInput | PaymentTransferUpdateWithWhereUniqueWithoutFromUserInput[]
+    updateMany?: PaymentTransferUpdateManyWithWhereWithoutFromUserInput | PaymentTransferUpdateManyWithWhereWithoutFromUserInput[]
+    deleteMany?: PaymentTransferScalarWhereInput | PaymentTransferScalarWhereInput[]
+  }
+
+  export type PaymentTransferUpdateManyWithoutToUserNestedInput = {
+    create?: XOR<PaymentTransferCreateWithoutToUserInput, PaymentTransferUncheckedCreateWithoutToUserInput> | PaymentTransferCreateWithoutToUserInput[] | PaymentTransferUncheckedCreateWithoutToUserInput[]
+    connectOrCreate?: PaymentTransferCreateOrConnectWithoutToUserInput | PaymentTransferCreateOrConnectWithoutToUserInput[]
+    upsert?: PaymentTransferUpsertWithWhereUniqueWithoutToUserInput | PaymentTransferUpsertWithWhereUniqueWithoutToUserInput[]
+    createMany?: PaymentTransferCreateManyToUserInputEnvelope
+    set?: PaymentTransferWhereUniqueInput | PaymentTransferWhereUniqueInput[]
+    disconnect?: PaymentTransferWhereUniqueInput | PaymentTransferWhereUniqueInput[]
+    delete?: PaymentTransferWhereUniqueInput | PaymentTransferWhereUniqueInput[]
+    connect?: PaymentTransferWhereUniqueInput | PaymentTransferWhereUniqueInput[]
+    update?: PaymentTransferUpdateWithWhereUniqueWithoutToUserInput | PaymentTransferUpdateWithWhereUniqueWithoutToUserInput[]
+    updateMany?: PaymentTransferUpdateManyWithWhereWithoutToUserInput | PaymentTransferUpdateManyWithWhereWithoutToUserInput[]
+    deleteMany?: PaymentTransferScalarWhereInput | PaymentTransferScalarWhereInput[]
+  }
+
   export type OrderUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<OrderCreateWithoutUserInput, OrderUncheckedCreateWithoutUserInput> | OrderCreateWithoutUserInput[] | OrderUncheckedCreateWithoutUserInput[]
     connectOrCreate?: OrderCreateOrConnectWithoutUserInput | OrderCreateOrConnectWithoutUserInput[]
@@ -9790,6 +16827,76 @@ export namespace Prisma {
     deleteMany?: OrderScalarWhereInput | OrderScalarWhereInput[]
   }
 
+  export type BankAccountUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<BankAccountCreateWithoutUserInput, BankAccountUncheckedCreateWithoutUserInput> | BankAccountCreateWithoutUserInput[] | BankAccountUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: BankAccountCreateOrConnectWithoutUserInput | BankAccountCreateOrConnectWithoutUserInput[]
+    upsert?: BankAccountUpsertWithWhereUniqueWithoutUserInput | BankAccountUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: BankAccountCreateManyUserInputEnvelope
+    set?: BankAccountWhereUniqueInput | BankAccountWhereUniqueInput[]
+    disconnect?: BankAccountWhereUniqueInput | BankAccountWhereUniqueInput[]
+    delete?: BankAccountWhereUniqueInput | BankAccountWhereUniqueInput[]
+    connect?: BankAccountWhereUniqueInput | BankAccountWhereUniqueInput[]
+    update?: BankAccountUpdateWithWhereUniqueWithoutUserInput | BankAccountUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: BankAccountUpdateManyWithWhereWithoutUserInput | BankAccountUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: BankAccountScalarWhereInput | BankAccountScalarWhereInput[]
+  }
+
+  export type GroupMemberUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<GroupMemberCreateWithoutUserInput, GroupMemberUncheckedCreateWithoutUserInput> | GroupMemberCreateWithoutUserInput[] | GroupMemberUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: GroupMemberCreateOrConnectWithoutUserInput | GroupMemberCreateOrConnectWithoutUserInput[]
+    upsert?: GroupMemberUpsertWithWhereUniqueWithoutUserInput | GroupMemberUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: GroupMemberCreateManyUserInputEnvelope
+    set?: GroupMemberWhereUniqueInput | GroupMemberWhereUniqueInput[]
+    disconnect?: GroupMemberWhereUniqueInput | GroupMemberWhereUniqueInput[]
+    delete?: GroupMemberWhereUniqueInput | GroupMemberWhereUniqueInput[]
+    connect?: GroupMemberWhereUniqueInput | GroupMemberWhereUniqueInput[]
+    update?: GroupMemberUpdateWithWhereUniqueWithoutUserInput | GroupMemberUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: GroupMemberUpdateManyWithWhereWithoutUserInput | GroupMemberUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: GroupMemberScalarWhereInput | GroupMemberScalarWhereInput[]
+  }
+
+  export type GroupOrderUncheckedUpdateManyWithoutOwnerNestedInput = {
+    create?: XOR<GroupOrderCreateWithoutOwnerInput, GroupOrderUncheckedCreateWithoutOwnerInput> | GroupOrderCreateWithoutOwnerInput[] | GroupOrderUncheckedCreateWithoutOwnerInput[]
+    connectOrCreate?: GroupOrderCreateOrConnectWithoutOwnerInput | GroupOrderCreateOrConnectWithoutOwnerInput[]
+    upsert?: GroupOrderUpsertWithWhereUniqueWithoutOwnerInput | GroupOrderUpsertWithWhereUniqueWithoutOwnerInput[]
+    createMany?: GroupOrderCreateManyOwnerInputEnvelope
+    set?: GroupOrderWhereUniqueInput | GroupOrderWhereUniqueInput[]
+    disconnect?: GroupOrderWhereUniqueInput | GroupOrderWhereUniqueInput[]
+    delete?: GroupOrderWhereUniqueInput | GroupOrderWhereUniqueInput[]
+    connect?: GroupOrderWhereUniqueInput | GroupOrderWhereUniqueInput[]
+    update?: GroupOrderUpdateWithWhereUniqueWithoutOwnerInput | GroupOrderUpdateWithWhereUniqueWithoutOwnerInput[]
+    updateMany?: GroupOrderUpdateManyWithWhereWithoutOwnerInput | GroupOrderUpdateManyWithWhereWithoutOwnerInput[]
+    deleteMany?: GroupOrderScalarWhereInput | GroupOrderScalarWhereInput[]
+  }
+
+  export type PaymentTransferUncheckedUpdateManyWithoutFromUserNestedInput = {
+    create?: XOR<PaymentTransferCreateWithoutFromUserInput, PaymentTransferUncheckedCreateWithoutFromUserInput> | PaymentTransferCreateWithoutFromUserInput[] | PaymentTransferUncheckedCreateWithoutFromUserInput[]
+    connectOrCreate?: PaymentTransferCreateOrConnectWithoutFromUserInput | PaymentTransferCreateOrConnectWithoutFromUserInput[]
+    upsert?: PaymentTransferUpsertWithWhereUniqueWithoutFromUserInput | PaymentTransferUpsertWithWhereUniqueWithoutFromUserInput[]
+    createMany?: PaymentTransferCreateManyFromUserInputEnvelope
+    set?: PaymentTransferWhereUniqueInput | PaymentTransferWhereUniqueInput[]
+    disconnect?: PaymentTransferWhereUniqueInput | PaymentTransferWhereUniqueInput[]
+    delete?: PaymentTransferWhereUniqueInput | PaymentTransferWhereUniqueInput[]
+    connect?: PaymentTransferWhereUniqueInput | PaymentTransferWhereUniqueInput[]
+    update?: PaymentTransferUpdateWithWhereUniqueWithoutFromUserInput | PaymentTransferUpdateWithWhereUniqueWithoutFromUserInput[]
+    updateMany?: PaymentTransferUpdateManyWithWhereWithoutFromUserInput | PaymentTransferUpdateManyWithWhereWithoutFromUserInput[]
+    deleteMany?: PaymentTransferScalarWhereInput | PaymentTransferScalarWhereInput[]
+  }
+
+  export type PaymentTransferUncheckedUpdateManyWithoutToUserNestedInput = {
+    create?: XOR<PaymentTransferCreateWithoutToUserInput, PaymentTransferUncheckedCreateWithoutToUserInput> | PaymentTransferCreateWithoutToUserInput[] | PaymentTransferUncheckedCreateWithoutToUserInput[]
+    connectOrCreate?: PaymentTransferCreateOrConnectWithoutToUserInput | PaymentTransferCreateOrConnectWithoutToUserInput[]
+    upsert?: PaymentTransferUpsertWithWhereUniqueWithoutToUserInput | PaymentTransferUpsertWithWhereUniqueWithoutToUserInput[]
+    createMany?: PaymentTransferCreateManyToUserInputEnvelope
+    set?: PaymentTransferWhereUniqueInput | PaymentTransferWhereUniqueInput[]
+    disconnect?: PaymentTransferWhereUniqueInput | PaymentTransferWhereUniqueInput[]
+    delete?: PaymentTransferWhereUniqueInput | PaymentTransferWhereUniqueInput[]
+    connect?: PaymentTransferWhereUniqueInput | PaymentTransferWhereUniqueInput[]
+    update?: PaymentTransferUpdateWithWhereUniqueWithoutToUserInput | PaymentTransferUpdateWithWhereUniqueWithoutToUserInput[]
+    updateMany?: PaymentTransferUpdateManyWithWhereWithoutToUserInput | PaymentTransferUpdateManyWithWhereWithoutToUserInput[]
+    deleteMany?: PaymentTransferScalarWhereInput | PaymentTransferScalarWhereInput[]
+  }
+
   export type ProductCreateNestedManyWithoutRestaurantInput = {
     create?: XOR<ProductCreateWithoutRestaurantInput, ProductUncheckedCreateWithoutRestaurantInput> | ProductCreateWithoutRestaurantInput[] | ProductUncheckedCreateWithoutRestaurantInput[]
     connectOrCreate?: ProductCreateOrConnectWithoutRestaurantInput | ProductCreateOrConnectWithoutRestaurantInput[]
@@ -9797,11 +16904,33 @@ export namespace Prisma {
     connect?: ProductWhereUniqueInput | ProductWhereUniqueInput[]
   }
 
+  export type GroupOrderCreateNestedManyWithoutRestaurantInput = {
+    create?: XOR<GroupOrderCreateWithoutRestaurantInput, GroupOrderUncheckedCreateWithoutRestaurantInput> | GroupOrderCreateWithoutRestaurantInput[] | GroupOrderUncheckedCreateWithoutRestaurantInput[]
+    connectOrCreate?: GroupOrderCreateOrConnectWithoutRestaurantInput | GroupOrderCreateOrConnectWithoutRestaurantInput[]
+    createMany?: GroupOrderCreateManyRestaurantInputEnvelope
+    connect?: GroupOrderWhereUniqueInput | GroupOrderWhereUniqueInput[]
+  }
+
   export type ProductUncheckedCreateNestedManyWithoutRestaurantInput = {
     create?: XOR<ProductCreateWithoutRestaurantInput, ProductUncheckedCreateWithoutRestaurantInput> | ProductCreateWithoutRestaurantInput[] | ProductUncheckedCreateWithoutRestaurantInput[]
     connectOrCreate?: ProductCreateOrConnectWithoutRestaurantInput | ProductCreateOrConnectWithoutRestaurantInput[]
     createMany?: ProductCreateManyRestaurantInputEnvelope
     connect?: ProductWhereUniqueInput | ProductWhereUniqueInput[]
+  }
+
+  export type GroupOrderUncheckedCreateNestedManyWithoutRestaurantInput = {
+    create?: XOR<GroupOrderCreateWithoutRestaurantInput, GroupOrderUncheckedCreateWithoutRestaurantInput> | GroupOrderCreateWithoutRestaurantInput[] | GroupOrderUncheckedCreateWithoutRestaurantInput[]
+    connectOrCreate?: GroupOrderCreateOrConnectWithoutRestaurantInput | GroupOrderCreateOrConnectWithoutRestaurantInput[]
+    createMany?: GroupOrderCreateManyRestaurantInputEnvelope
+    connect?: GroupOrderWhereUniqueInput | GroupOrderWhereUniqueInput[]
+  }
+
+  export type EnumPlatformFieldUpdateOperationsInput = {
+    set?: $Enums.Platform
+  }
+
+  export type NullableStringFieldUpdateOperationsInput = {
+    set?: string | null
   }
 
   export type ProductUpdateManyWithoutRestaurantNestedInput = {
@@ -9818,6 +16947,20 @@ export namespace Prisma {
     deleteMany?: ProductScalarWhereInput | ProductScalarWhereInput[]
   }
 
+  export type GroupOrderUpdateManyWithoutRestaurantNestedInput = {
+    create?: XOR<GroupOrderCreateWithoutRestaurantInput, GroupOrderUncheckedCreateWithoutRestaurantInput> | GroupOrderCreateWithoutRestaurantInput[] | GroupOrderUncheckedCreateWithoutRestaurantInput[]
+    connectOrCreate?: GroupOrderCreateOrConnectWithoutRestaurantInput | GroupOrderCreateOrConnectWithoutRestaurantInput[]
+    upsert?: GroupOrderUpsertWithWhereUniqueWithoutRestaurantInput | GroupOrderUpsertWithWhereUniqueWithoutRestaurantInput[]
+    createMany?: GroupOrderCreateManyRestaurantInputEnvelope
+    set?: GroupOrderWhereUniqueInput | GroupOrderWhereUniqueInput[]
+    disconnect?: GroupOrderWhereUniqueInput | GroupOrderWhereUniqueInput[]
+    delete?: GroupOrderWhereUniqueInput | GroupOrderWhereUniqueInput[]
+    connect?: GroupOrderWhereUniqueInput | GroupOrderWhereUniqueInput[]
+    update?: GroupOrderUpdateWithWhereUniqueWithoutRestaurantInput | GroupOrderUpdateWithWhereUniqueWithoutRestaurantInput[]
+    updateMany?: GroupOrderUpdateManyWithWhereWithoutRestaurantInput | GroupOrderUpdateManyWithWhereWithoutRestaurantInput[]
+    deleteMany?: GroupOrderScalarWhereInput | GroupOrderScalarWhereInput[]
+  }
+
   export type ProductUncheckedUpdateManyWithoutRestaurantNestedInput = {
     create?: XOR<ProductCreateWithoutRestaurantInput, ProductUncheckedCreateWithoutRestaurantInput> | ProductCreateWithoutRestaurantInput[] | ProductUncheckedCreateWithoutRestaurantInput[]
     connectOrCreate?: ProductCreateOrConnectWithoutRestaurantInput | ProductCreateOrConnectWithoutRestaurantInput[]
@@ -9830,6 +16973,20 @@ export namespace Prisma {
     update?: ProductUpdateWithWhereUniqueWithoutRestaurantInput | ProductUpdateWithWhereUniqueWithoutRestaurantInput[]
     updateMany?: ProductUpdateManyWithWhereWithoutRestaurantInput | ProductUpdateManyWithWhereWithoutRestaurantInput[]
     deleteMany?: ProductScalarWhereInput | ProductScalarWhereInput[]
+  }
+
+  export type GroupOrderUncheckedUpdateManyWithoutRestaurantNestedInput = {
+    create?: XOR<GroupOrderCreateWithoutRestaurantInput, GroupOrderUncheckedCreateWithoutRestaurantInput> | GroupOrderCreateWithoutRestaurantInput[] | GroupOrderUncheckedCreateWithoutRestaurantInput[]
+    connectOrCreate?: GroupOrderCreateOrConnectWithoutRestaurantInput | GroupOrderCreateOrConnectWithoutRestaurantInput[]
+    upsert?: GroupOrderUpsertWithWhereUniqueWithoutRestaurantInput | GroupOrderUpsertWithWhereUniqueWithoutRestaurantInput[]
+    createMany?: GroupOrderCreateManyRestaurantInputEnvelope
+    set?: GroupOrderWhereUniqueInput | GroupOrderWhereUniqueInput[]
+    disconnect?: GroupOrderWhereUniqueInput | GroupOrderWhereUniqueInput[]
+    delete?: GroupOrderWhereUniqueInput | GroupOrderWhereUniqueInput[]
+    connect?: GroupOrderWhereUniqueInput | GroupOrderWhereUniqueInput[]
+    update?: GroupOrderUpdateWithWhereUniqueWithoutRestaurantInput | GroupOrderUpdateWithWhereUniqueWithoutRestaurantInput[]
+    updateMany?: GroupOrderUpdateManyWithWhereWithoutRestaurantInput | GroupOrderUpdateManyWithWhereWithoutRestaurantInput[]
+    deleteMany?: GroupOrderScalarWhereInput | GroupOrderScalarWhereInput[]
   }
 
   export type RestaurantCreateNestedOneWithoutProductsInput = {
@@ -9850,10 +17007,6 @@ export namespace Prisma {
     connectOrCreate?: OrderItemCreateOrConnectWithoutProductInput | OrderItemCreateOrConnectWithoutProductInput[]
     createMany?: OrderItemCreateManyProductInputEnvelope
     connect?: OrderItemWhereUniqueInput | OrderItemWhereUniqueInput[]
-  }
-
-  export type NullableStringFieldUpdateOperationsInput = {
-    set?: string | null
   }
 
   export type FloatFieldUpdateOperationsInput = {
@@ -10000,6 +17153,222 @@ export namespace Prisma {
     update?: XOR<XOR<PaymentUpdateToOneWithWhereWithoutOrderInput, PaymentUpdateWithoutOrderInput>, PaymentUncheckedUpdateWithoutOrderInput>
   }
 
+  export type UserCreateNestedOneWithoutGroupOrdersInput = {
+    create?: XOR<UserCreateWithoutGroupOrdersInput, UserUncheckedCreateWithoutGroupOrdersInput>
+    connectOrCreate?: UserCreateOrConnectWithoutGroupOrdersInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type RestaurantCreateNestedOneWithoutGroupOrdersInput = {
+    create?: XOR<RestaurantCreateWithoutGroupOrdersInput, RestaurantUncheckedCreateWithoutGroupOrdersInput>
+    connectOrCreate?: RestaurantCreateOrConnectWithoutGroupOrdersInput
+    connect?: RestaurantWhereUniqueInput
+  }
+
+  export type GroupMemberCreateNestedManyWithoutGroupOrderInput = {
+    create?: XOR<GroupMemberCreateWithoutGroupOrderInput, GroupMemberUncheckedCreateWithoutGroupOrderInput> | GroupMemberCreateWithoutGroupOrderInput[] | GroupMemberUncheckedCreateWithoutGroupOrderInput[]
+    connectOrCreate?: GroupMemberCreateOrConnectWithoutGroupOrderInput | GroupMemberCreateOrConnectWithoutGroupOrderInput[]
+    createMany?: GroupMemberCreateManyGroupOrderInputEnvelope
+    connect?: GroupMemberWhereUniqueInput | GroupMemberWhereUniqueInput[]
+  }
+
+  export type PaymentTransferCreateNestedManyWithoutGroupOrderInput = {
+    create?: XOR<PaymentTransferCreateWithoutGroupOrderInput, PaymentTransferUncheckedCreateWithoutGroupOrderInput> | PaymentTransferCreateWithoutGroupOrderInput[] | PaymentTransferUncheckedCreateWithoutGroupOrderInput[]
+    connectOrCreate?: PaymentTransferCreateOrConnectWithoutGroupOrderInput | PaymentTransferCreateOrConnectWithoutGroupOrderInput[]
+    createMany?: PaymentTransferCreateManyGroupOrderInputEnvelope
+    connect?: PaymentTransferWhereUniqueInput | PaymentTransferWhereUniqueInput[]
+  }
+
+  export type GroupMemberUncheckedCreateNestedManyWithoutGroupOrderInput = {
+    create?: XOR<GroupMemberCreateWithoutGroupOrderInput, GroupMemberUncheckedCreateWithoutGroupOrderInput> | GroupMemberCreateWithoutGroupOrderInput[] | GroupMemberUncheckedCreateWithoutGroupOrderInput[]
+    connectOrCreate?: GroupMemberCreateOrConnectWithoutGroupOrderInput | GroupMemberCreateOrConnectWithoutGroupOrderInput[]
+    createMany?: GroupMemberCreateManyGroupOrderInputEnvelope
+    connect?: GroupMemberWhereUniqueInput | GroupMemberWhereUniqueInput[]
+  }
+
+  export type PaymentTransferUncheckedCreateNestedManyWithoutGroupOrderInput = {
+    create?: XOR<PaymentTransferCreateWithoutGroupOrderInput, PaymentTransferUncheckedCreateWithoutGroupOrderInput> | PaymentTransferCreateWithoutGroupOrderInput[] | PaymentTransferUncheckedCreateWithoutGroupOrderInput[]
+    connectOrCreate?: PaymentTransferCreateOrConnectWithoutGroupOrderInput | PaymentTransferCreateOrConnectWithoutGroupOrderInput[]
+    createMany?: PaymentTransferCreateManyGroupOrderInputEnvelope
+    connect?: PaymentTransferWhereUniqueInput | PaymentTransferWhereUniqueInput[]
+  }
+
+  export type EnumGroupOrderStatusFieldUpdateOperationsInput = {
+    set?: $Enums.GroupOrderStatus
+  }
+
+  export type NullableDateTimeFieldUpdateOperationsInput = {
+    set?: Date | string | null
+  }
+
+  export type UserUpdateOneRequiredWithoutGroupOrdersNestedInput = {
+    create?: XOR<UserCreateWithoutGroupOrdersInput, UserUncheckedCreateWithoutGroupOrdersInput>
+    connectOrCreate?: UserCreateOrConnectWithoutGroupOrdersInput
+    upsert?: UserUpsertWithoutGroupOrdersInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutGroupOrdersInput, UserUpdateWithoutGroupOrdersInput>, UserUncheckedUpdateWithoutGroupOrdersInput>
+  }
+
+  export type RestaurantUpdateOneRequiredWithoutGroupOrdersNestedInput = {
+    create?: XOR<RestaurantCreateWithoutGroupOrdersInput, RestaurantUncheckedCreateWithoutGroupOrdersInput>
+    connectOrCreate?: RestaurantCreateOrConnectWithoutGroupOrdersInput
+    upsert?: RestaurantUpsertWithoutGroupOrdersInput
+    connect?: RestaurantWhereUniqueInput
+    update?: XOR<XOR<RestaurantUpdateToOneWithWhereWithoutGroupOrdersInput, RestaurantUpdateWithoutGroupOrdersInput>, RestaurantUncheckedUpdateWithoutGroupOrdersInput>
+  }
+
+  export type GroupMemberUpdateManyWithoutGroupOrderNestedInput = {
+    create?: XOR<GroupMemberCreateWithoutGroupOrderInput, GroupMemberUncheckedCreateWithoutGroupOrderInput> | GroupMemberCreateWithoutGroupOrderInput[] | GroupMemberUncheckedCreateWithoutGroupOrderInput[]
+    connectOrCreate?: GroupMemberCreateOrConnectWithoutGroupOrderInput | GroupMemberCreateOrConnectWithoutGroupOrderInput[]
+    upsert?: GroupMemberUpsertWithWhereUniqueWithoutGroupOrderInput | GroupMemberUpsertWithWhereUniqueWithoutGroupOrderInput[]
+    createMany?: GroupMemberCreateManyGroupOrderInputEnvelope
+    set?: GroupMemberWhereUniqueInput | GroupMemberWhereUniqueInput[]
+    disconnect?: GroupMemberWhereUniqueInput | GroupMemberWhereUniqueInput[]
+    delete?: GroupMemberWhereUniqueInput | GroupMemberWhereUniqueInput[]
+    connect?: GroupMemberWhereUniqueInput | GroupMemberWhereUniqueInput[]
+    update?: GroupMemberUpdateWithWhereUniqueWithoutGroupOrderInput | GroupMemberUpdateWithWhereUniqueWithoutGroupOrderInput[]
+    updateMany?: GroupMemberUpdateManyWithWhereWithoutGroupOrderInput | GroupMemberUpdateManyWithWhereWithoutGroupOrderInput[]
+    deleteMany?: GroupMemberScalarWhereInput | GroupMemberScalarWhereInput[]
+  }
+
+  export type PaymentTransferUpdateManyWithoutGroupOrderNestedInput = {
+    create?: XOR<PaymentTransferCreateWithoutGroupOrderInput, PaymentTransferUncheckedCreateWithoutGroupOrderInput> | PaymentTransferCreateWithoutGroupOrderInput[] | PaymentTransferUncheckedCreateWithoutGroupOrderInput[]
+    connectOrCreate?: PaymentTransferCreateOrConnectWithoutGroupOrderInput | PaymentTransferCreateOrConnectWithoutGroupOrderInput[]
+    upsert?: PaymentTransferUpsertWithWhereUniqueWithoutGroupOrderInput | PaymentTransferUpsertWithWhereUniqueWithoutGroupOrderInput[]
+    createMany?: PaymentTransferCreateManyGroupOrderInputEnvelope
+    set?: PaymentTransferWhereUniqueInput | PaymentTransferWhereUniqueInput[]
+    disconnect?: PaymentTransferWhereUniqueInput | PaymentTransferWhereUniqueInput[]
+    delete?: PaymentTransferWhereUniqueInput | PaymentTransferWhereUniqueInput[]
+    connect?: PaymentTransferWhereUniqueInput | PaymentTransferWhereUniqueInput[]
+    update?: PaymentTransferUpdateWithWhereUniqueWithoutGroupOrderInput | PaymentTransferUpdateWithWhereUniqueWithoutGroupOrderInput[]
+    updateMany?: PaymentTransferUpdateManyWithWhereWithoutGroupOrderInput | PaymentTransferUpdateManyWithWhereWithoutGroupOrderInput[]
+    deleteMany?: PaymentTransferScalarWhereInput | PaymentTransferScalarWhereInput[]
+  }
+
+  export type GroupMemberUncheckedUpdateManyWithoutGroupOrderNestedInput = {
+    create?: XOR<GroupMemberCreateWithoutGroupOrderInput, GroupMemberUncheckedCreateWithoutGroupOrderInput> | GroupMemberCreateWithoutGroupOrderInput[] | GroupMemberUncheckedCreateWithoutGroupOrderInput[]
+    connectOrCreate?: GroupMemberCreateOrConnectWithoutGroupOrderInput | GroupMemberCreateOrConnectWithoutGroupOrderInput[]
+    upsert?: GroupMemberUpsertWithWhereUniqueWithoutGroupOrderInput | GroupMemberUpsertWithWhereUniqueWithoutGroupOrderInput[]
+    createMany?: GroupMemberCreateManyGroupOrderInputEnvelope
+    set?: GroupMemberWhereUniqueInput | GroupMemberWhereUniqueInput[]
+    disconnect?: GroupMemberWhereUniqueInput | GroupMemberWhereUniqueInput[]
+    delete?: GroupMemberWhereUniqueInput | GroupMemberWhereUniqueInput[]
+    connect?: GroupMemberWhereUniqueInput | GroupMemberWhereUniqueInput[]
+    update?: GroupMemberUpdateWithWhereUniqueWithoutGroupOrderInput | GroupMemberUpdateWithWhereUniqueWithoutGroupOrderInput[]
+    updateMany?: GroupMemberUpdateManyWithWhereWithoutGroupOrderInput | GroupMemberUpdateManyWithWhereWithoutGroupOrderInput[]
+    deleteMany?: GroupMemberScalarWhereInput | GroupMemberScalarWhereInput[]
+  }
+
+  export type PaymentTransferUncheckedUpdateManyWithoutGroupOrderNestedInput = {
+    create?: XOR<PaymentTransferCreateWithoutGroupOrderInput, PaymentTransferUncheckedCreateWithoutGroupOrderInput> | PaymentTransferCreateWithoutGroupOrderInput[] | PaymentTransferUncheckedCreateWithoutGroupOrderInput[]
+    connectOrCreate?: PaymentTransferCreateOrConnectWithoutGroupOrderInput | PaymentTransferCreateOrConnectWithoutGroupOrderInput[]
+    upsert?: PaymentTransferUpsertWithWhereUniqueWithoutGroupOrderInput | PaymentTransferUpsertWithWhereUniqueWithoutGroupOrderInput[]
+    createMany?: PaymentTransferCreateManyGroupOrderInputEnvelope
+    set?: PaymentTransferWhereUniqueInput | PaymentTransferWhereUniqueInput[]
+    disconnect?: PaymentTransferWhereUniqueInput | PaymentTransferWhereUniqueInput[]
+    delete?: PaymentTransferWhereUniqueInput | PaymentTransferWhereUniqueInput[]
+    connect?: PaymentTransferWhereUniqueInput | PaymentTransferWhereUniqueInput[]
+    update?: PaymentTransferUpdateWithWhereUniqueWithoutGroupOrderInput | PaymentTransferUpdateWithWhereUniqueWithoutGroupOrderInput[]
+    updateMany?: PaymentTransferUpdateManyWithWhereWithoutGroupOrderInput | PaymentTransferUpdateManyWithWhereWithoutGroupOrderInput[]
+    deleteMany?: PaymentTransferScalarWhereInput | PaymentTransferScalarWhereInput[]
+  }
+
+  export type GroupOrderCreateNestedOneWithoutMembersInput = {
+    create?: XOR<GroupOrderCreateWithoutMembersInput, GroupOrderUncheckedCreateWithoutMembersInput>
+    connectOrCreate?: GroupOrderCreateOrConnectWithoutMembersInput
+    connect?: GroupOrderWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutGroupMembersInput = {
+    create?: XOR<UserCreateWithoutGroupMembersInput, UserUncheckedCreateWithoutGroupMembersInput>
+    connectOrCreate?: UserCreateOrConnectWithoutGroupMembersInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type EnumGroupRoleFieldUpdateOperationsInput = {
+    set?: $Enums.GroupRole
+  }
+
+  export type GroupOrderUpdateOneRequiredWithoutMembersNestedInput = {
+    create?: XOR<GroupOrderCreateWithoutMembersInput, GroupOrderUncheckedCreateWithoutMembersInput>
+    connectOrCreate?: GroupOrderCreateOrConnectWithoutMembersInput
+    upsert?: GroupOrderUpsertWithoutMembersInput
+    connect?: GroupOrderWhereUniqueInput
+    update?: XOR<XOR<GroupOrderUpdateToOneWithWhereWithoutMembersInput, GroupOrderUpdateWithoutMembersInput>, GroupOrderUncheckedUpdateWithoutMembersInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutGroupMembersNestedInput = {
+    create?: XOR<UserCreateWithoutGroupMembersInput, UserUncheckedCreateWithoutGroupMembersInput>
+    connectOrCreate?: UserCreateOrConnectWithoutGroupMembersInput
+    upsert?: UserUpsertWithoutGroupMembersInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutGroupMembersInput, UserUpdateWithoutGroupMembersInput>, UserUncheckedUpdateWithoutGroupMembersInput>
+  }
+
+  export type UserCreateNestedOneWithoutBankAccountsInput = {
+    create?: XOR<UserCreateWithoutBankAccountsInput, UserUncheckedCreateWithoutBankAccountsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutBankAccountsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type BoolFieldUpdateOperationsInput = {
+    set?: boolean
+  }
+
+  export type UserUpdateOneRequiredWithoutBankAccountsNestedInput = {
+    create?: XOR<UserCreateWithoutBankAccountsInput, UserUncheckedCreateWithoutBankAccountsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutBankAccountsInput
+    upsert?: UserUpsertWithoutBankAccountsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutBankAccountsInput, UserUpdateWithoutBankAccountsInput>, UserUncheckedUpdateWithoutBankAccountsInput>
+  }
+
+  export type GroupOrderCreateNestedOneWithoutPaymentsInput = {
+    create?: XOR<GroupOrderCreateWithoutPaymentsInput, GroupOrderUncheckedCreateWithoutPaymentsInput>
+    connectOrCreate?: GroupOrderCreateOrConnectWithoutPaymentsInput
+    connect?: GroupOrderWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutPaymentTransfersFromInput = {
+    create?: XOR<UserCreateWithoutPaymentTransfersFromInput, UserUncheckedCreateWithoutPaymentTransfersFromInput>
+    connectOrCreate?: UserCreateOrConnectWithoutPaymentTransfersFromInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutPaymentTransfersToInput = {
+    create?: XOR<UserCreateWithoutPaymentTransfersToInput, UserUncheckedCreateWithoutPaymentTransfersToInput>
+    connectOrCreate?: UserCreateOrConnectWithoutPaymentTransfersToInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type EnumPaymentTransferStatusFieldUpdateOperationsInput = {
+    set?: $Enums.PaymentTransferStatus
+  }
+
+  export type GroupOrderUpdateOneRequiredWithoutPaymentsNestedInput = {
+    create?: XOR<GroupOrderCreateWithoutPaymentsInput, GroupOrderUncheckedCreateWithoutPaymentsInput>
+    connectOrCreate?: GroupOrderCreateOrConnectWithoutPaymentsInput
+    upsert?: GroupOrderUpsertWithoutPaymentsInput
+    connect?: GroupOrderWhereUniqueInput
+    update?: XOR<XOR<GroupOrderUpdateToOneWithWhereWithoutPaymentsInput, GroupOrderUpdateWithoutPaymentsInput>, GroupOrderUncheckedUpdateWithoutPaymentsInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutPaymentTransfersFromNestedInput = {
+    create?: XOR<UserCreateWithoutPaymentTransfersFromInput, UserUncheckedCreateWithoutPaymentTransfersFromInput>
+    connectOrCreate?: UserCreateOrConnectWithoutPaymentTransfersFromInput
+    upsert?: UserUpsertWithoutPaymentTransfersFromInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutPaymentTransfersFromInput, UserUpdateWithoutPaymentTransfersFromInput>, UserUncheckedUpdateWithoutPaymentTransfersFromInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutPaymentTransfersToNestedInput = {
+    create?: XOR<UserCreateWithoutPaymentTransfersToInput, UserUncheckedCreateWithoutPaymentTransfersToInput>
+    connectOrCreate?: UserCreateOrConnectWithoutPaymentTransfersToInput
+    upsert?: UserUpsertWithoutPaymentTransfersToInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutPaymentTransfersToInput, UserUpdateWithoutPaymentTransfersToInput>, UserUncheckedUpdateWithoutPaymentTransfersToInput>
+  }
+
   export type OrderCreateNestedOneWithoutOrderItemsInput = {
     create?: XOR<OrderCreateWithoutOrderItemsInput, OrderUncheckedCreateWithoutOrderItemsInput>
     connectOrCreate?: OrderCreateOrConnectWithoutOrderItemsInput
@@ -10134,6 +17503,13 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
+  export type NestedEnumPlatformFilter<$PrismaModel = never> = {
+    equals?: $Enums.Platform | EnumPlatformFieldRefInput<$PrismaModel>
+    in?: $Enums.Platform[] | ListEnumPlatformFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Platform[] | ListEnumPlatformFieldRefInput<$PrismaModel>
+    not?: NestedEnumPlatformFilter<$PrismaModel> | $Enums.Platform
+  }
+
   export type NestedStringNullableFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
     in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
@@ -10148,15 +17524,14 @@ export namespace Prisma {
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
-  export type NestedFloatFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel>
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatFilter<$PrismaModel> | number
+  export type NestedEnumPlatformWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Platform | EnumPlatformFieldRefInput<$PrismaModel>
+    in?: $Enums.Platform[] | ListEnumPlatformFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Platform[] | ListEnumPlatformFieldRefInput<$PrismaModel>
+    not?: NestedEnumPlatformWithAggregatesFilter<$PrismaModel> | $Enums.Platform
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumPlatformFilter<$PrismaModel>
+    _max?: NestedEnumPlatformFilter<$PrismaModel>
   }
 
   export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -10185,6 +17560,17 @@ export namespace Prisma {
     gt?: number | IntFieldRefInput<$PrismaModel>
     gte?: number | IntFieldRefInput<$PrismaModel>
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type NestedFloatFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatFilter<$PrismaModel> | number
   }
 
   export type NestedFloatWithAggregatesFilter<$PrismaModel = never> = {
@@ -10234,6 +17620,95 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumOrderStatusFilter<$PrismaModel>
     _max?: NestedEnumOrderStatusFilter<$PrismaModel>
+  }
+
+  export type NestedEnumGroupOrderStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.GroupOrderStatus | EnumGroupOrderStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.GroupOrderStatus[] | ListEnumGroupOrderStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.GroupOrderStatus[] | ListEnumGroupOrderStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumGroupOrderStatusFilter<$PrismaModel> | $Enums.GroupOrderStatus
+  }
+
+  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
+  export type NestedEnumGroupOrderStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.GroupOrderStatus | EnumGroupOrderStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.GroupOrderStatus[] | ListEnumGroupOrderStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.GroupOrderStatus[] | ListEnumGroupOrderStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumGroupOrderStatusWithAggregatesFilter<$PrismaModel> | $Enums.GroupOrderStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumGroupOrderStatusFilter<$PrismaModel>
+    _max?: NestedEnumGroupOrderStatusFilter<$PrismaModel>
+  }
+
+  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
+  }
+
+  export type NestedEnumGroupRoleFilter<$PrismaModel = never> = {
+    equals?: $Enums.GroupRole | EnumGroupRoleFieldRefInput<$PrismaModel>
+    in?: $Enums.GroupRole[] | ListEnumGroupRoleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.GroupRole[] | ListEnumGroupRoleFieldRefInput<$PrismaModel>
+    not?: NestedEnumGroupRoleFilter<$PrismaModel> | $Enums.GroupRole
+  }
+
+  export type NestedEnumGroupRoleWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.GroupRole | EnumGroupRoleFieldRefInput<$PrismaModel>
+    in?: $Enums.GroupRole[] | ListEnumGroupRoleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.GroupRole[] | ListEnumGroupRoleFieldRefInput<$PrismaModel>
+    not?: NestedEnumGroupRoleWithAggregatesFilter<$PrismaModel> | $Enums.GroupRole
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumGroupRoleFilter<$PrismaModel>
+    _max?: NestedEnumGroupRoleFilter<$PrismaModel>
+  }
+
+  export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
+  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
+  }
+
+  export type NestedEnumPaymentTransferStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.PaymentTransferStatus | EnumPaymentTransferStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.PaymentTransferStatus[] | ListEnumPaymentTransferStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PaymentTransferStatus[] | ListEnumPaymentTransferStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumPaymentTransferStatusFilter<$PrismaModel> | $Enums.PaymentTransferStatus
+  }
+
+  export type NestedEnumPaymentTransferStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.PaymentTransferStatus | EnumPaymentTransferStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.PaymentTransferStatus[] | ListEnumPaymentTransferStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PaymentTransferStatus[] | ListEnumPaymentTransferStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumPaymentTransferStatusWithAggregatesFilter<$PrismaModel> | $Enums.PaymentTransferStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumPaymentTransferStatusFilter<$PrismaModel>
+    _max?: NestedEnumPaymentTransferStatusFilter<$PrismaModel>
   }
 
   export type NestedEnumPaymentMethodFilter<$PrismaModel = never> = {
@@ -10300,6 +17775,206 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type BankAccountCreateWithoutUserInput = {
+    id?: string
+    bankName: string
+    accountNumber: string
+    accountHolderName: string
+    isDefault?: boolean
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type BankAccountUncheckedCreateWithoutUserInput = {
+    id?: string
+    bankName: string
+    accountNumber: string
+    accountHolderName: string
+    isDefault?: boolean
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type BankAccountCreateOrConnectWithoutUserInput = {
+    where: BankAccountWhereUniqueInput
+    create: XOR<BankAccountCreateWithoutUserInput, BankAccountUncheckedCreateWithoutUserInput>
+  }
+
+  export type BankAccountCreateManyUserInputEnvelope = {
+    data: BankAccountCreateManyUserInput | BankAccountCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type GroupMemberCreateWithoutUserInput = {
+    id?: string
+    role?: $Enums.GroupRole
+    cartTotal?: number
+    joinedAt?: Date | string
+    leftAt?: Date | string | null
+    groupOrder: GroupOrderCreateNestedOneWithoutMembersInput
+  }
+
+  export type GroupMemberUncheckedCreateWithoutUserInput = {
+    id?: string
+    groupOrderId: string
+    role?: $Enums.GroupRole
+    cartTotal?: number
+    joinedAt?: Date | string
+    leftAt?: Date | string | null
+  }
+
+  export type GroupMemberCreateOrConnectWithoutUserInput = {
+    where: GroupMemberWhereUniqueInput
+    create: XOR<GroupMemberCreateWithoutUserInput, GroupMemberUncheckedCreateWithoutUserInput>
+  }
+
+  export type GroupMemberCreateManyUserInputEnvelope = {
+    data: GroupMemberCreateManyUserInput | GroupMemberCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type GroupOrderCreateWithoutOwnerInput = {
+    id?: string
+    groupId: string
+    platform?: $Enums.Platform
+    platformOrderId?: string | null
+    status?: $Enums.GroupOrderStatus
+    totalAmount?: number
+    deliveryFee?: number
+    serviceFee?: number
+    tax?: number
+    lockedAt?: Date | string | null
+    placedAt?: Date | string | null
+    deliveredAt?: Date | string | null
+    paymentDeadline?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    restaurant: RestaurantCreateNestedOneWithoutGroupOrdersInput
+    members?: GroupMemberCreateNestedManyWithoutGroupOrderInput
+    payments?: PaymentTransferCreateNestedManyWithoutGroupOrderInput
+  }
+
+  export type GroupOrderUncheckedCreateWithoutOwnerInput = {
+    id?: string
+    groupId: string
+    restaurantId: string
+    platform?: $Enums.Platform
+    platformOrderId?: string | null
+    status?: $Enums.GroupOrderStatus
+    totalAmount?: number
+    deliveryFee?: number
+    serviceFee?: number
+    tax?: number
+    lockedAt?: Date | string | null
+    placedAt?: Date | string | null
+    deliveredAt?: Date | string | null
+    paymentDeadline?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    members?: GroupMemberUncheckedCreateNestedManyWithoutGroupOrderInput
+    payments?: PaymentTransferUncheckedCreateNestedManyWithoutGroupOrderInput
+  }
+
+  export type GroupOrderCreateOrConnectWithoutOwnerInput = {
+    where: GroupOrderWhereUniqueInput
+    create: XOR<GroupOrderCreateWithoutOwnerInput, GroupOrderUncheckedCreateWithoutOwnerInput>
+  }
+
+  export type GroupOrderCreateManyOwnerInputEnvelope = {
+    data: GroupOrderCreateManyOwnerInput | GroupOrderCreateManyOwnerInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type PaymentTransferCreateWithoutFromUserInput = {
+    id?: string
+    amount: number
+    status?: $Enums.PaymentTransferStatus
+    transactionId?: string | null
+    bankName?: string | null
+    transferDate?: Date | string | null
+    verifiedAt?: Date | string | null
+    verifiedBy?: string | null
+    notes?: string | null
+    screenshotUrl?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    groupOrder: GroupOrderCreateNestedOneWithoutPaymentsInput
+    toUser: UserCreateNestedOneWithoutPaymentTransfersToInput
+  }
+
+  export type PaymentTransferUncheckedCreateWithoutFromUserInput = {
+    id?: string
+    groupOrderId: string
+    toUserId: string
+    amount: number
+    status?: $Enums.PaymentTransferStatus
+    transactionId?: string | null
+    bankName?: string | null
+    transferDate?: Date | string | null
+    verifiedAt?: Date | string | null
+    verifiedBy?: string | null
+    notes?: string | null
+    screenshotUrl?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PaymentTransferCreateOrConnectWithoutFromUserInput = {
+    where: PaymentTransferWhereUniqueInput
+    create: XOR<PaymentTransferCreateWithoutFromUserInput, PaymentTransferUncheckedCreateWithoutFromUserInput>
+  }
+
+  export type PaymentTransferCreateManyFromUserInputEnvelope = {
+    data: PaymentTransferCreateManyFromUserInput | PaymentTransferCreateManyFromUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type PaymentTransferCreateWithoutToUserInput = {
+    id?: string
+    amount: number
+    status?: $Enums.PaymentTransferStatus
+    transactionId?: string | null
+    bankName?: string | null
+    transferDate?: Date | string | null
+    verifiedAt?: Date | string | null
+    verifiedBy?: string | null
+    notes?: string | null
+    screenshotUrl?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    groupOrder: GroupOrderCreateNestedOneWithoutPaymentsInput
+    fromUser: UserCreateNestedOneWithoutPaymentTransfersFromInput
+  }
+
+  export type PaymentTransferUncheckedCreateWithoutToUserInput = {
+    id?: string
+    groupOrderId: string
+    fromUserId: string
+    amount: number
+    status?: $Enums.PaymentTransferStatus
+    transactionId?: string | null
+    bankName?: string | null
+    transferDate?: Date | string | null
+    verifiedAt?: Date | string | null
+    verifiedBy?: string | null
+    notes?: string | null
+    screenshotUrl?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PaymentTransferCreateOrConnectWithoutToUserInput = {
+    where: PaymentTransferWhereUniqueInput
+    create: XOR<PaymentTransferCreateWithoutToUserInput, PaymentTransferUncheckedCreateWithoutToUserInput>
+  }
+
+  export type PaymentTransferCreateManyToUserInputEnvelope = {
+    data: PaymentTransferCreateManyToUserInput | PaymentTransferCreateManyToUserInput[]
+    skipDuplicates?: boolean
+  }
+
   export type OrderUpsertWithWhereUniqueWithoutUserInput = {
     where: OrderWhereUniqueInput
     update: XOR<OrderUpdateWithoutUserInput, OrderUncheckedUpdateWithoutUserInput>
@@ -10326,6 +18001,158 @@ export namespace Prisma {
     total?: FloatFilter<"Order"> | number
     createdAt?: DateTimeFilter<"Order"> | Date | string
     updatedAt?: DateTimeFilter<"Order"> | Date | string
+  }
+
+  export type BankAccountUpsertWithWhereUniqueWithoutUserInput = {
+    where: BankAccountWhereUniqueInput
+    update: XOR<BankAccountUpdateWithoutUserInput, BankAccountUncheckedUpdateWithoutUserInput>
+    create: XOR<BankAccountCreateWithoutUserInput, BankAccountUncheckedCreateWithoutUserInput>
+  }
+
+  export type BankAccountUpdateWithWhereUniqueWithoutUserInput = {
+    where: BankAccountWhereUniqueInput
+    data: XOR<BankAccountUpdateWithoutUserInput, BankAccountUncheckedUpdateWithoutUserInput>
+  }
+
+  export type BankAccountUpdateManyWithWhereWithoutUserInput = {
+    where: BankAccountScalarWhereInput
+    data: XOR<BankAccountUpdateManyMutationInput, BankAccountUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type BankAccountScalarWhereInput = {
+    AND?: BankAccountScalarWhereInput | BankAccountScalarWhereInput[]
+    OR?: BankAccountScalarWhereInput[]
+    NOT?: BankAccountScalarWhereInput | BankAccountScalarWhereInput[]
+    id?: StringFilter<"BankAccount"> | string
+    userId?: StringFilter<"BankAccount"> | string
+    bankName?: StringFilter<"BankAccount"> | string
+    accountNumber?: StringFilter<"BankAccount"> | string
+    accountHolderName?: StringFilter<"BankAccount"> | string
+    isDefault?: BoolFilter<"BankAccount"> | boolean
+    isActive?: BoolFilter<"BankAccount"> | boolean
+    createdAt?: DateTimeFilter<"BankAccount"> | Date | string
+    updatedAt?: DateTimeFilter<"BankAccount"> | Date | string
+  }
+
+  export type GroupMemberUpsertWithWhereUniqueWithoutUserInput = {
+    where: GroupMemberWhereUniqueInput
+    update: XOR<GroupMemberUpdateWithoutUserInput, GroupMemberUncheckedUpdateWithoutUserInput>
+    create: XOR<GroupMemberCreateWithoutUserInput, GroupMemberUncheckedCreateWithoutUserInput>
+  }
+
+  export type GroupMemberUpdateWithWhereUniqueWithoutUserInput = {
+    where: GroupMemberWhereUniqueInput
+    data: XOR<GroupMemberUpdateWithoutUserInput, GroupMemberUncheckedUpdateWithoutUserInput>
+  }
+
+  export type GroupMemberUpdateManyWithWhereWithoutUserInput = {
+    where: GroupMemberScalarWhereInput
+    data: XOR<GroupMemberUpdateManyMutationInput, GroupMemberUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type GroupMemberScalarWhereInput = {
+    AND?: GroupMemberScalarWhereInput | GroupMemberScalarWhereInput[]
+    OR?: GroupMemberScalarWhereInput[]
+    NOT?: GroupMemberScalarWhereInput | GroupMemberScalarWhereInput[]
+    id?: StringFilter<"GroupMember"> | string
+    groupOrderId?: StringFilter<"GroupMember"> | string
+    userId?: StringFilter<"GroupMember"> | string
+    role?: EnumGroupRoleFilter<"GroupMember"> | $Enums.GroupRole
+    cartTotal?: FloatFilter<"GroupMember"> | number
+    joinedAt?: DateTimeFilter<"GroupMember"> | Date | string
+    leftAt?: DateTimeNullableFilter<"GroupMember"> | Date | string | null
+  }
+
+  export type GroupOrderUpsertWithWhereUniqueWithoutOwnerInput = {
+    where: GroupOrderWhereUniqueInput
+    update: XOR<GroupOrderUpdateWithoutOwnerInput, GroupOrderUncheckedUpdateWithoutOwnerInput>
+    create: XOR<GroupOrderCreateWithoutOwnerInput, GroupOrderUncheckedCreateWithoutOwnerInput>
+  }
+
+  export type GroupOrderUpdateWithWhereUniqueWithoutOwnerInput = {
+    where: GroupOrderWhereUniqueInput
+    data: XOR<GroupOrderUpdateWithoutOwnerInput, GroupOrderUncheckedUpdateWithoutOwnerInput>
+  }
+
+  export type GroupOrderUpdateManyWithWhereWithoutOwnerInput = {
+    where: GroupOrderScalarWhereInput
+    data: XOR<GroupOrderUpdateManyMutationInput, GroupOrderUncheckedUpdateManyWithoutOwnerInput>
+  }
+
+  export type GroupOrderScalarWhereInput = {
+    AND?: GroupOrderScalarWhereInput | GroupOrderScalarWhereInput[]
+    OR?: GroupOrderScalarWhereInput[]
+    NOT?: GroupOrderScalarWhereInput | GroupOrderScalarWhereInput[]
+    id?: StringFilter<"GroupOrder"> | string
+    groupId?: StringFilter<"GroupOrder"> | string
+    ownerId?: StringFilter<"GroupOrder"> | string
+    restaurantId?: StringFilter<"GroupOrder"> | string
+    platform?: EnumPlatformFilter<"GroupOrder"> | $Enums.Platform
+    platformOrderId?: StringNullableFilter<"GroupOrder"> | string | null
+    status?: EnumGroupOrderStatusFilter<"GroupOrder"> | $Enums.GroupOrderStatus
+    totalAmount?: FloatFilter<"GroupOrder"> | number
+    deliveryFee?: FloatFilter<"GroupOrder"> | number
+    serviceFee?: FloatFilter<"GroupOrder"> | number
+    tax?: FloatFilter<"GroupOrder"> | number
+    lockedAt?: DateTimeNullableFilter<"GroupOrder"> | Date | string | null
+    placedAt?: DateTimeNullableFilter<"GroupOrder"> | Date | string | null
+    deliveredAt?: DateTimeNullableFilter<"GroupOrder"> | Date | string | null
+    paymentDeadline?: DateTimeNullableFilter<"GroupOrder"> | Date | string | null
+    createdAt?: DateTimeFilter<"GroupOrder"> | Date | string
+    updatedAt?: DateTimeFilter<"GroupOrder"> | Date | string
+  }
+
+  export type PaymentTransferUpsertWithWhereUniqueWithoutFromUserInput = {
+    where: PaymentTransferWhereUniqueInput
+    update: XOR<PaymentTransferUpdateWithoutFromUserInput, PaymentTransferUncheckedUpdateWithoutFromUserInput>
+    create: XOR<PaymentTransferCreateWithoutFromUserInput, PaymentTransferUncheckedCreateWithoutFromUserInput>
+  }
+
+  export type PaymentTransferUpdateWithWhereUniqueWithoutFromUserInput = {
+    where: PaymentTransferWhereUniqueInput
+    data: XOR<PaymentTransferUpdateWithoutFromUserInput, PaymentTransferUncheckedUpdateWithoutFromUserInput>
+  }
+
+  export type PaymentTransferUpdateManyWithWhereWithoutFromUserInput = {
+    where: PaymentTransferScalarWhereInput
+    data: XOR<PaymentTransferUpdateManyMutationInput, PaymentTransferUncheckedUpdateManyWithoutFromUserInput>
+  }
+
+  export type PaymentTransferScalarWhereInput = {
+    AND?: PaymentTransferScalarWhereInput | PaymentTransferScalarWhereInput[]
+    OR?: PaymentTransferScalarWhereInput[]
+    NOT?: PaymentTransferScalarWhereInput | PaymentTransferScalarWhereInput[]
+    id?: StringFilter<"PaymentTransfer"> | string
+    groupOrderId?: StringFilter<"PaymentTransfer"> | string
+    fromUserId?: StringFilter<"PaymentTransfer"> | string
+    toUserId?: StringFilter<"PaymentTransfer"> | string
+    amount?: FloatFilter<"PaymentTransfer"> | number
+    status?: EnumPaymentTransferStatusFilter<"PaymentTransfer"> | $Enums.PaymentTransferStatus
+    transactionId?: StringNullableFilter<"PaymentTransfer"> | string | null
+    bankName?: StringNullableFilter<"PaymentTransfer"> | string | null
+    transferDate?: DateTimeNullableFilter<"PaymentTransfer"> | Date | string | null
+    verifiedAt?: DateTimeNullableFilter<"PaymentTransfer"> | Date | string | null
+    verifiedBy?: StringNullableFilter<"PaymentTransfer"> | string | null
+    notes?: StringNullableFilter<"PaymentTransfer"> | string | null
+    screenshotUrl?: StringNullableFilter<"PaymentTransfer"> | string | null
+    createdAt?: DateTimeFilter<"PaymentTransfer"> | Date | string
+    updatedAt?: DateTimeFilter<"PaymentTransfer"> | Date | string
+  }
+
+  export type PaymentTransferUpsertWithWhereUniqueWithoutToUserInput = {
+    where: PaymentTransferWhereUniqueInput
+    update: XOR<PaymentTransferUpdateWithoutToUserInput, PaymentTransferUncheckedUpdateWithoutToUserInput>
+    create: XOR<PaymentTransferCreateWithoutToUserInput, PaymentTransferUncheckedCreateWithoutToUserInput>
+  }
+
+  export type PaymentTransferUpdateWithWhereUniqueWithoutToUserInput = {
+    where: PaymentTransferWhereUniqueInput
+    data: XOR<PaymentTransferUpdateWithoutToUserInput, PaymentTransferUncheckedUpdateWithoutToUserInput>
+  }
+
+  export type PaymentTransferUpdateManyWithWhereWithoutToUserInput = {
+    where: PaymentTransferScalarWhereInput
+    data: XOR<PaymentTransferUpdateManyMutationInput, PaymentTransferUncheckedUpdateManyWithoutToUserInput>
   }
 
   export type ProductCreateWithoutRestaurantInput = {
@@ -10362,6 +18189,58 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type GroupOrderCreateWithoutRestaurantInput = {
+    id?: string
+    groupId: string
+    platform?: $Enums.Platform
+    platformOrderId?: string | null
+    status?: $Enums.GroupOrderStatus
+    totalAmount?: number
+    deliveryFee?: number
+    serviceFee?: number
+    tax?: number
+    lockedAt?: Date | string | null
+    placedAt?: Date | string | null
+    deliveredAt?: Date | string | null
+    paymentDeadline?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    owner: UserCreateNestedOneWithoutGroupOrdersInput
+    members?: GroupMemberCreateNestedManyWithoutGroupOrderInput
+    payments?: PaymentTransferCreateNestedManyWithoutGroupOrderInput
+  }
+
+  export type GroupOrderUncheckedCreateWithoutRestaurantInput = {
+    id?: string
+    groupId: string
+    ownerId: string
+    platform?: $Enums.Platform
+    platformOrderId?: string | null
+    status?: $Enums.GroupOrderStatus
+    totalAmount?: number
+    deliveryFee?: number
+    serviceFee?: number
+    tax?: number
+    lockedAt?: Date | string | null
+    placedAt?: Date | string | null
+    deliveredAt?: Date | string | null
+    paymentDeadline?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    members?: GroupMemberUncheckedCreateNestedManyWithoutGroupOrderInput
+    payments?: PaymentTransferUncheckedCreateNestedManyWithoutGroupOrderInput
+  }
+
+  export type GroupOrderCreateOrConnectWithoutRestaurantInput = {
+    where: GroupOrderWhereUniqueInput
+    create: XOR<GroupOrderCreateWithoutRestaurantInput, GroupOrderUncheckedCreateWithoutRestaurantInput>
+  }
+
+  export type GroupOrderCreateManyRestaurantInputEnvelope = {
+    data: GroupOrderCreateManyRestaurantInput | GroupOrderCreateManyRestaurantInput[]
+    skipDuplicates?: boolean
+  }
+
   export type ProductUpsertWithWhereUniqueWithoutRestaurantInput = {
     where: ProductWhereUniqueInput
     update: XOR<ProductUpdateWithoutRestaurantInput, ProductUncheckedUpdateWithoutRestaurantInput>
@@ -10393,20 +18272,42 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Product"> | Date | string
   }
 
+  export type GroupOrderUpsertWithWhereUniqueWithoutRestaurantInput = {
+    where: GroupOrderWhereUniqueInput
+    update: XOR<GroupOrderUpdateWithoutRestaurantInput, GroupOrderUncheckedUpdateWithoutRestaurantInput>
+    create: XOR<GroupOrderCreateWithoutRestaurantInput, GroupOrderUncheckedCreateWithoutRestaurantInput>
+  }
+
+  export type GroupOrderUpdateWithWhereUniqueWithoutRestaurantInput = {
+    where: GroupOrderWhereUniqueInput
+    data: XOR<GroupOrderUpdateWithoutRestaurantInput, GroupOrderUncheckedUpdateWithoutRestaurantInput>
+  }
+
+  export type GroupOrderUpdateManyWithWhereWithoutRestaurantInput = {
+    where: GroupOrderScalarWhereInput
+    data: XOR<GroupOrderUpdateManyMutationInput, GroupOrderUncheckedUpdateManyWithoutRestaurantInput>
+  }
+
   export type RestaurantCreateWithoutProductsInput = {
     id?: string
     name: string
-    grabLink: string
+    platform?: $Enums.Platform
+    grabLink?: string | null
+    shopeeLink?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    groupOrders?: GroupOrderCreateNestedManyWithoutRestaurantInput
   }
 
   export type RestaurantUncheckedCreateWithoutProductsInput = {
     id?: string
     name: string
-    grabLink: string
+    platform?: $Enums.Platform
+    grabLink?: string | null
+    shopeeLink?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    groupOrders?: GroupOrderUncheckedCreateNestedManyWithoutRestaurantInput
   }
 
   export type RestaurantCreateOrConnectWithoutProductsInput = {
@@ -10452,17 +18353,23 @@ export namespace Prisma {
   export type RestaurantUpdateWithoutProductsInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    grabLink?: StringFieldUpdateOperationsInput | string
+    platform?: EnumPlatformFieldUpdateOperationsInput | $Enums.Platform
+    grabLink?: NullableStringFieldUpdateOperationsInput | string | null
+    shopeeLink?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    groupOrders?: GroupOrderUpdateManyWithoutRestaurantNestedInput
   }
 
   export type RestaurantUncheckedUpdateWithoutProductsInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    grabLink?: StringFieldUpdateOperationsInput | string
+    platform?: EnumPlatformFieldUpdateOperationsInput | $Enums.Platform
+    grabLink?: NullableStringFieldUpdateOperationsInput | string | null
+    shopeeLink?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    groupOrders?: GroupOrderUncheckedUpdateManyWithoutRestaurantNestedInput
   }
 
   export type OrderItemUpsertWithWhereUniqueWithoutProductInput = {
@@ -10500,6 +18407,11 @@ export namespace Prisma {
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
+    bankAccounts?: BankAccountCreateNestedManyWithoutUserInput
+    groupMembers?: GroupMemberCreateNestedManyWithoutUserInput
+    groupOrders?: GroupOrderCreateNestedManyWithoutOwnerInput
+    paymentTransfersFrom?: PaymentTransferCreateNestedManyWithoutFromUserInput
+    paymentTransfersTo?: PaymentTransferCreateNestedManyWithoutToUserInput
   }
 
   export type UserUncheckedCreateWithoutOrdersInput = {
@@ -10510,6 +18422,11 @@ export namespace Prisma {
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
+    bankAccounts?: BankAccountUncheckedCreateNestedManyWithoutUserInput
+    groupMembers?: GroupMemberUncheckedCreateNestedManyWithoutUserInput
+    groupOrders?: GroupOrderUncheckedCreateNestedManyWithoutOwnerInput
+    paymentTransfersFrom?: PaymentTransferUncheckedCreateNestedManyWithoutFromUserInput
+    paymentTransfersTo?: PaymentTransferUncheckedCreateNestedManyWithoutToUserInput
   }
 
   export type UserCreateOrConnectWithoutOrdersInput = {
@@ -10581,6 +18498,11 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    bankAccounts?: BankAccountUpdateManyWithoutUserNestedInput
+    groupMembers?: GroupMemberUpdateManyWithoutUserNestedInput
+    groupOrders?: GroupOrderUpdateManyWithoutOwnerNestedInput
+    paymentTransfersFrom?: PaymentTransferUpdateManyWithoutFromUserNestedInput
+    paymentTransfersTo?: PaymentTransferUpdateManyWithoutToUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutOrdersInput = {
@@ -10591,6 +18513,11 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    bankAccounts?: BankAccountUncheckedUpdateManyWithoutUserNestedInput
+    groupMembers?: GroupMemberUncheckedUpdateManyWithoutUserNestedInput
+    groupOrders?: GroupOrderUncheckedUpdateManyWithoutOwnerNestedInput
+    paymentTransfersFrom?: PaymentTransferUncheckedUpdateManyWithoutFromUserNestedInput
+    paymentTransfersTo?: PaymentTransferUncheckedUpdateManyWithoutToUserNestedInput
   }
 
   export type OrderItemUpsertWithWhereUniqueWithoutOrderInput = {
@@ -10634,6 +18561,750 @@ export namespace Prisma {
     method?: EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
     status?: EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserCreateWithoutGroupOrdersInput = {
+    id?: string
+    name: string
+    email: string
+    password: string
+    role?: $Enums.Role
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    orders?: OrderCreateNestedManyWithoutUserInput
+    bankAccounts?: BankAccountCreateNestedManyWithoutUserInput
+    groupMembers?: GroupMemberCreateNestedManyWithoutUserInput
+    paymentTransfersFrom?: PaymentTransferCreateNestedManyWithoutFromUserInput
+    paymentTransfersTo?: PaymentTransferCreateNestedManyWithoutToUserInput
+  }
+
+  export type UserUncheckedCreateWithoutGroupOrdersInput = {
+    id?: string
+    name: string
+    email: string
+    password: string
+    role?: $Enums.Role
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    orders?: OrderUncheckedCreateNestedManyWithoutUserInput
+    bankAccounts?: BankAccountUncheckedCreateNestedManyWithoutUserInput
+    groupMembers?: GroupMemberUncheckedCreateNestedManyWithoutUserInput
+    paymentTransfersFrom?: PaymentTransferUncheckedCreateNestedManyWithoutFromUserInput
+    paymentTransfersTo?: PaymentTransferUncheckedCreateNestedManyWithoutToUserInput
+  }
+
+  export type UserCreateOrConnectWithoutGroupOrdersInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutGroupOrdersInput, UserUncheckedCreateWithoutGroupOrdersInput>
+  }
+
+  export type RestaurantCreateWithoutGroupOrdersInput = {
+    id?: string
+    name: string
+    platform?: $Enums.Platform
+    grabLink?: string | null
+    shopeeLink?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    products?: ProductCreateNestedManyWithoutRestaurantInput
+  }
+
+  export type RestaurantUncheckedCreateWithoutGroupOrdersInput = {
+    id?: string
+    name: string
+    platform?: $Enums.Platform
+    grabLink?: string | null
+    shopeeLink?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    products?: ProductUncheckedCreateNestedManyWithoutRestaurantInput
+  }
+
+  export type RestaurantCreateOrConnectWithoutGroupOrdersInput = {
+    where: RestaurantWhereUniqueInput
+    create: XOR<RestaurantCreateWithoutGroupOrdersInput, RestaurantUncheckedCreateWithoutGroupOrdersInput>
+  }
+
+  export type GroupMemberCreateWithoutGroupOrderInput = {
+    id?: string
+    role?: $Enums.GroupRole
+    cartTotal?: number
+    joinedAt?: Date | string
+    leftAt?: Date | string | null
+    user: UserCreateNestedOneWithoutGroupMembersInput
+  }
+
+  export type GroupMemberUncheckedCreateWithoutGroupOrderInput = {
+    id?: string
+    userId: string
+    role?: $Enums.GroupRole
+    cartTotal?: number
+    joinedAt?: Date | string
+    leftAt?: Date | string | null
+  }
+
+  export type GroupMemberCreateOrConnectWithoutGroupOrderInput = {
+    where: GroupMemberWhereUniqueInput
+    create: XOR<GroupMemberCreateWithoutGroupOrderInput, GroupMemberUncheckedCreateWithoutGroupOrderInput>
+  }
+
+  export type GroupMemberCreateManyGroupOrderInputEnvelope = {
+    data: GroupMemberCreateManyGroupOrderInput | GroupMemberCreateManyGroupOrderInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type PaymentTransferCreateWithoutGroupOrderInput = {
+    id?: string
+    amount: number
+    status?: $Enums.PaymentTransferStatus
+    transactionId?: string | null
+    bankName?: string | null
+    transferDate?: Date | string | null
+    verifiedAt?: Date | string | null
+    verifiedBy?: string | null
+    notes?: string | null
+    screenshotUrl?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    fromUser: UserCreateNestedOneWithoutPaymentTransfersFromInput
+    toUser: UserCreateNestedOneWithoutPaymentTransfersToInput
+  }
+
+  export type PaymentTransferUncheckedCreateWithoutGroupOrderInput = {
+    id?: string
+    fromUserId: string
+    toUserId: string
+    amount: number
+    status?: $Enums.PaymentTransferStatus
+    transactionId?: string | null
+    bankName?: string | null
+    transferDate?: Date | string | null
+    verifiedAt?: Date | string | null
+    verifiedBy?: string | null
+    notes?: string | null
+    screenshotUrl?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PaymentTransferCreateOrConnectWithoutGroupOrderInput = {
+    where: PaymentTransferWhereUniqueInput
+    create: XOR<PaymentTransferCreateWithoutGroupOrderInput, PaymentTransferUncheckedCreateWithoutGroupOrderInput>
+  }
+
+  export type PaymentTransferCreateManyGroupOrderInputEnvelope = {
+    data: PaymentTransferCreateManyGroupOrderInput | PaymentTransferCreateManyGroupOrderInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type UserUpsertWithoutGroupOrdersInput = {
+    update: XOR<UserUpdateWithoutGroupOrdersInput, UserUncheckedUpdateWithoutGroupOrdersInput>
+    create: XOR<UserCreateWithoutGroupOrdersInput, UserUncheckedCreateWithoutGroupOrdersInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutGroupOrdersInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutGroupOrdersInput, UserUncheckedUpdateWithoutGroupOrdersInput>
+  }
+
+  export type UserUpdateWithoutGroupOrdersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    orders?: OrderUpdateManyWithoutUserNestedInput
+    bankAccounts?: BankAccountUpdateManyWithoutUserNestedInput
+    groupMembers?: GroupMemberUpdateManyWithoutUserNestedInput
+    paymentTransfersFrom?: PaymentTransferUpdateManyWithoutFromUserNestedInput
+    paymentTransfersTo?: PaymentTransferUpdateManyWithoutToUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutGroupOrdersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
+    bankAccounts?: BankAccountUncheckedUpdateManyWithoutUserNestedInput
+    groupMembers?: GroupMemberUncheckedUpdateManyWithoutUserNestedInput
+    paymentTransfersFrom?: PaymentTransferUncheckedUpdateManyWithoutFromUserNestedInput
+    paymentTransfersTo?: PaymentTransferUncheckedUpdateManyWithoutToUserNestedInput
+  }
+
+  export type RestaurantUpsertWithoutGroupOrdersInput = {
+    update: XOR<RestaurantUpdateWithoutGroupOrdersInput, RestaurantUncheckedUpdateWithoutGroupOrdersInput>
+    create: XOR<RestaurantCreateWithoutGroupOrdersInput, RestaurantUncheckedCreateWithoutGroupOrdersInput>
+    where?: RestaurantWhereInput
+  }
+
+  export type RestaurantUpdateToOneWithWhereWithoutGroupOrdersInput = {
+    where?: RestaurantWhereInput
+    data: XOR<RestaurantUpdateWithoutGroupOrdersInput, RestaurantUncheckedUpdateWithoutGroupOrdersInput>
+  }
+
+  export type RestaurantUpdateWithoutGroupOrdersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    platform?: EnumPlatformFieldUpdateOperationsInput | $Enums.Platform
+    grabLink?: NullableStringFieldUpdateOperationsInput | string | null
+    shopeeLink?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    products?: ProductUpdateManyWithoutRestaurantNestedInput
+  }
+
+  export type RestaurantUncheckedUpdateWithoutGroupOrdersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    platform?: EnumPlatformFieldUpdateOperationsInput | $Enums.Platform
+    grabLink?: NullableStringFieldUpdateOperationsInput | string | null
+    shopeeLink?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    products?: ProductUncheckedUpdateManyWithoutRestaurantNestedInput
+  }
+
+  export type GroupMemberUpsertWithWhereUniqueWithoutGroupOrderInput = {
+    where: GroupMemberWhereUniqueInput
+    update: XOR<GroupMemberUpdateWithoutGroupOrderInput, GroupMemberUncheckedUpdateWithoutGroupOrderInput>
+    create: XOR<GroupMemberCreateWithoutGroupOrderInput, GroupMemberUncheckedCreateWithoutGroupOrderInput>
+  }
+
+  export type GroupMemberUpdateWithWhereUniqueWithoutGroupOrderInput = {
+    where: GroupMemberWhereUniqueInput
+    data: XOR<GroupMemberUpdateWithoutGroupOrderInput, GroupMemberUncheckedUpdateWithoutGroupOrderInput>
+  }
+
+  export type GroupMemberUpdateManyWithWhereWithoutGroupOrderInput = {
+    where: GroupMemberScalarWhereInput
+    data: XOR<GroupMemberUpdateManyMutationInput, GroupMemberUncheckedUpdateManyWithoutGroupOrderInput>
+  }
+
+  export type PaymentTransferUpsertWithWhereUniqueWithoutGroupOrderInput = {
+    where: PaymentTransferWhereUniqueInput
+    update: XOR<PaymentTransferUpdateWithoutGroupOrderInput, PaymentTransferUncheckedUpdateWithoutGroupOrderInput>
+    create: XOR<PaymentTransferCreateWithoutGroupOrderInput, PaymentTransferUncheckedCreateWithoutGroupOrderInput>
+  }
+
+  export type PaymentTransferUpdateWithWhereUniqueWithoutGroupOrderInput = {
+    where: PaymentTransferWhereUniqueInput
+    data: XOR<PaymentTransferUpdateWithoutGroupOrderInput, PaymentTransferUncheckedUpdateWithoutGroupOrderInput>
+  }
+
+  export type PaymentTransferUpdateManyWithWhereWithoutGroupOrderInput = {
+    where: PaymentTransferScalarWhereInput
+    data: XOR<PaymentTransferUpdateManyMutationInput, PaymentTransferUncheckedUpdateManyWithoutGroupOrderInput>
+  }
+
+  export type GroupOrderCreateWithoutMembersInput = {
+    id?: string
+    groupId: string
+    platform?: $Enums.Platform
+    platformOrderId?: string | null
+    status?: $Enums.GroupOrderStatus
+    totalAmount?: number
+    deliveryFee?: number
+    serviceFee?: number
+    tax?: number
+    lockedAt?: Date | string | null
+    placedAt?: Date | string | null
+    deliveredAt?: Date | string | null
+    paymentDeadline?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    owner: UserCreateNestedOneWithoutGroupOrdersInput
+    restaurant: RestaurantCreateNestedOneWithoutGroupOrdersInput
+    payments?: PaymentTransferCreateNestedManyWithoutGroupOrderInput
+  }
+
+  export type GroupOrderUncheckedCreateWithoutMembersInput = {
+    id?: string
+    groupId: string
+    ownerId: string
+    restaurantId: string
+    platform?: $Enums.Platform
+    platformOrderId?: string | null
+    status?: $Enums.GroupOrderStatus
+    totalAmount?: number
+    deliveryFee?: number
+    serviceFee?: number
+    tax?: number
+    lockedAt?: Date | string | null
+    placedAt?: Date | string | null
+    deliveredAt?: Date | string | null
+    paymentDeadline?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    payments?: PaymentTransferUncheckedCreateNestedManyWithoutGroupOrderInput
+  }
+
+  export type GroupOrderCreateOrConnectWithoutMembersInput = {
+    where: GroupOrderWhereUniqueInput
+    create: XOR<GroupOrderCreateWithoutMembersInput, GroupOrderUncheckedCreateWithoutMembersInput>
+  }
+
+  export type UserCreateWithoutGroupMembersInput = {
+    id?: string
+    name: string
+    email: string
+    password: string
+    role?: $Enums.Role
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    orders?: OrderCreateNestedManyWithoutUserInput
+    bankAccounts?: BankAccountCreateNestedManyWithoutUserInput
+    groupOrders?: GroupOrderCreateNestedManyWithoutOwnerInput
+    paymentTransfersFrom?: PaymentTransferCreateNestedManyWithoutFromUserInput
+    paymentTransfersTo?: PaymentTransferCreateNestedManyWithoutToUserInput
+  }
+
+  export type UserUncheckedCreateWithoutGroupMembersInput = {
+    id?: string
+    name: string
+    email: string
+    password: string
+    role?: $Enums.Role
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    orders?: OrderUncheckedCreateNestedManyWithoutUserInput
+    bankAccounts?: BankAccountUncheckedCreateNestedManyWithoutUserInput
+    groupOrders?: GroupOrderUncheckedCreateNestedManyWithoutOwnerInput
+    paymentTransfersFrom?: PaymentTransferUncheckedCreateNestedManyWithoutFromUserInput
+    paymentTransfersTo?: PaymentTransferUncheckedCreateNestedManyWithoutToUserInput
+  }
+
+  export type UserCreateOrConnectWithoutGroupMembersInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutGroupMembersInput, UserUncheckedCreateWithoutGroupMembersInput>
+  }
+
+  export type GroupOrderUpsertWithoutMembersInput = {
+    update: XOR<GroupOrderUpdateWithoutMembersInput, GroupOrderUncheckedUpdateWithoutMembersInput>
+    create: XOR<GroupOrderCreateWithoutMembersInput, GroupOrderUncheckedCreateWithoutMembersInput>
+    where?: GroupOrderWhereInput
+  }
+
+  export type GroupOrderUpdateToOneWithWhereWithoutMembersInput = {
+    where?: GroupOrderWhereInput
+    data: XOR<GroupOrderUpdateWithoutMembersInput, GroupOrderUncheckedUpdateWithoutMembersInput>
+  }
+
+  export type GroupOrderUpdateWithoutMembersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    groupId?: StringFieldUpdateOperationsInput | string
+    platform?: EnumPlatformFieldUpdateOperationsInput | $Enums.Platform
+    platformOrderId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumGroupOrderStatusFieldUpdateOperationsInput | $Enums.GroupOrderStatus
+    totalAmount?: FloatFieldUpdateOperationsInput | number
+    deliveryFee?: FloatFieldUpdateOperationsInput | number
+    serviceFee?: FloatFieldUpdateOperationsInput | number
+    tax?: FloatFieldUpdateOperationsInput | number
+    lockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    placedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paymentDeadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    owner?: UserUpdateOneRequiredWithoutGroupOrdersNestedInput
+    restaurant?: RestaurantUpdateOneRequiredWithoutGroupOrdersNestedInput
+    payments?: PaymentTransferUpdateManyWithoutGroupOrderNestedInput
+  }
+
+  export type GroupOrderUncheckedUpdateWithoutMembersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    groupId?: StringFieldUpdateOperationsInput | string
+    ownerId?: StringFieldUpdateOperationsInput | string
+    restaurantId?: StringFieldUpdateOperationsInput | string
+    platform?: EnumPlatformFieldUpdateOperationsInput | $Enums.Platform
+    platformOrderId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumGroupOrderStatusFieldUpdateOperationsInput | $Enums.GroupOrderStatus
+    totalAmount?: FloatFieldUpdateOperationsInput | number
+    deliveryFee?: FloatFieldUpdateOperationsInput | number
+    serviceFee?: FloatFieldUpdateOperationsInput | number
+    tax?: FloatFieldUpdateOperationsInput | number
+    lockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    placedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paymentDeadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    payments?: PaymentTransferUncheckedUpdateManyWithoutGroupOrderNestedInput
+  }
+
+  export type UserUpsertWithoutGroupMembersInput = {
+    update: XOR<UserUpdateWithoutGroupMembersInput, UserUncheckedUpdateWithoutGroupMembersInput>
+    create: XOR<UserCreateWithoutGroupMembersInput, UserUncheckedCreateWithoutGroupMembersInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutGroupMembersInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutGroupMembersInput, UserUncheckedUpdateWithoutGroupMembersInput>
+  }
+
+  export type UserUpdateWithoutGroupMembersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    orders?: OrderUpdateManyWithoutUserNestedInput
+    bankAccounts?: BankAccountUpdateManyWithoutUserNestedInput
+    groupOrders?: GroupOrderUpdateManyWithoutOwnerNestedInput
+    paymentTransfersFrom?: PaymentTransferUpdateManyWithoutFromUserNestedInput
+    paymentTransfersTo?: PaymentTransferUpdateManyWithoutToUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutGroupMembersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
+    bankAccounts?: BankAccountUncheckedUpdateManyWithoutUserNestedInput
+    groupOrders?: GroupOrderUncheckedUpdateManyWithoutOwnerNestedInput
+    paymentTransfersFrom?: PaymentTransferUncheckedUpdateManyWithoutFromUserNestedInput
+    paymentTransfersTo?: PaymentTransferUncheckedUpdateManyWithoutToUserNestedInput
+  }
+
+  export type UserCreateWithoutBankAccountsInput = {
+    id?: string
+    name: string
+    email: string
+    password: string
+    role?: $Enums.Role
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    orders?: OrderCreateNestedManyWithoutUserInput
+    groupMembers?: GroupMemberCreateNestedManyWithoutUserInput
+    groupOrders?: GroupOrderCreateNestedManyWithoutOwnerInput
+    paymentTransfersFrom?: PaymentTransferCreateNestedManyWithoutFromUserInput
+    paymentTransfersTo?: PaymentTransferCreateNestedManyWithoutToUserInput
+  }
+
+  export type UserUncheckedCreateWithoutBankAccountsInput = {
+    id?: string
+    name: string
+    email: string
+    password: string
+    role?: $Enums.Role
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    orders?: OrderUncheckedCreateNestedManyWithoutUserInput
+    groupMembers?: GroupMemberUncheckedCreateNestedManyWithoutUserInput
+    groupOrders?: GroupOrderUncheckedCreateNestedManyWithoutOwnerInput
+    paymentTransfersFrom?: PaymentTransferUncheckedCreateNestedManyWithoutFromUserInput
+    paymentTransfersTo?: PaymentTransferUncheckedCreateNestedManyWithoutToUserInput
+  }
+
+  export type UserCreateOrConnectWithoutBankAccountsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutBankAccountsInput, UserUncheckedCreateWithoutBankAccountsInput>
+  }
+
+  export type UserUpsertWithoutBankAccountsInput = {
+    update: XOR<UserUpdateWithoutBankAccountsInput, UserUncheckedUpdateWithoutBankAccountsInput>
+    create: XOR<UserCreateWithoutBankAccountsInput, UserUncheckedCreateWithoutBankAccountsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutBankAccountsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutBankAccountsInput, UserUncheckedUpdateWithoutBankAccountsInput>
+  }
+
+  export type UserUpdateWithoutBankAccountsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    orders?: OrderUpdateManyWithoutUserNestedInput
+    groupMembers?: GroupMemberUpdateManyWithoutUserNestedInput
+    groupOrders?: GroupOrderUpdateManyWithoutOwnerNestedInput
+    paymentTransfersFrom?: PaymentTransferUpdateManyWithoutFromUserNestedInput
+    paymentTransfersTo?: PaymentTransferUpdateManyWithoutToUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutBankAccountsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
+    groupMembers?: GroupMemberUncheckedUpdateManyWithoutUserNestedInput
+    groupOrders?: GroupOrderUncheckedUpdateManyWithoutOwnerNestedInput
+    paymentTransfersFrom?: PaymentTransferUncheckedUpdateManyWithoutFromUserNestedInput
+    paymentTransfersTo?: PaymentTransferUncheckedUpdateManyWithoutToUserNestedInput
+  }
+
+  export type GroupOrderCreateWithoutPaymentsInput = {
+    id?: string
+    groupId: string
+    platform?: $Enums.Platform
+    platformOrderId?: string | null
+    status?: $Enums.GroupOrderStatus
+    totalAmount?: number
+    deliveryFee?: number
+    serviceFee?: number
+    tax?: number
+    lockedAt?: Date | string | null
+    placedAt?: Date | string | null
+    deliveredAt?: Date | string | null
+    paymentDeadline?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    owner: UserCreateNestedOneWithoutGroupOrdersInput
+    restaurant: RestaurantCreateNestedOneWithoutGroupOrdersInput
+    members?: GroupMemberCreateNestedManyWithoutGroupOrderInput
+  }
+
+  export type GroupOrderUncheckedCreateWithoutPaymentsInput = {
+    id?: string
+    groupId: string
+    ownerId: string
+    restaurantId: string
+    platform?: $Enums.Platform
+    platformOrderId?: string | null
+    status?: $Enums.GroupOrderStatus
+    totalAmount?: number
+    deliveryFee?: number
+    serviceFee?: number
+    tax?: number
+    lockedAt?: Date | string | null
+    placedAt?: Date | string | null
+    deliveredAt?: Date | string | null
+    paymentDeadline?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    members?: GroupMemberUncheckedCreateNestedManyWithoutGroupOrderInput
+  }
+
+  export type GroupOrderCreateOrConnectWithoutPaymentsInput = {
+    where: GroupOrderWhereUniqueInput
+    create: XOR<GroupOrderCreateWithoutPaymentsInput, GroupOrderUncheckedCreateWithoutPaymentsInput>
+  }
+
+  export type UserCreateWithoutPaymentTransfersFromInput = {
+    id?: string
+    name: string
+    email: string
+    password: string
+    role?: $Enums.Role
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    orders?: OrderCreateNestedManyWithoutUserInput
+    bankAccounts?: BankAccountCreateNestedManyWithoutUserInput
+    groupMembers?: GroupMemberCreateNestedManyWithoutUserInput
+    groupOrders?: GroupOrderCreateNestedManyWithoutOwnerInput
+    paymentTransfersTo?: PaymentTransferCreateNestedManyWithoutToUserInput
+  }
+
+  export type UserUncheckedCreateWithoutPaymentTransfersFromInput = {
+    id?: string
+    name: string
+    email: string
+    password: string
+    role?: $Enums.Role
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    orders?: OrderUncheckedCreateNestedManyWithoutUserInput
+    bankAccounts?: BankAccountUncheckedCreateNestedManyWithoutUserInput
+    groupMembers?: GroupMemberUncheckedCreateNestedManyWithoutUserInput
+    groupOrders?: GroupOrderUncheckedCreateNestedManyWithoutOwnerInput
+    paymentTransfersTo?: PaymentTransferUncheckedCreateNestedManyWithoutToUserInput
+  }
+
+  export type UserCreateOrConnectWithoutPaymentTransfersFromInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutPaymentTransfersFromInput, UserUncheckedCreateWithoutPaymentTransfersFromInput>
+  }
+
+  export type UserCreateWithoutPaymentTransfersToInput = {
+    id?: string
+    name: string
+    email: string
+    password: string
+    role?: $Enums.Role
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    orders?: OrderCreateNestedManyWithoutUserInput
+    bankAccounts?: BankAccountCreateNestedManyWithoutUserInput
+    groupMembers?: GroupMemberCreateNestedManyWithoutUserInput
+    groupOrders?: GroupOrderCreateNestedManyWithoutOwnerInput
+    paymentTransfersFrom?: PaymentTransferCreateNestedManyWithoutFromUserInput
+  }
+
+  export type UserUncheckedCreateWithoutPaymentTransfersToInput = {
+    id?: string
+    name: string
+    email: string
+    password: string
+    role?: $Enums.Role
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    orders?: OrderUncheckedCreateNestedManyWithoutUserInput
+    bankAccounts?: BankAccountUncheckedCreateNestedManyWithoutUserInput
+    groupMembers?: GroupMemberUncheckedCreateNestedManyWithoutUserInput
+    groupOrders?: GroupOrderUncheckedCreateNestedManyWithoutOwnerInput
+    paymentTransfersFrom?: PaymentTransferUncheckedCreateNestedManyWithoutFromUserInput
+  }
+
+  export type UserCreateOrConnectWithoutPaymentTransfersToInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutPaymentTransfersToInput, UserUncheckedCreateWithoutPaymentTransfersToInput>
+  }
+
+  export type GroupOrderUpsertWithoutPaymentsInput = {
+    update: XOR<GroupOrderUpdateWithoutPaymentsInput, GroupOrderUncheckedUpdateWithoutPaymentsInput>
+    create: XOR<GroupOrderCreateWithoutPaymentsInput, GroupOrderUncheckedCreateWithoutPaymentsInput>
+    where?: GroupOrderWhereInput
+  }
+
+  export type GroupOrderUpdateToOneWithWhereWithoutPaymentsInput = {
+    where?: GroupOrderWhereInput
+    data: XOR<GroupOrderUpdateWithoutPaymentsInput, GroupOrderUncheckedUpdateWithoutPaymentsInput>
+  }
+
+  export type GroupOrderUpdateWithoutPaymentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    groupId?: StringFieldUpdateOperationsInput | string
+    platform?: EnumPlatformFieldUpdateOperationsInput | $Enums.Platform
+    platformOrderId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumGroupOrderStatusFieldUpdateOperationsInput | $Enums.GroupOrderStatus
+    totalAmount?: FloatFieldUpdateOperationsInput | number
+    deliveryFee?: FloatFieldUpdateOperationsInput | number
+    serviceFee?: FloatFieldUpdateOperationsInput | number
+    tax?: FloatFieldUpdateOperationsInput | number
+    lockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    placedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paymentDeadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    owner?: UserUpdateOneRequiredWithoutGroupOrdersNestedInput
+    restaurant?: RestaurantUpdateOneRequiredWithoutGroupOrdersNestedInput
+    members?: GroupMemberUpdateManyWithoutGroupOrderNestedInput
+  }
+
+  export type GroupOrderUncheckedUpdateWithoutPaymentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    groupId?: StringFieldUpdateOperationsInput | string
+    ownerId?: StringFieldUpdateOperationsInput | string
+    restaurantId?: StringFieldUpdateOperationsInput | string
+    platform?: EnumPlatformFieldUpdateOperationsInput | $Enums.Platform
+    platformOrderId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumGroupOrderStatusFieldUpdateOperationsInput | $Enums.GroupOrderStatus
+    totalAmount?: FloatFieldUpdateOperationsInput | number
+    deliveryFee?: FloatFieldUpdateOperationsInput | number
+    serviceFee?: FloatFieldUpdateOperationsInput | number
+    tax?: FloatFieldUpdateOperationsInput | number
+    lockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    placedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paymentDeadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    members?: GroupMemberUncheckedUpdateManyWithoutGroupOrderNestedInput
+  }
+
+  export type UserUpsertWithoutPaymentTransfersFromInput = {
+    update: XOR<UserUpdateWithoutPaymentTransfersFromInput, UserUncheckedUpdateWithoutPaymentTransfersFromInput>
+    create: XOR<UserCreateWithoutPaymentTransfersFromInput, UserUncheckedCreateWithoutPaymentTransfersFromInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutPaymentTransfersFromInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutPaymentTransfersFromInput, UserUncheckedUpdateWithoutPaymentTransfersFromInput>
+  }
+
+  export type UserUpdateWithoutPaymentTransfersFromInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    orders?: OrderUpdateManyWithoutUserNestedInput
+    bankAccounts?: BankAccountUpdateManyWithoutUserNestedInput
+    groupMembers?: GroupMemberUpdateManyWithoutUserNestedInput
+    groupOrders?: GroupOrderUpdateManyWithoutOwnerNestedInput
+    paymentTransfersTo?: PaymentTransferUpdateManyWithoutToUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutPaymentTransfersFromInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
+    bankAccounts?: BankAccountUncheckedUpdateManyWithoutUserNestedInput
+    groupMembers?: GroupMemberUncheckedUpdateManyWithoutUserNestedInput
+    groupOrders?: GroupOrderUncheckedUpdateManyWithoutOwnerNestedInput
+    paymentTransfersTo?: PaymentTransferUncheckedUpdateManyWithoutToUserNestedInput
+  }
+
+  export type UserUpsertWithoutPaymentTransfersToInput = {
+    update: XOR<UserUpdateWithoutPaymentTransfersToInput, UserUncheckedUpdateWithoutPaymentTransfersToInput>
+    create: XOR<UserCreateWithoutPaymentTransfersToInput, UserUncheckedCreateWithoutPaymentTransfersToInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutPaymentTransfersToInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutPaymentTransfersToInput, UserUncheckedUpdateWithoutPaymentTransfersToInput>
+  }
+
+  export type UserUpdateWithoutPaymentTransfersToInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    orders?: OrderUpdateManyWithoutUserNestedInput
+    bankAccounts?: BankAccountUpdateManyWithoutUserNestedInput
+    groupMembers?: GroupMemberUpdateManyWithoutUserNestedInput
+    groupOrders?: GroupOrderUpdateManyWithoutOwnerNestedInput
+    paymentTransfersFrom?: PaymentTransferUpdateManyWithoutFromUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutPaymentTransfersToInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
+    bankAccounts?: BankAccountUncheckedUpdateManyWithoutUserNestedInput
+    groupMembers?: GroupMemberUncheckedUpdateManyWithoutUserNestedInput
+    groupOrders?: GroupOrderUncheckedUpdateManyWithoutOwnerNestedInput
+    paymentTransfersFrom?: PaymentTransferUncheckedUpdateManyWithoutFromUserNestedInput
   }
 
   export type OrderCreateWithoutOrderItemsInput = {
@@ -10820,6 +19491,79 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
+  export type BankAccountCreateManyUserInput = {
+    id?: string
+    bankName: string
+    accountNumber: string
+    accountHolderName: string
+    isDefault?: boolean
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type GroupMemberCreateManyUserInput = {
+    id?: string
+    groupOrderId: string
+    role?: $Enums.GroupRole
+    cartTotal?: number
+    joinedAt?: Date | string
+    leftAt?: Date | string | null
+  }
+
+  export type GroupOrderCreateManyOwnerInput = {
+    id?: string
+    groupId: string
+    restaurantId: string
+    platform?: $Enums.Platform
+    platformOrderId?: string | null
+    status?: $Enums.GroupOrderStatus
+    totalAmount?: number
+    deliveryFee?: number
+    serviceFee?: number
+    tax?: number
+    lockedAt?: Date | string | null
+    placedAt?: Date | string | null
+    deliveredAt?: Date | string | null
+    paymentDeadline?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PaymentTransferCreateManyFromUserInput = {
+    id?: string
+    groupOrderId: string
+    toUserId: string
+    amount: number
+    status?: $Enums.PaymentTransferStatus
+    transactionId?: string | null
+    bankName?: string | null
+    transferDate?: Date | string | null
+    verifiedAt?: Date | string | null
+    verifiedBy?: string | null
+    notes?: string | null
+    screenshotUrl?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PaymentTransferCreateManyToUserInput = {
+    id?: string
+    groupOrderId: string
+    fromUserId: string
+    amount: number
+    status?: $Enums.PaymentTransferStatus
+    transactionId?: string | null
+    bankName?: string | null
+    transferDate?: Date | string | null
+    verifiedAt?: Date | string | null
+    verifiedBy?: string | null
+    notes?: string | null
+    screenshotUrl?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type OrderUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     status?: EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
@@ -10848,6 +19592,229 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type BankAccountUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    bankName?: StringFieldUpdateOperationsInput | string
+    accountNumber?: StringFieldUpdateOperationsInput | string
+    accountHolderName?: StringFieldUpdateOperationsInput | string
+    isDefault?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BankAccountUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    bankName?: StringFieldUpdateOperationsInput | string
+    accountNumber?: StringFieldUpdateOperationsInput | string
+    accountHolderName?: StringFieldUpdateOperationsInput | string
+    isDefault?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BankAccountUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    bankName?: StringFieldUpdateOperationsInput | string
+    accountNumber?: StringFieldUpdateOperationsInput | string
+    accountHolderName?: StringFieldUpdateOperationsInput | string
+    isDefault?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type GroupMemberUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    role?: EnumGroupRoleFieldUpdateOperationsInput | $Enums.GroupRole
+    cartTotal?: FloatFieldUpdateOperationsInput | number
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    leftAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    groupOrder?: GroupOrderUpdateOneRequiredWithoutMembersNestedInput
+  }
+
+  export type GroupMemberUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    groupOrderId?: StringFieldUpdateOperationsInput | string
+    role?: EnumGroupRoleFieldUpdateOperationsInput | $Enums.GroupRole
+    cartTotal?: FloatFieldUpdateOperationsInput | number
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    leftAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type GroupMemberUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    groupOrderId?: StringFieldUpdateOperationsInput | string
+    role?: EnumGroupRoleFieldUpdateOperationsInput | $Enums.GroupRole
+    cartTotal?: FloatFieldUpdateOperationsInput | number
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    leftAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type GroupOrderUpdateWithoutOwnerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    groupId?: StringFieldUpdateOperationsInput | string
+    platform?: EnumPlatformFieldUpdateOperationsInput | $Enums.Platform
+    platformOrderId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumGroupOrderStatusFieldUpdateOperationsInput | $Enums.GroupOrderStatus
+    totalAmount?: FloatFieldUpdateOperationsInput | number
+    deliveryFee?: FloatFieldUpdateOperationsInput | number
+    serviceFee?: FloatFieldUpdateOperationsInput | number
+    tax?: FloatFieldUpdateOperationsInput | number
+    lockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    placedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paymentDeadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    restaurant?: RestaurantUpdateOneRequiredWithoutGroupOrdersNestedInput
+    members?: GroupMemberUpdateManyWithoutGroupOrderNestedInput
+    payments?: PaymentTransferUpdateManyWithoutGroupOrderNestedInput
+  }
+
+  export type GroupOrderUncheckedUpdateWithoutOwnerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    groupId?: StringFieldUpdateOperationsInput | string
+    restaurantId?: StringFieldUpdateOperationsInput | string
+    platform?: EnumPlatformFieldUpdateOperationsInput | $Enums.Platform
+    platformOrderId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumGroupOrderStatusFieldUpdateOperationsInput | $Enums.GroupOrderStatus
+    totalAmount?: FloatFieldUpdateOperationsInput | number
+    deliveryFee?: FloatFieldUpdateOperationsInput | number
+    serviceFee?: FloatFieldUpdateOperationsInput | number
+    tax?: FloatFieldUpdateOperationsInput | number
+    lockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    placedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paymentDeadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    members?: GroupMemberUncheckedUpdateManyWithoutGroupOrderNestedInput
+    payments?: PaymentTransferUncheckedUpdateManyWithoutGroupOrderNestedInput
+  }
+
+  export type GroupOrderUncheckedUpdateManyWithoutOwnerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    groupId?: StringFieldUpdateOperationsInput | string
+    restaurantId?: StringFieldUpdateOperationsInput | string
+    platform?: EnumPlatformFieldUpdateOperationsInput | $Enums.Platform
+    platformOrderId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumGroupOrderStatusFieldUpdateOperationsInput | $Enums.GroupOrderStatus
+    totalAmount?: FloatFieldUpdateOperationsInput | number
+    deliveryFee?: FloatFieldUpdateOperationsInput | number
+    serviceFee?: FloatFieldUpdateOperationsInput | number
+    tax?: FloatFieldUpdateOperationsInput | number
+    lockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    placedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paymentDeadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PaymentTransferUpdateWithoutFromUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    amount?: FloatFieldUpdateOperationsInput | number
+    status?: EnumPaymentTransferStatusFieldUpdateOperationsInput | $Enums.PaymentTransferStatus
+    transactionId?: NullableStringFieldUpdateOperationsInput | string | null
+    bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    transferDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    verifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    verifiedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    screenshotUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    groupOrder?: GroupOrderUpdateOneRequiredWithoutPaymentsNestedInput
+    toUser?: UserUpdateOneRequiredWithoutPaymentTransfersToNestedInput
+  }
+
+  export type PaymentTransferUncheckedUpdateWithoutFromUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    groupOrderId?: StringFieldUpdateOperationsInput | string
+    toUserId?: StringFieldUpdateOperationsInput | string
+    amount?: FloatFieldUpdateOperationsInput | number
+    status?: EnumPaymentTransferStatusFieldUpdateOperationsInput | $Enums.PaymentTransferStatus
+    transactionId?: NullableStringFieldUpdateOperationsInput | string | null
+    bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    transferDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    verifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    verifiedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    screenshotUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PaymentTransferUncheckedUpdateManyWithoutFromUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    groupOrderId?: StringFieldUpdateOperationsInput | string
+    toUserId?: StringFieldUpdateOperationsInput | string
+    amount?: FloatFieldUpdateOperationsInput | number
+    status?: EnumPaymentTransferStatusFieldUpdateOperationsInput | $Enums.PaymentTransferStatus
+    transactionId?: NullableStringFieldUpdateOperationsInput | string | null
+    bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    transferDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    verifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    verifiedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    screenshotUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PaymentTransferUpdateWithoutToUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    amount?: FloatFieldUpdateOperationsInput | number
+    status?: EnumPaymentTransferStatusFieldUpdateOperationsInput | $Enums.PaymentTransferStatus
+    transactionId?: NullableStringFieldUpdateOperationsInput | string | null
+    bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    transferDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    verifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    verifiedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    screenshotUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    groupOrder?: GroupOrderUpdateOneRequiredWithoutPaymentsNestedInput
+    fromUser?: UserUpdateOneRequiredWithoutPaymentTransfersFromNestedInput
+  }
+
+  export type PaymentTransferUncheckedUpdateWithoutToUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    groupOrderId?: StringFieldUpdateOperationsInput | string
+    fromUserId?: StringFieldUpdateOperationsInput | string
+    amount?: FloatFieldUpdateOperationsInput | number
+    status?: EnumPaymentTransferStatusFieldUpdateOperationsInput | $Enums.PaymentTransferStatus
+    transactionId?: NullableStringFieldUpdateOperationsInput | string | null
+    bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    transferDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    verifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    verifiedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    screenshotUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PaymentTransferUncheckedUpdateManyWithoutToUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    groupOrderId?: StringFieldUpdateOperationsInput | string
+    fromUserId?: StringFieldUpdateOperationsInput | string
+    amount?: FloatFieldUpdateOperationsInput | number
+    status?: EnumPaymentTransferStatusFieldUpdateOperationsInput | $Enums.PaymentTransferStatus
+    transactionId?: NullableStringFieldUpdateOperationsInput | string | null
+    bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    transferDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    verifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    verifiedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    screenshotUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type ProductCreateManyRestaurantInput = {
     id?: string
     name: string
@@ -10855,6 +19822,25 @@ export namespace Prisma {
     price: number
     imageUrl?: string | null
     stock?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type GroupOrderCreateManyRestaurantInput = {
+    id?: string
+    groupId: string
+    ownerId: string
+    platform?: $Enums.Platform
+    platformOrderId?: string | null
+    status?: $Enums.GroupOrderStatus
+    totalAmount?: number
+    deliveryFee?: number
+    serviceFee?: number
+    tax?: number
+    lockedAt?: Date | string | null
+    placedAt?: Date | string | null
+    deliveredAt?: Date | string | null
+    paymentDeadline?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -10890,6 +19876,67 @@ export namespace Prisma {
     price?: FloatFieldUpdateOperationsInput | number
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     stock?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type GroupOrderUpdateWithoutRestaurantInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    groupId?: StringFieldUpdateOperationsInput | string
+    platform?: EnumPlatformFieldUpdateOperationsInput | $Enums.Platform
+    platformOrderId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumGroupOrderStatusFieldUpdateOperationsInput | $Enums.GroupOrderStatus
+    totalAmount?: FloatFieldUpdateOperationsInput | number
+    deliveryFee?: FloatFieldUpdateOperationsInput | number
+    serviceFee?: FloatFieldUpdateOperationsInput | number
+    tax?: FloatFieldUpdateOperationsInput | number
+    lockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    placedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paymentDeadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    owner?: UserUpdateOneRequiredWithoutGroupOrdersNestedInput
+    members?: GroupMemberUpdateManyWithoutGroupOrderNestedInput
+    payments?: PaymentTransferUpdateManyWithoutGroupOrderNestedInput
+  }
+
+  export type GroupOrderUncheckedUpdateWithoutRestaurantInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    groupId?: StringFieldUpdateOperationsInput | string
+    ownerId?: StringFieldUpdateOperationsInput | string
+    platform?: EnumPlatformFieldUpdateOperationsInput | $Enums.Platform
+    platformOrderId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumGroupOrderStatusFieldUpdateOperationsInput | $Enums.GroupOrderStatus
+    totalAmount?: FloatFieldUpdateOperationsInput | number
+    deliveryFee?: FloatFieldUpdateOperationsInput | number
+    serviceFee?: FloatFieldUpdateOperationsInput | number
+    tax?: FloatFieldUpdateOperationsInput | number
+    lockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    placedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paymentDeadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    members?: GroupMemberUncheckedUpdateManyWithoutGroupOrderNestedInput
+    payments?: PaymentTransferUncheckedUpdateManyWithoutGroupOrderNestedInput
+  }
+
+  export type GroupOrderUncheckedUpdateManyWithoutRestaurantInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    groupId?: StringFieldUpdateOperationsInput | string
+    ownerId?: StringFieldUpdateOperationsInput | string
+    platform?: EnumPlatformFieldUpdateOperationsInput | $Enums.Platform
+    platformOrderId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumGroupOrderStatusFieldUpdateOperationsInput | $Enums.GroupOrderStatus
+    totalAmount?: FloatFieldUpdateOperationsInput | number
+    deliveryFee?: FloatFieldUpdateOperationsInput | number
+    serviceFee?: FloatFieldUpdateOperationsInput | number
+    tax?: FloatFieldUpdateOperationsInput | number
+    lockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    placedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paymentDeadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -10948,6 +19995,110 @@ export namespace Prisma {
     productId?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
     price?: FloatFieldUpdateOperationsInput | number
+  }
+
+  export type GroupMemberCreateManyGroupOrderInput = {
+    id?: string
+    userId: string
+    role?: $Enums.GroupRole
+    cartTotal?: number
+    joinedAt?: Date | string
+    leftAt?: Date | string | null
+  }
+
+  export type PaymentTransferCreateManyGroupOrderInput = {
+    id?: string
+    fromUserId: string
+    toUserId: string
+    amount: number
+    status?: $Enums.PaymentTransferStatus
+    transactionId?: string | null
+    bankName?: string | null
+    transferDate?: Date | string | null
+    verifiedAt?: Date | string | null
+    verifiedBy?: string | null
+    notes?: string | null
+    screenshotUrl?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type GroupMemberUpdateWithoutGroupOrderInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    role?: EnumGroupRoleFieldUpdateOperationsInput | $Enums.GroupRole
+    cartTotal?: FloatFieldUpdateOperationsInput | number
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    leftAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    user?: UserUpdateOneRequiredWithoutGroupMembersNestedInput
+  }
+
+  export type GroupMemberUncheckedUpdateWithoutGroupOrderInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    role?: EnumGroupRoleFieldUpdateOperationsInput | $Enums.GroupRole
+    cartTotal?: FloatFieldUpdateOperationsInput | number
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    leftAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type GroupMemberUncheckedUpdateManyWithoutGroupOrderInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    role?: EnumGroupRoleFieldUpdateOperationsInput | $Enums.GroupRole
+    cartTotal?: FloatFieldUpdateOperationsInput | number
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    leftAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type PaymentTransferUpdateWithoutGroupOrderInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    amount?: FloatFieldUpdateOperationsInput | number
+    status?: EnumPaymentTransferStatusFieldUpdateOperationsInput | $Enums.PaymentTransferStatus
+    transactionId?: NullableStringFieldUpdateOperationsInput | string | null
+    bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    transferDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    verifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    verifiedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    screenshotUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    fromUser?: UserUpdateOneRequiredWithoutPaymentTransfersFromNestedInput
+    toUser?: UserUpdateOneRequiredWithoutPaymentTransfersToNestedInput
+  }
+
+  export type PaymentTransferUncheckedUpdateWithoutGroupOrderInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fromUserId?: StringFieldUpdateOperationsInput | string
+    toUserId?: StringFieldUpdateOperationsInput | string
+    amount?: FloatFieldUpdateOperationsInput | number
+    status?: EnumPaymentTransferStatusFieldUpdateOperationsInput | $Enums.PaymentTransferStatus
+    transactionId?: NullableStringFieldUpdateOperationsInput | string | null
+    bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    transferDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    verifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    verifiedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    screenshotUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PaymentTransferUncheckedUpdateManyWithoutGroupOrderInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fromUserId?: StringFieldUpdateOperationsInput | string
+    toUserId?: StringFieldUpdateOperationsInput | string
+    amount?: FloatFieldUpdateOperationsInput | number
+    status?: EnumPaymentTransferStatusFieldUpdateOperationsInput | $Enums.PaymentTransferStatus
+    transactionId?: NullableStringFieldUpdateOperationsInput | string | null
+    bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    transferDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    verifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    verifiedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    screenshotUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
 

@@ -133,7 +133,9 @@ exports.Prisma.UserScalarFieldEnum = {
 exports.Prisma.RestaurantScalarFieldEnum = {
   id: 'id',
   name: 'name',
+  platform: 'platform',
   grabLink: 'grabLink',
+  shopeeLink: 'shopeeLink',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -155,6 +157,66 @@ exports.Prisma.OrderScalarFieldEnum = {
   userId: 'userId',
   status: 'status',
   total: 'total',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.GroupOrderScalarFieldEnum = {
+  id: 'id',
+  groupId: 'groupId',
+  ownerId: 'ownerId',
+  restaurantId: 'restaurantId',
+  platform: 'platform',
+  platformOrderId: 'platformOrderId',
+  status: 'status',
+  totalAmount: 'totalAmount',
+  deliveryFee: 'deliveryFee',
+  serviceFee: 'serviceFee',
+  tax: 'tax',
+  lockedAt: 'lockedAt',
+  placedAt: 'placedAt',
+  deliveredAt: 'deliveredAt',
+  paymentDeadline: 'paymentDeadline',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.GroupMemberScalarFieldEnum = {
+  id: 'id',
+  groupOrderId: 'groupOrderId',
+  userId: 'userId',
+  role: 'role',
+  cartTotal: 'cartTotal',
+  joinedAt: 'joinedAt',
+  leftAt: 'leftAt'
+};
+
+exports.Prisma.BankAccountScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  bankName: 'bankName',
+  accountNumber: 'accountNumber',
+  accountHolderName: 'accountHolderName',
+  isDefault: 'isDefault',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.PaymentTransferScalarFieldEnum = {
+  id: 'id',
+  groupOrderId: 'groupOrderId',
+  fromUserId: 'fromUserId',
+  toUserId: 'toUserId',
+  amount: 'amount',
+  status: 'status',
+  transactionId: 'transactionId',
+  bankName: 'bankName',
+  transferDate: 'transferDate',
+  verifiedAt: 'verifiedAt',
+  verifiedBy: 'verifiedBy',
+  notes: 'notes',
+  screenshotUrl: 'screenshotUrl',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -195,6 +257,11 @@ exports.Role = exports.$Enums.Role = {
   CUSTOMER: 'CUSTOMER'
 };
 
+exports.Platform = exports.$Enums.Platform = {
+  GRAB: 'GRAB',
+  SHOPEE: 'SHOPEE'
+};
+
 exports.OrderStatus = exports.$Enums.OrderStatus = {
   PENDING: 'PENDING',
   PROCESSING: 'PROCESSING',
@@ -202,11 +269,43 @@ exports.OrderStatus = exports.$Enums.OrderStatus = {
   CANCELLED: 'CANCELLED'
 };
 
+exports.GroupOrderStatus = exports.$Enums.GroupOrderStatus = {
+  DRAFT: 'DRAFT',
+  ACTIVE: 'ACTIVE',
+  LOCKED: 'LOCKED',
+  PLACED: 'PLACED',
+  CONFIRMED: 'CONFIRMED',
+  PREPARING: 'PREPARING',
+  DELIVERING: 'DELIVERING',
+  DELIVERED: 'DELIVERED',
+  PAYMENT_PENDING: 'PAYMENT_PENDING',
+  PAYMENT_VERIFIED: 'PAYMENT_VERIFIED',
+  COMPLETED: 'COMPLETED',
+  CANCELLED: 'CANCELLED'
+};
+
+exports.GroupRole = exports.$Enums.GroupRole = {
+  OWNER: 'OWNER',
+  MEMBER: 'MEMBER'
+};
+
+exports.PaymentTransferStatus = exports.$Enums.PaymentTransferStatus = {
+  PENDING: 'PENDING',
+  TRANSFERRED: 'TRANSFERRED',
+  VERIFIED: 'VERIFIED',
+  COMPLETED: 'COMPLETED',
+  FAILED: 'FAILED',
+  DISPUTED: 'DISPUTED'
+};
+
 exports.PaymentMethod = exports.$Enums.PaymentMethod = {
   CASH: 'CASH',
   CREDIT_CARD: 'CREDIT_CARD',
   PAYPAL: 'PAYPAL',
-  STRIPE: 'STRIPE'
+  STRIPE: 'STRIPE',
+  GRAB_PAY: 'GRAB_PAY',
+  SHOPEE_PAY: 'SHOPEE_PAY',
+  BANK_TRANSFER: 'BANK_TRANSFER'
 };
 
 exports.PaymentStatus = exports.$Enums.PaymentStatus = {
@@ -221,6 +320,10 @@ exports.Prisma.ModelName = {
   Restaurant: 'Restaurant',
   Product: 'Product',
   Order: 'Order',
+  GroupOrder: 'GroupOrder',
+  GroupMember: 'GroupMember',
+  BankAccount: 'BankAccount',
+  PaymentTransfer: 'PaymentTransfer',
   OrderItem: 'OrderItem',
   Payment: 'Payment'
 };
