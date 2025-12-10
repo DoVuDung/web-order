@@ -26,8 +26,8 @@ export function corsOptionsResponse(request?: NextRequest) {
     }
   } else {
     origin = process.env.NODE_ENV === 'production'
-      ? 'https://web-order.vercel.app'
-      : 'http://localhost:3000';
+    ? 'https://web-order.vercel.app'
+    : 'http://localhost:3000';
   }
 
   return new NextResponse(null, {

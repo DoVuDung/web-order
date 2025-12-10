@@ -2,7 +2,7 @@
 
 import { Button } from "@heroui/react";
 import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { FaRegMoon } from "react-icons/fa";
 import { GoSun } from "react-icons/go";
 

@@ -65,11 +65,11 @@ function OrderCraw({ onChange }: OrderCrawProps) {
     } catch (error) {
       console.error("Error during crawling:", error);
       try {
-        addToast({
-          title: "Crawl Failed",
-          description: error instanceof Error ? error.message : "An unknown error occurred",
-          color: "danger",
-        });
+      addToast({
+        title: "Crawl Failed",
+        description: error instanceof Error ? error.message : "An unknown error occurred",
+        color: "danger",
+      });
       } catch {
         // Fallback to alert if toast is not available
         alert(`Error: ${error instanceof Error ? error.message : "Failed to crawl restaurant"}`);

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getAuthUser, hasRole, isOwner, type UserRole } from "./auth";
+import { getAuthUser, hasRole, type UserRole } from "./auth";
 import { unauthorizedResponse, forbiddenResponse } from "./auth";
 
 export interface AuthorizationOptions {
@@ -162,8 +162,10 @@ export function requireOwnerOrRole(
  * Group-specific authorization helpers
  */
 export async function isGroupOwner(
-  userId: string,
-  groupId: string
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  _userId: string,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  _groupId: string
 ): Promise<boolean> {
   // This will be implemented when GroupOrder model is available
   // For now, return false as placeholder
@@ -172,8 +174,10 @@ export async function isGroupOwner(
 }
 
 export async function isGroupMember(
-  userId: string,
-  groupId: string
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  _userId: string,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  _groupId: string
 ): Promise<boolean> {
   // This will be implemented when GroupOrder model is available
   // For now, return false as placeholder

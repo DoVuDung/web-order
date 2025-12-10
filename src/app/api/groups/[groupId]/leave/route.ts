@@ -44,7 +44,7 @@ export async function POST(
   request: NextRequest,
   context: RouteContext
 ) {
-  return withRateLimit('api', requireAuth(async (auth, req: NextRequest) => {
+  return withRateLimit('api', requireAuth(async (auth) => {
     try {
       const { groupId } = await context.params;
 

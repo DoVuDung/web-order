@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Card, CardBody, CardHeader } from "@heroui/react";
 import { Button, Input, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure, Select, SelectItem, Spinner } from "@heroui/react";
 import useStore from '@/store/store';
@@ -45,22 +45,6 @@ export default function GroupManager() {
   const [currentGroup, setCurrentGroup] = useState<GroupOrder | null>(null);
   const [modalMode, setModalMode] = useState<'create' | 'join'>('create');
 
-  // Load restaurants when modal opens for create mode
-  useEffect(() => {
-    if (isOpen && modalMode === 'create') {
-      loadRestaurants();
-    }
-  }, [isOpen, modalMode]);
-
-  // Load current group info
-  useEffect(() => {
-    if (currentGroupId) {
-      loadGroupInfo();
-    } else {
-      setCurrentGroup(null);
-    }
-  }, [currentGroupId]);
-
   const loadRestaurants = async () => {
     setLoadingRestaurants(true);
     try {
@@ -76,7 +60,7 @@ export default function GroupManager() {
     }
   };
 
-  const loadGroupInfo = async () => {
+  const loadGroupInfo = useCallback(async () => {
     if (!currentGroupId) return;
     
     try {
@@ -88,7 +72,23 @@ export default function GroupManager() {
     } catch (error) {
       console.error('Error loading group info:', error);
     }
-  };
+  }, [currentGroupId]);
+
+  // Load restaurants when modal opens for create mode
+  useEffect(() => {
+    if (isOpen && modalMode === 'create') {
+      loadRestaurants();
+    }
+  }, [isOpen, modalMode]);
+
+  // Load current group info
+  useEffect(() => {
+    if (currentGroupId) {
+      loadGroupInfo();
+    } else {
+      setCurrentGroup(null);
+    }
+  }, [currentGroupId, loadGroupInfo]);
 
   const handleCreateGroup = async () => {
     if (!user || !selectedRestaurant) {
@@ -112,7 +112,7 @@ export default function GroupManager() {
         const data = await response.json();
         setCurrentGroupId(data.groupOrder.groupId);
         alert(`✅ Group created successfully!\n\nShare this ID with others:\n${data.groupOrder.groupId}`);
-        onClose();
+      onClose();
         setSelectedRestaurant('');
       } else {
         const error = await response.json();
@@ -140,10 +140,10 @@ export default function GroupManager() {
 
       if (response.ok) {
         const data = await response.json();
-        setCurrentGroupId(groupIdInput);
+    setCurrentGroupId(groupIdInput);
         alert(`✅ ${data.message || 'Successfully joined group!'}`);
         onClose();
-        setGroupIdInput('');
+    setGroupIdInput('');
       } else {
         const error = await response.json();
         alert(`❌ Error: ${error.error || 'Failed to join group'}`);
@@ -166,7 +166,7 @@ export default function GroupManager() {
         });
 
         if (response.ok) {
-          clearGroup();
+      clearGroup();
           alert('✅ Successfully left the group');
         } else {
           const error = await response.json();
@@ -190,7 +190,7 @@ export default function GroupManager() {
     setModalMode('create');
     onOpen();
   };
-
+    
   const openJoinModal = () => {
     setModalMode('join');
     onOpen();
@@ -259,15 +259,15 @@ export default function GroupManager() {
                     📋 Copy ID
                   </Button>
                   {!isOwner && (
-                    <Button 
-                      size="sm" 
-                      color="danger" 
-                      variant="bordered"
-                      onPress={handleLeaveGroup}
-                      className="w-full sm:w-auto"
-                    >
+                  <Button 
+                    size="sm" 
+                    color="danger" 
+                    variant="bordered"
+                    onPress={handleLeaveGroup}
+                    className="w-full sm:w-auto"
+                  >
                       Leave
-                    </Button>
+                  </Button>
                   )}
                 </div>
               </div>
@@ -307,7 +307,7 @@ export default function GroupManager() {
           </ModalHeader>
           <ModalBody>
             {modalMode === 'create' ? (
-              <div className="space-y-4">
+            <div className="space-y-4">
                 <p className="text-sm text-gray-600 dark:text-gray-400">
                   Select a restaurant to create a group order. Share the group ID with others to let them join.
                 </p>
@@ -335,7 +335,7 @@ export default function GroupManager() {
                 ) : (
                   <p className="text-sm text-gray-500">
                     No restaurants available. Please crawl a restaurant first at the home page.
-                  </p>
+                </p>
                 )}
                 
                 <Button 
@@ -353,23 +353,23 @@ export default function GroupManager() {
                 <p className="text-sm text-gray-600 dark:text-gray-400">
                   Enter the group ID shared by the group owner to join the order.
                 </p>
-                <Input
+                  <Input
                   label="Group ID"
                   placeholder="group_..."
-                  value={groupIdInput}
-                  onChange={(e) => setGroupIdInput(e.target.value)}
+                    value={groupIdInput}
+                    onChange={(e) => setGroupIdInput(e.target.value)}
                   fullWidth
-                />
-                <Button 
-                  color="secondary" 
-                  onPress={handleJoinGroup}
+                  />
+                  <Button 
+                    color="secondary" 
+                    onPress={handleJoinGroup}
                   isLoading={isJoining}
-                  isDisabled={!groupIdInput.trim()}
-                  className="w-full"
-                >
-                  Join Group
-                </Button>
-              </div>
+                    isDisabled={!groupIdInput.trim()}
+                    className="w-full"
+                  >
+                    Join Group
+                  </Button>
+                </div>
             )}
           </ModalBody>
           <ModalFooter>

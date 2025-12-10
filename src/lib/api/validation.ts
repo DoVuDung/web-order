@@ -28,7 +28,7 @@ export async function validateRequest<T>(
         success: false,
         response: badRequestResponse(
           "Validation failed",
-          result.error.errors.map((err) => ({
+          result.error.issues.map((err: z.ZodIssue) => ({
             path: err.path.join('.'),
             message: err.message,
           }))
@@ -70,7 +70,7 @@ export function validateQuery<T>(
         success: false,
         response: badRequestResponse(
           "Invalid query parameters",
-          result.error.errors.map((err) => ({
+          result.error.issues.map((err: z.ZodIssue) => ({
             path: err.path.join('.'),
             message: err.message,
           }))

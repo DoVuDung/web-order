@@ -59,7 +59,7 @@ export const POST = withRateLimit('api', requireAuth(async (auth, request: NextR
       return validation.response;
     }
 
-    const { restaurantId, name } = validation.data;
+    const { restaurantId } = validation.data;
 
     // Verify restaurant exists
     const restaurant = await prisma.restaurant.findUnique({
@@ -142,7 +142,7 @@ export const POST = withRateLimit('api', requireAuth(async (auth, request: NextR
  *       401:
  *         $ref: '#/components/responses/UnauthorizedError'
  */
-export const GET = withRateLimit('api', requireAuth(async (auth, request: NextRequest) => {
+export const GET = withRateLimit('api', requireAuth(async (auth) => {
   try {
     // Get all groups where user is a member
     const groups = await prisma.groupOrder.findMany({

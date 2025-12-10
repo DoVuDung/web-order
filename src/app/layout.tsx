@@ -6,6 +6,7 @@ import "./globals.css";
 import { Providers } from "./providers";
 import NavbarOrder from "./components/Navbar";
 import type { Metadata, Viewport } from "next";
+import Script from "next/script";
 import "../lib/client-utils";
 
 // Force dynamic rendering to prevent static generation issues with Clerk
@@ -80,6 +81,7 @@ export default function RootLayout({
           <link rel="manifest" href="/manifest.json" />
           {/* Script to prevent browser extension interference */}
           <script
+            async
             dangerouslySetInnerHTML={{
               __html: `
                 try {

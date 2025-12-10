@@ -99,9 +99,9 @@ export async function GET() {
  *             schema:
  *               $ref: '#/components/schemas/Error'
  */
-export async function DELETE(req: Request) {
+export async function DELETE(request: NextRequest) {
   try {
-    const { searchParams } = new URL(req.url);
+    const { searchParams } = new URL(request.url);
     const restaurantId = searchParams.get('id');
 
     if (!restaurantId) {
