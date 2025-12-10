@@ -6,6 +6,9 @@ import { Card, CardBody, CardHeader } from "@heroui/card";
 import { Button, Input, Select, SelectItem, Chip, Divider } from "@heroui/react";
 import { useState, useEffect } from "react";
 
+// Force dynamic rendering to prevent static generation
+export const dynamic = 'force-dynamic';
+
 interface User {
   id: string;
   firstName: string;

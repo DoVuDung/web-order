@@ -1,6 +1,6 @@
 "use client";
 import { useDebounce } from "@/hooks";
-import { addToast, Input, Button } from "@heroui/react";
+import { addToast, Input } from "@heroui/react";
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import useStore from "@/store/store";
@@ -19,6 +19,7 @@ function OrderCraw({ onChange }: OrderCrawProps) {
   useEffect(() => {
     if (onChange) {
       onChange(debouncedValue);
+      console.log('debouncedValue: ', debouncedValue);
     }
   }, [debouncedValue, onChange]);
 
@@ -33,45 +34,45 @@ function OrderCraw({ onChange }: OrderCrawProps) {
         },
         body: JSON.stringify({ url: debouncedValue }),
       });
-      
       if (!response.ok) {
         const error = await response.json();
         throw new Error(error.error || "Failed to fetch data");
       }
-      
       const data = await response.json();
+      console.log("Crawled data:", data);
       
       // Store the crawled data in global state
       setCrawledData(data);
       
-      console.log(`✅ Crawl Successful! Found ${data.products?.length || 0} items from ${data.name}`);
+      console.log(`Crawl Successful! Found ${data.products?.length || 0} items from ${data.name}`);
       
-      // Try to use toast
+      // Try to use toast, fallback to console if not available
       try {
         addToast({
-          title: "✅ Crawl Successful",
+          title: "Crawl Successful",
           description: `Found ${data.products?.length || 0} items from ${data.name}`,
           color: "success",
         });
       } catch {
-        // Toast not available
+        console.log("Toast not available, using console log instead");
       }
       
-      // Navigate to orders page
+      // Navigate to orders page after successful crawl
       setTimeout(() => {
         router.push("/orders");
-      }, 1000);
+      }, 1000); // Small delay
       
     } catch (error) {
       console.error("Error during crawling:", error);
       try {
         addToast({
-          title: "❌ Crawl Failed",
+          title: "Crawl Failed",
           description: error instanceof Error ? error.message : "An unknown error occurred",
           color: "danger",
         });
       } catch {
-        alert(`❌ Error: ${error instanceof Error ? error.message : "Failed to crawl restaurant"}`);
+        // Fallback to alert if toast is not available
+        alert(`Error: ${error instanceof Error ? error.message : "Failed to crawl restaurant"}`);
       }
     } finally {
       setIsLoading(false);
@@ -81,20 +82,21 @@ function OrderCraw({ onChange }: OrderCrawProps) {
   useEffect(() => {
     if (!debouncedValue) return;
     handleCraw();
-    
+    // Cleanup function to reset loading state
     return () => {
       setIsLoading(false);
     };
   }, [debouncedValue, handleCraw]);
 
+
   return (
-    <div className="w-full">
-      <div className="text-center mb-6">
-        <h2 className="text-2xl sm:text-3xl font-bold mb-2">
-          Paste Restaurant Link
-        </h2>
+    <div className="w-full max-w-2xl mx-auto p-4 sm:p-6">
+      <div className="text-center mb-6 sm:mb-8">
+        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-2 sm:mb-4">
+          🍔 Order Together
+        </h1>
         <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400">
-          From Grab Food or Shopee Food
+          Paste a Grab Food restaurant URL to start ordering
         </p>
       </div>
       
@@ -105,7 +107,9 @@ function OrderCraw({ onChange }: OrderCrawProps) {
           placeholder="https://food.grab.com/vn/vi/restaurant/..."
           type="url"
           variant="bordered"
-          onClear={() => setInputValue("")}
+          onClear={() => {
+            setInputValue("");
+          }}
           size="lg"
           onChange={(e) => setInputValue(e.target.value)}
           value={inputValue}
@@ -114,30 +118,24 @@ function OrderCraw({ onChange }: OrderCrawProps) {
             input: "text-sm sm:text-base",
             label: "text-sm sm:text-base"
           }}
-          startContent={
-            <span className="text-2xl">🔗</span>
-          }
         />
-        
         {isLoading && (
-          <div className="text-center">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-100 dark:bg-blue-900 rounded-full">
-              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600 dark:border-blue-400"></div>
-              <p className="text-sm text-blue-600 dark:text-blue-400">
-                Crawling restaurant data...
-              </p>
-            </div>
-          </div>
+          <p className="text-xs sm:text-sm text-gray-600 text-center">
+            🔄 Crawling restaurant data...
+          </p>
         )}
         
-        <div className="text-center text-xs sm:text-sm text-gray-500 dark:text-gray-400">
-          💡 Tip: After crawling, you can view the menu on the{" "}
-          <button
-            onClick={() => router.push("/orders")}
-            className="text-blue-600 dark:text-blue-400 hover:underline font-medium"
-          >
-            Orders page
-          </button>
+        <div className="text-center">
+          <p className="text-xs sm:text-sm text-gray-500">
+            After crawling, go to{" "}
+            <button
+              onClick={() => router.push("/orders")}
+              className="text-[#6c47ff] hover:underline font-medium"
+            >
+              Orders page
+            </button>{" "}
+            to view menu items
+          </p>
         </div>
       </div>
     </div>

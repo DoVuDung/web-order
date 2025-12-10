@@ -3,8 +3,6 @@
 import {
     SignedIn,
     SignedOut,
-    SignInButton,
-    SignUpButton,
     UserButton,
     useUser,
 } from "@clerk/nextjs";
@@ -98,16 +96,16 @@ function NavbarOrder() {
         <NavbarMenuItem className="hidden sm:block">
           <SignedOut>
             <div className="flex gap-2">
-              <SignInButton>
+              <Link href="/sign-in">
                 <Button 
-                  variant="ghost" 
+                  variant="ghost"
                   size="sm"
                   className="text-xs sm:text-sm"
                 >
                   Sign In
                 </Button>
-              </SignInButton>
-              <SignUpButton>
+              </Link>
+              <Link href="/sign-up">
                 <Button 
                   color="primary"
                   size="sm"
@@ -115,25 +113,37 @@ function NavbarOrder() {
                 >
                   Sign Up
                 </Button>
-              </SignUpButton>
+              </Link>
             </div>
           </SignedOut>
           <SignedIn>
-            <UserButton />
+            <UserButton 
+              appearance={{
+                elements: {
+                  avatarBox: "w-8 h-8",
+                },
+              }}
+            />
           </SignedIn>
         </NavbarMenuItem>
         
-        {/* Mobile auth buttons */}
+        {/* Mobile login buttons */}
         <NavbarMenuItem className="sm:hidden">
           <SignedOut>
-            <SignInButton>
+            <Link href="/sign-in">
               <Button variant="ghost" size="sm">
                 Sign In
               </Button>
-            </SignInButton>
+            </Link>
           </SignedOut>
           <SignedIn>
-            <UserButton />
+            <UserButton 
+              appearance={{
+                elements: {
+                  avatarBox: "w-8 h-8",
+                },
+              }}
+            />
           </SignedIn>
         </NavbarMenuItem>
       </NavbarContent>
@@ -187,17 +197,34 @@ function NavbarOrder() {
             </Link>
           </NavbarMenuItem>
         )}
+        {/* Mobile menu login buttons */}
         <NavbarMenuItem className="sm:hidden">
           <SignedOut>
             <div className="flex flex-col gap-2 pt-4">
-              <SignUpButton>
+              <Link 
+                href="/sign-in"
+                className="w-full block"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <Button 
+                  variant="ghost"
+                  className="w-full"
+                >
+                  Sign In
+                </Button>
+              </Link>
+              <Link 
+                href="/sign-up"
+                className="w-full block"
+                onClick={() => setIsMenuOpen(false)}
+              >
                 <Button 
                   color="primary"
                   className="w-full"
                 >
                   Sign Up
                 </Button>
-              </SignUpButton>
+              </Link>
             </div>
           </SignedOut>
         </NavbarMenuItem>

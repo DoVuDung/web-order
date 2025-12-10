@@ -1,114 +1,84 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@plugin './hero.ts';
+/* Note: You may need to change the path to fit your project structure */
+@source '../../node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}';
+@custom-variant dark (&:is(.dark *));
 
+/* Custom responsive utilities */
 @layer base {
-  :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+  html {
+    scroll-behavior: smooth;
   }
 
-  .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+  body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Improved contrast for accessibility */
+  :root {
+    --foreground-rgb: 0, 0, 0;
+    --background-start-rgb: 255, 255, 255;
+    --background-end-rgb: 255, 255, 255;
+    }
+
+  [data-theme="dark"] {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+
+  /* Ensure proper text contrast */
+  .text-gray-600 {
+    color: #4b5563; /* Darker gray for better contrast */
+  }
+
+  .dark .text-gray-600 {
+    color: #d1d5db; /* Lighter gray for dark mode */
+  }
+
+  .text-gray-500 {
+    color: #6b7280; /* Adjusted for better contrast */
+  }
+
+  .dark .text-gray-500 {
+    color: #9ca3af; /* Adjusted for dark mode */
   }
 }
 
 @layer utilities {
-  /* Food icon animations */
-  @keyframes float-food {
-    0%, 100% {
-      transform: translateY(0) rotate(0deg) scale(1);
-      opacity: 0.3;
-    }
-    25% {
-      transform: translateY(-30px) rotate(5deg) scale(1.1);
-      opacity: 0.5;
-    }
-    50% {
-      transform: translateY(-20px) rotate(-5deg) scale(0.9);
-      opacity: 0.4;
-    }
-    75% {
-      transform: translateY(-40px) rotate(3deg) scale(1.05);
-      opacity: 0.6;
-    }
+  .text-balance {
+    text-wrap: balance;
   }
 
-  @keyframes float-up {
-    0% {
-      transform: translateY(100vh) rotate(0deg);
-      opacity: 0;
-    }
-    10% {
-      opacity: 0.5;
-    }
-    90% {
-      opacity: 0.5;
-    }
-    100% {
-      transform: translateY(-100px) rotate(360deg);
-      opacity: 0;
-    }
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
 
-  @keyframes pulse-food {
-    0%, 100% {
-      transform: scale(1);
-      opacity: 0.5;
-    }
-    50% {
-      transform: scale(1.2);
-      opacity: 0.7;
-    }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
   }
 
-  .animate-float-food {
-    animation: float-food 20s ease-in-out infinite;
+  /* Responsive text truncation */
+  .line-clamp-1 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
   }
 
-  .animate-float-up {
-    animation: float-up 15s linear infinite;
+  .line-clamp-2 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
   }
 
-  .animate-pulse-food {
-    animation: pulse-food 3s ease-in-out infinite;
-  }
-
-  /* Gradient animations */
-  @keyframes gradient-shift {
-    0%, 100% {
-      background-position: 0% 50%;
-    }
-    50% {
-      background-position: 100% 50%;
-    }
-  }
-
-  .animate-gradient {
-    background-size: 200% 200%;
-    animation: gradient-shift 8s ease infinite;
-  }
-}
-
-@layer components {
-  .food-pattern-bg {
-    background-image: 
-      linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.03) 30%, rgba(255, 255, 255, 0.03) 70%, transparent 70%),
-      linear-gradient(-45deg, transparent 30%, rgba(255, 255, 255, 0.03) 30%, rgba(255, 255, 255, 0.03) 70%, transparent 70%);
-    background-size: 60px 60px;
-    background-position: 0 0, 30px 30px;
-  }
-
-  .glass-effect {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-  }
-
-  .dark .glass-effect {
-    background: rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+  .line-clamp-3 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
   }
 }

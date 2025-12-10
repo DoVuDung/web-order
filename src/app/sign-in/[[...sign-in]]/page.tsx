@@ -2,11 +2,11 @@ import { SignIn } from '@clerk/nextjs';
 
 export default function SignInPage() {
   return (
-    <div className="flex min-h-screen items-center justify-center p-4">
+    <div className="flex min-h-[calc(100vh-200px)] items-center justify-center p-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold mb-2">Welcome Back! 👋</h1>
-          <p className="text-gray-600 dark:text-gray-400">
+          <h1 className="text-3xl font-bold mb-2 text-foreground">Welcome Back! 👋</h1>
+          <p className="text-default-500">
             Sign in to continue your food ordering journey
           </p>
         </div>
@@ -15,12 +15,23 @@ export default function SignInPage() {
           appearance={{
             elements: {
               rootBox: "mx-auto",
-              card: "shadow-lg",
+              card: "shadow-lg border border-default-200",
+              headerTitle: "text-foreground",
+              headerSubtitle: "text-default-500",
+              socialButtonsBlockButton: "border border-default-200 hover:bg-default-100 transition-colors",
+              socialButtonsBlockButtonText: "font-medium",
+              formButtonPrimary: "bg-primary text-primary-foreground hover:bg-primary/90",
+              footerActionLink: "text-primary hover:text-primary/80",
+            },
+            layout: {
+              socialButtonsPlacement: "top",
+              socialButtonsVariant: "blockButton",
             },
           }}
           routing="path"
           path="/sign-in"
           signUpUrl="/sign-up"
+          fallbackRedirectUrl="/"
         />
       </div>
     </div>

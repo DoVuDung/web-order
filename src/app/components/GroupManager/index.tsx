@@ -321,10 +321,13 @@ export default function GroupManager() {
                     label="Select Restaurant"
                     placeholder="Choose a restaurant"
                     selectedKeys={selectedRestaurant ? [selectedRestaurant] : []}
-                    onChange={(e) => setSelectedRestaurant(e.target.value)}
+                    onSelectionChange={(keys) => {
+                      const selected = Array.from(keys)[0] as string;
+                      setSelectedRestaurant(selected || '');
+                    }}
                   >
                     {restaurants.map((restaurant) => (
-                      <SelectItem key={restaurant.id} value={restaurant.id}>
+                      <SelectItem key={restaurant.id}>
                         {restaurant.name} ({restaurant.platform})
                       </SelectItem>
                     ))}
